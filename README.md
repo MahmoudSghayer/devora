@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# devora.design
 
-## Getting Started
+Bilingual (English + Arabic/RTL) marketing site for **devora** — a full-stack web studio. _dev + aura._
 
-First, run the development server:
+Built with **Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Motion (Framer) · next-intl**.
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000  → redirects to /en
+npm run build      # production build (all pages prerendered per-locale)
+npm start          # serve the production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Locales live under `/en` and `/ar`. The language toggle switches locale in place and persists via the `NEXT_LOCALE` cookie.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/[locale]/         home · work · services · contact · not-found  (+ layout: <html dir/lang>, chrome)
+app/api/contact/      POST stub (validates, does not deliver — see below)
+components/chrome/     Header, MobileMenu, Footer, Marquee, ScrollProgress, Logo, LanguageToggle
+components/motion/     WordReveal, HeroReveal, Reveal, Parallax, Magnetic
+components/ui/         Container, SectionHeader, PageIntro, AmberBand, ArrowButton, ArrowLink, Chip, SiteImage
+components/{home,work,services,contact}/   page sections
+lib/                   motion.ts (EASE), fonts.ts, site.ts (brand + placeholders), validation.ts, hooks/
+i18n/                  routing, request, navigation (next-intl)
+messages/              en.json · ar.json  (all copy)
+proxy.ts               next-intl middleware (Next 16 "proxy" convention)
+scripts/               capture-screenshots.mjs  (regenerate case-study images)
+```
 
-## Learn More
+Design tokens (colors, radii, fluid headings, the single `nav:` 920px breakpoint) are defined in `app/globals.css` via Tailwind v4 `@theme`. **No box-shadows** — depth is borders, surface shifts, hover lifts and motion. All motion honors `prefers-reduced-motion`.
 
-To learn more about Next.js, take a look at the following resources:
+## Case-study images
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`public/images/zawiya.png` and `aldarb.png` are screenshots of the live client sites, captured with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+node scripts/capture-screenshots.mjs
+```
 
-## Deploy on Vercel
+## ⚠️ Replace before launch (`TODO(devora)`)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+All placeholders are grepable via `TODO(devora)`:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| What | Where |
+|------|-------|
+| **Pricing** — `from $2,900` / `from $7,500` | `messages/{en,ar}.json` → `services.k1_p` / `k2_p` |
+| **Testimonial quotes** (both) | `messages/{en,ar}.json` → `home.t1_q` / `t2_q` |
+| **Social URLs** (Instagram/X/LinkedIn/Behance) | `lib/site.ts` → `SOCIALS` (currently `#`) |
+| **Contact email** | `lib/site.ts` → `SITE.email` (`hello@devora.design`) |
+| **Team photo** | `components/home/TeamSection.tsx` (placeholder slot) |
+| **Contact delivery** | `app/api/contact/route.ts` — validates only; wire real email/CRM/form service |
+| **Arabic validation copy** — review | `messages/ar.json` → `contact.err_*`, `send_*`, `sending` |
+
+## Contact form
+
+Client-side validation (name + email format + details required) with an `idle → sending → sent / error` state machine, posting to `/api/contact`. The route validates with Zod and acknowledges — it does **not** send anywhere yet (stub).
+
+## Deploy
+
+Standard server-capable target (Vercel/Node). To go fully static instead, add `output: 'export'` in `next.config.ts` and repoint the contact form at an external form service (route handlers don't run in a static export).

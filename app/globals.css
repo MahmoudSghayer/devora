@@ -1,26 +1,124 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* devora design tokens (Tailwind v4 CSS-first).
+   Values are verbatim from the design handoff. Custom color names generate
+   bg, text and border color utilities; --breakpoint-nav generates the nav
+   and max-nav variants (the only responsive breakpoint used, never md/lg).
+   No shadows: depth comes from borders, surface shifts, hover lifts, motion. */
+@theme {
+  /* the single responsive breakpoint */
+  --breakpoint-nav: 920px;
+
+  /* surfaces */
+  --color-bg: #0f0f0f;
+  --color-bg-alt: #121212;
+  --color-bg-foot: #0b0b0b;
+  --color-surface: #141414;
+  --color-surface-2: #151515;
+  --color-featured: #161408;
+
+  /* borders */
+  --color-border: #232323;
+  --color-border-sub: #1d1d1d;
+  --color-border-card: #2a2a28;
+  --color-border-chip: #333330;
+  --color-border-ghost: #3a3a3a;
+  --color-border-amber: #3d3620;
+
+  /* text */
+  --color-ink: #f2f2ef;
+  --color-ink-2: #c9c9c2;
+  --color-muted: #9a9a94;
+  --color-muted-2: #8f8f8a;
+  --color-faint: #6a6a66;
+  --color-faint-2: #55554f;
+
+  /* accent */
+  --color-amber: #f4c542;
+  --color-amber-hi: #ffd75e;
+  --color-on-amber: #131108;
+  --color-dark-btn-hi: #2a2712;
+
+  /* fonts (next/font vars set on <html>; Arabic fallback in the stack) */
+  --font-display: var(--font-space-grotesk), var(--font-plex-arabic), sans-serif;
+  --font-mono: var(--font-space-mono), var(--font-plex-arabic), monospace;
+
+  /* radii */
+  --radius-pill: 999px;
+  --radius-card: 18px;
+  --radius-img: 16px;
+  --radius-input: 10px;
+
+  /* fluid heading sizes */
+  --text-h1: clamp(40px, 8vw, 128px);
+  --text-h1-sub: clamp(36px, 6.5vw, 104px);
+  --text-h2: clamp(28px, 4vw, 56px);
+  --text-cta: clamp(38px, 6.5vw, 96px);
+  --text-case: clamp(32px, 3.4vw, 48px);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-amber);
+    color: var(--color-on-amber);
+  }
+  /* Arabic: negative tracking breaks ligatures — force zero under RTL. */
+  [dir="rtl"] .u-track,
+  [dir="rtl"] .u-mono,
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3 {
+    letter-spacing: 0 !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── ambient decorative loops ────────────────────────────────────────────
+   Gated behind no-preference so reduced-motion simply never starts them. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes gridDrift {
+    from { background-position: 0 0; }
+    to { background-position: var(--drift, 160px) 0; }
+  }
+  @keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.55; }
+  }
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(6px); }
+  }
+  @keyframes spinSlow {
+    to { transform: rotate(360deg); }
+  }
+
+  .animate-marquee { animation: marquee 22s linear infinite; }
+  .animate-grid-drift { animation: gridDrift var(--drift-dur, 18s) linear infinite; }
+  .animate-pulse-dot { animation: pulseDot var(--pulse-dur, 2.4s) ease-in-out infinite; }
+  .animate-nudge { animation: nudge 1.6s ease-in-out infinite; }
+  .animate-spin-slow { animation: spinSlow 46s linear infinite; }
+}
+
+/* RTL: the ambient arrow-nudge should push toward the (flipped) arrow. */
+[dir="rtl"] .animate-nudge {
+  animation-name: nudgeRtl;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes nudgeRtl {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-6px); }
+  }
 }
