@@ -41,12 +41,18 @@ export default function CaseStudyDetail({
           </Reveal>
           <Reveal index={2}>
             <div className="mt-5 flex flex-wrap items-center gap-3">
+              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
+                {w('detail_disc')}
+              </span>
               <span className="rounded-pill border border-border-chip px-4 py-[9px] font-mono text-xs text-ink-2">
                 {copy.industry}
               </span>
               <span className="font-mono text-xs text-faint">{copy.tags}</span>
             </div>
-            <p className="mt-6 max-w-[620px] text-[19px] leading-[1.65] text-muted">
+            <p className="u-mono mt-8 font-mono text-xs uppercase tracking-[0.22em] text-muted-2">
+              {w('detail_overview')}
+            </p>
+            <p className="mt-3 max-w-[620px] text-[19px] leading-[1.65] text-muted">
               {copy.summary}
             </p>
           </Reveal>

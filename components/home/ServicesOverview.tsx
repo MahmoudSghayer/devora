@@ -9,6 +9,7 @@ const ITEMS = [
   {n: '02', t: 's2_t', d: 's2_d'},
   {n: '03', t: 's3_t', d: 's3_d'},
   {n: '04', t: 's4_t', d: 's4_d'},
+  {n: '05', t: 's5_t', d: 's5_d'},
 ] as const;
 
 export default function ServicesOverview() {

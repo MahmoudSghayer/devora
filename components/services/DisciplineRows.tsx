@@ -8,6 +8,7 @@ const DISCIPLINES = [
   {n: '02', t: 's2_t', d: 'sb2_d', chips: ['d21', 'd22', 'd23', 'd24']},
   {n: '03', t: 's3_t', d: 'sb3_d', chips: ['d31', 'd32', 'd33', 'd34']},
   {n: '04', t: 's4_t', d: 'sb4_d', chips: ['d41', 'd42', 'd43', 'd44']},
+  {n: '05', t: 's5_t', d: 'sb5_d', chips: ['d51', 'd52', 'd53', 'd54']},
 ] as const;
 
 export default function DisciplineRows() {
