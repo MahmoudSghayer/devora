@@ -1,0 +1,51 @@
+name: CI
+
+# Runs on every push to main and on every pull request. Vercel already
+# deploys on push; this gate catches type, lint and build errors *before*
+# a deploy (and before a PR merges).
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to the same ref cancels the in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Typecheck · Lint · Build
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      # When the e2e suite lands (tests/e2e.mjs + the `test:e2e` script),
+      # add a step here — it needs the app served first, e.g.:
+      #   - run: npm run build
+      #   - run: npm run start & npx wait-on http://localhost:3000
+      #   - run: npm run test:e2e
