@@ -7,6 +7,7 @@ import {spaceGrotesk, spaceMono, arabic} from '@/lib/fonts';
 import Header from '@/components/chrome/Header';
 import Footer from '@/components/chrome/Footer';
 import ScrollProgress from '@/components/chrome/ScrollProgress';
+import ChatWidget from '@/components/chat/ChatWidget';
 import {Analytics} from '@vercel/analytics/next';
 
 export function generateStaticParams() {
@@ -40,6 +41,7 @@ export default async function LocaleLayout({
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <ChatWidget />
         </NextIntlClientProvider>
         <Analytics />
       </body>
