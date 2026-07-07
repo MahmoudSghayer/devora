@@ -29,20 +29,27 @@ export async function sendMail(opts: {
     return {delivered: false};
   }
 
+  const port = Number(process.env.ZOHO_SMTP_PORT || 465);
   const transporter = nodemailer.createTransport({
     host: process.env.ZOHO_SMTP_HOST || 'smtp.zoho.com',
-    port: Number(process.env.ZOHO_SMTP_PORT || 465),
-    secure: true, // 465 = implicit TLS
+    port,
+    secure: port === 465, // 465 = implicit SSL/TLS; 587 = STARTTLS
     auth: {user, pass},
   });
 
-  await transporter.sendMail({
-    from: `devora.design <${user}>`,
-    to,
-    replyTo: opts.replyTo,
-    subject: opts.subject,
-    text: opts.text,
-    html: opts.html,
-  });
-  return {delivered: true};
+  try {
+    await transporter.sendMail({
+      from: `devora.design <${user}>`, // must match the authenticated mailbox
+      to,
+      replyTo: opts.replyTo,
+      subject: opts.subject,
+      text: opts.text,
+      html: opts.html,
+    });
+    return {delivered: true};
+  } catch (err) {
+    // Surface the real SMTP error (auth / connection / relaying) in the logs.
+    console.error('[email] send failed:', err);
+    throw err;
+  }
 }
