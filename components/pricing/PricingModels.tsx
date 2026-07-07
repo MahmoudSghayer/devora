@@ -3,8 +3,8 @@ import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
 import {Link} from '@/i18n/navigation';
 
-// Two project tiers + a monthly Care Plan. Prices are placeholder figures —
-// TODO(devora): replace with real numbers, or keep the "custom quote" framing.
+// Two project tiers + a monthly Care Plan. "from" prices are starting points;
+// every project is scoped and quoted to fit.
 const MODELS = [
   {
     n: 'm1_n',
