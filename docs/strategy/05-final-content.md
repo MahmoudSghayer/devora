@@ -37,11 +37,11 @@
 
 - **H1:** Transparent from the first email.
 - **Sub:** Clear ways to start, honest numbers, and no surprise invoices.
-- **Launch** — from $2,900 · up to 5 pages, brand touch-up, CMS, two-week sprint.
-- **Studio** (Most requested) — from $7,500 · full identity, custom design & build, e-commerce ready, SEO foundations, 4–8 weeks.
-- **Care Plan** (Monthly) — custom monthly · dedicated senior squad, monthly roadmap, updates/fixes/improvements, performance/SEO/content, priority support.
+- **Launch** — from $3,500 · up to 5 pages, brand touch-up, CMS, two-week sprint.
+- **Studio** (Most requested) — from $9,500 · full identity, custom design & build, e-commerce ready, SEO foundations, 4–8 weeks.
+- **Care Plan** (Monthly) — from $1,200/mo · dedicated senior squad, monthly roadmap, updates/fixes/improvements, performance/SEO/content, priority support.
 - **Every engagement includes:** strategy workshop · responsive, accessible build · clean editable CMS + training · launch support · performance & SEO foundations · **bilingual-ready (EN/AR, RTL)**.
-- **Note:** Placeholder figures — every project gets a custom quote.
+- **Note:** Indicative starting prices — every project is scoped and quoted to fit. (Set from 2026 market research: boutique custom builds $8k–15k; quality care plans $1k–3k/mo.)
 
 ## About
 

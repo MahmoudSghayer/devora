@@ -32,7 +32,7 @@ Everything grep-able via `TODO(devora)`:
 
 | Item | Where |
 |---|---|
-| Pricing figures (`from $2,900` / `$7,500`) | `messages/{en,ar}.json` → `pricing.m1_p`, `m2_p` (or keep custom-quote) |
+| ~~Pricing figures~~ ✅ set — Launch $3,500 · Studio $9,500 · Care Plan $1,200/mo (market-researched) | `messages/{en,ar}.json` → `pricing.m1_p`, `m2_p`, `m3_p` |
 | Testimonial quotes + attributions | `messages/{en,ar}.json` → `home.t1_*`, `t2_*` |
 | Social URLs | `lib/site.ts` → `SOCIALS` |
 | Contact email | `lib/site.ts` → `SITE.email` |
