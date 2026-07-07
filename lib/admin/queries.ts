@@ -262,19 +262,17 @@ export async function getAnalytics(): Promise<Analytics> {
   }
   const supabase = createSupabaseServiceClient();
 
-  const {data: convs} = await supabase.from('conversations').select('locale');
-  const split = new Map<string, number>();
-  (convs ?? []).forEach((c: {locale: string}) =>
-    split.set(c.locale, (split.get(c.locale) ?? 0) + 1)
-  );
-  const languageSplit = [...split.entries()].map(([locale, count]) => ({
-    locale,
-    count,
-  }));
-  const totalConvs = convs?.length ?? 0;
-
-  const [{count: takeovers}, {count: totalMessages}, {data: questions}] =
+  // Count-only queries (head:true) — never pull full rows just to tally.
+  const [enRes, arRes, {count: takeovers}, {count: totalMessages}, {data: questions}] =
     await Promise.all([
+      supabase
+        .from('conversations')
+        .select('id', {count: 'exact', head: true})
+        .eq('locale', 'en'),
+      supabase
+        .from('conversations')
+        .select('id', {count: 'exact', head: true})
+        .eq('locale', 'ar'),
       supabase
         .from('analytics_events')
         .select('id', {count: 'exact', head: true})
@@ -287,6 +285,14 @@ export async function getAnalytics(): Promise<Analytics> {
         .order('created_at', {ascending: false})
         .limit(10),
     ]);
+
+  const en = enRes.count ?? 0;
+  const ar = arRes.count ?? 0;
+  const totalConvs = en + ar;
+  const languageSplit = [
+    {locale: 'en', count: en},
+    {locale: 'ar', count: ar},
+  ].filter((l) => l.count > 0);
 
   return {
     languageSplit,
