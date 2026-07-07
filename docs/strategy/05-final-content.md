@@ -37,11 +37,12 @@
 
 - **H1:** Transparent from the first email.
 - **Sub:** Clear ways to start, honest numbers, and no surprise invoices.
-- **Launch** — from $3,500 · up to 5 pages, brand touch-up, CMS, two-week sprint.
-- **Studio** (Most requested) — from $9,500 · full identity, custom design & build, e-commerce ready, SEO foundations, 4–8 weeks.
-- **Care Plan** (Monthly) — from $1,200/mo · dedicated senior squad, monthly roadmap, updates/fixes/improvements, performance/SEO/content, priority support.
+Model: a one-time build + a low monthly (hosting, care & support), per tier.
+- **Launch** (landing) — from $1,650 + $200/mo · up to 5 pages, brand touch-up, CMS, two-week sprint.
+- **Studio** (Most requested) — from $2,650 + $250/mo · full identity, custom design & build, e-commerce ready, SEO foundations, 4–8 weeks.
+- **Growth** (Complete) — from $5,000 + $300/mo · everything in Studio, e-commerce/bookings, custom integrations & AI, advanced SEO.
 - **Every engagement includes:** strategy workshop · responsive, accessible build · clean editable CMS + training · launch support · performance & SEO foundations · **bilingual-ready (EN/AR, RTL)**.
-- **Note:** Indicative starting prices — every project is scoped and quoted to fit. (Set from 2026 market research: boutique custom builds $8k–15k; quality care plans $1k–3k/mo.)
+- **Note:** A one-time build + a low monthly. Set for the Israeli SMB market at 2026 rates (~3.0 ₪/$): 5k / 8k / 15k ₪ builds ≈ $1,650 / $2,650 / $5,000, each + $200–$300/mo (hosting, care & support).
 
 ## About
 

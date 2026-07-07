@@ -32,7 +32,7 @@ Everything grep-able via `TODO(devora)`:
 
 | Item | Where |
 |---|---|
-| ~~Pricing figures~~ ✅ set — Launch $3,500 · Studio $9,500 · Care Plan $1,200/mo (market-researched) | `messages/{en,ar}.json` → `pricing.m1_p`, `m2_p`, `m3_p` |
+| ~~Pricing figures~~ ✅ set — setup + monthly (Israeli market): Launch $1,650+$200/mo · Studio $2,650+$250/mo · Growth $5,000+$300/mo | `messages/{en,ar}.json` → `pricing.m1_p`/`m1_mo` … |
 | Testimonial quotes + attributions | `messages/{en,ar}.json` → `home.t1_*`, `t2_*` |
 | Social URLs | `lib/site.ts` → `SOCIALS` |
 | Contact email | `lib/site.ts` → `SITE.email` |
