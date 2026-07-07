@@ -4,8 +4,7 @@
 export const SITE = {
   name: 'devora',
   domain: 'devora.design',
-  // TODO(devora): confirm the real inbox address.
-  email: 'hello@devora.design',
+  email: 'support@devora.design',
 } as const;
 
 // TODO(devora): replace "#" with the real profile URLs.

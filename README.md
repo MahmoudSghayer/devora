@@ -235,7 +235,7 @@ Everything below is grep-able via `TODO(devora)`.
 | **Pricing** ✅ set — `from $3,500` / `from $9,500` / `from $1,200/mo` | `messages/{en,ar}.json` → `pricing.m1_p`, `m2_p`, `m3_p` |
 | **Testimonial quotes** (both) + attributions | `messages/{en,ar}.json` → `home.t1_q`/`t1_a`, `t2_q`/`t2_a` |
 | **Social URLs** (Instagram · X · LinkedIn · Behance) | `lib/site.ts` → `SOCIALS` (currently `#`) |
-| **Contact email** | `lib/site.ts` → `SITE.email` (`hello@devora.design`) |
+| **Contact email** ✅ set — `support@devora.design` | `lib/site.ts` → `SITE.email` |
 | **Team photo** | `components/home/TeamSection.tsx` (placeholder slot → real image in `public/images/`) |
 | **Contact delivery** | `app/api/contact/route.ts` — wire email (Resend/Postmark/SES), a CRM, or a form service |
 | **Arabic validation copy** — review by a native speaker | `messages/ar.json` → `contact.err_*`, `send_*`, `sending` |
