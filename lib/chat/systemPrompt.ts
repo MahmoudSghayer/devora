@@ -41,7 +41,10 @@ export function buildSystemPrompt(
     {
       type: 'text',
       text: `<knowledge_base locale="${locale}">\n${kbContext}\n</knowledge_base>`,
-      cache_control: {type: 'ephemeral'},
+      // 1h TTL (not the default 5m): support visitors pause between turns, so the
+      // expensive, stable instructions+KB prefix should survive those gaps as a
+      // cache read instead of being re-written every 5 minutes.
+      cache_control: {type: 'ephemeral', ttl: '1h'},
     },
   ];
 }

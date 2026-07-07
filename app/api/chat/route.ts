@@ -1,3 +1,4 @@
+import type Anthropic from '@anthropic-ai/sdk';
 import {NextResponse} from 'next/server';
 import {chatMessageSchema} from '@/lib/validation';
 import {getConversation, getMessages, insertMessage} from '@/lib/chat/store';
@@ -118,7 +119,19 @@ export async function POST(request: Request) {
       : (clientHistory ?? []).map((t) => ({role: t.role, content: t.content}))
   ).slice(-20);
 
-  const claudeMessages = [...priorTurns, {role: 'user' as const, content: message}];
+  // Trailing cache_control breakpoint on the newest message so prior turns become
+  // a cache read instead of fresh input tokens. 5m (not 1h): turns arrive seconds
+  // apart, so 5m always still holds the growing prefix — and since this tail is
+  // rewritten every turn, a longer TTL would just pay the higher write premium.
+  const claudeMessages: Anthropic.MessageParam[] = [
+    ...priorTurns,
+    {
+      role: 'user',
+      content: [
+        {type: 'text', text: message, cache_control: {type: 'ephemeral', ttl: '5m'}},
+      ],
+    },
+  ];
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -138,7 +151,23 @@ export async function POST(request: Request) {
             assistantText += t;
             controller.enqueue(sse({type: 'delta', text: t}));
           });
-          await claudeStream.finalMessage();
+          const final = await claudeStream.finalMessage();
+          // Cache telemetry: turn 1 shows a large cache_creation and ~0 read; from
+          // turn 2 on, cache_read jumps to the KB-prefix size and climbs. Nullable
+          // cache fields → `?? 0`. Fire-and-forget, never blocks the response.
+          const u = final.usage;
+          void logEvent('cache_usage', {
+            conversationId,
+            locale,
+            props: {
+              model: CHAT_MODEL,
+              input_tokens: u.input_tokens,
+              output_tokens: u.output_tokens,
+              cache_read_input_tokens: u.cache_read_input_tokens ?? 0,
+              cache_creation_input_tokens: u.cache_creation_input_tokens ?? 0,
+              turns: claudeMessages.length,
+            },
+          });
         } else {
           console.warn(
             '[chat] ANTHROPIC_API_KEY not set on this deployment — serving offline fallback. Set the key and redeploy so Claude answers.'
