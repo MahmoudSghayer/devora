@@ -81,6 +81,23 @@ export async function getConversationDetail(id: string): Promise<{
   };
 }
 
+// Close conversations whose last message is older than `minutes`. Idempotent —
+// a new message re-activates the conversation (insertMessage sets status back to
+// 'active'). Returns how many were closed.
+export async function closeStaleConversations(minutes = 15): Promise<number> {
+  if (!isSupabaseConfigured()) return 0;
+  const supabase = createSupabaseServiceClient();
+  const cutoff = new Date(Date.now() - minutes * 60 * 1000).toISOString();
+  const {data, error} = await supabase
+    .from('conversations')
+    .update({status: 'closed'})
+    .neq('status', 'closed')
+    .lt('last_message_at', cutoff)
+    .select('id');
+  if (error) return 0;
+  return data?.length ?? 0;
+}
+
 export async function getConversationToken(id: string): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
   const supabase = createSupabaseServiceClient();
