@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import {useTranslations} from 'next-intl';
 import {Link} from '@/i18n/navigation';
 import Container from '@/components/ui/Container';
+import ScrollToggle from './ScrollToggle';
 import {SITE, SOCIALS} from '@/lib/site';
 
 function ColTitle({children}: {children: ReactNode}) {
@@ -18,7 +19,8 @@ const linkCls =
 export default function Footer() {
   const t = useTranslations('common');
   return (
-    <footer className="border-t border-border bg-bg-foot">
+    <>
+      <footer className="border-t border-border bg-bg-foot">
       <Container className="pt-20 pb-10">
         <div className="grid gap-12 nav:grid-cols-[1.5fr_1fr] nav:gap-16">
           {/* Wordmark + tagline */}
@@ -99,6 +101,8 @@ export default function Footer() {
           <span dir="ltr">{t('footer_sig')}</span>
         </div>
       </Container>
-    </footer>
+      </footer>
+      <ScrollToggle />
+    </>
   );
 }
