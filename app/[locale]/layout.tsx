@@ -3,7 +3,7 @@ import {notFound} from 'next/navigation';
 import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import {setRequestLocale, getMessages} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
-import {spaceGrotesk, spaceMono, plexArabic} from '@/lib/fonts';
+import {spaceGrotesk, spaceMono, arabic} from '@/lib/fonts';
 import Header from '@/components/chrome/Header';
 import Footer from '@/components/chrome/Footer';
 import ScrollProgress from '@/components/chrome/ScrollProgress';
@@ -32,7 +32,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${spaceGrotesk.variable} ${spaceMono.variable} ${plexArabic.variable}`}
+      className={`${spaceGrotesk.variable} ${spaceMono.variable} ${arabic.variable}`}
     >
       <body className="flex min-h-dvh flex-col bg-bg text-ink font-display antialiased">
         <NextIntlClientProvider messages={messages} locale={locale}>

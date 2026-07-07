@@ -39,9 +39,9 @@
   --color-on-amber: #131108;
   --color-dark-btn-hi: #2a2712;
 
-  /* fonts (next/font vars set on <html>; Arabic fallback in the stack) */
-  --font-display: var(--font-space-grotesk), var(--font-plex-arabic), sans-serif;
-  --font-mono: var(--font-space-mono), var(--font-plex-arabic), monospace;
+  /* fonts (next/font vars set on <html>; Arabic (Cairo) fallback in the stack) */
+  --font-display: var(--font-space-grotesk), var(--font-arabic), sans-serif;
+  --font-mono: var(--font-space-mono), var(--font-arabic), monospace;
 
   /* radii */
   --radius-pill: 999px;
@@ -79,6 +79,19 @@
   [dir="rtl"] h2,
   [dir="rtl"] h3 {
     letter-spacing: 0 !important;
+  }
+  /* Arabic script sits taller (ascenders + diacritics) than the tight Latin
+     display leading — give RTL headings more room. */
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3 {
+    line-height: 1.25 !important;
+  }
+  /* The word-reveal masks clip Latin descenders tightly (0.12em); Arabic sits
+     lower, so widen the mask under RTL to avoid clipping letters like ن ج ي. */
+  [dir="rtl"] h1 .overflow-hidden {
+    padding-bottom: 0.24em !important;
+    margin-bottom: -0.24em !important;
   }
 }
 

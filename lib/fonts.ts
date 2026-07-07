@@ -1,7 +1,6 @@
-import {Space_Grotesk, Space_Mono, IBM_Plex_Sans_Arabic} from 'next/font/google';
+import {Space_Grotesk, Space_Mono, Cairo} from 'next/font/google';
 
-// Display + body. Arabic glyphs resolve through the font stack fallback
-// (see --font-display in globals.css), so no runtime font switching.
+// Latin display + body.
 export const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -9,7 +8,7 @@ export const spaceGrotesk = Space_Grotesk({
   display: 'swap',
 });
 
-// Labels, numbers, tags, marquee.
+// Latin mono — labels, numbers, tags, marquee.
 export const spaceMono = Space_Mono({
   subsets: ['latin'],
   weight: ['400', '700'],
@@ -17,11 +16,13 @@ export const spaceMono = Space_Mono({
   display: 'swap',
 });
 
-// Arabic glyph fallback. The 'arabic' subset is required — the default latin
-// subset omits Arabic glyphs entirely.
-export const plexArabic = IBM_Plex_Sans_Arabic({
+// Arabic display + body. Cairo is a modern geometric Arabic face that pairs
+// with Space Grotesk and (as a variable font) covers the 400–700 weights the
+// design uses. It renders every Arabic glyph via the font-stack fallback in
+// globals.css; Latin brand names stay in Space Grotesk. The 'arabic' subset is
+// required — the latin subset omits Arabic glyphs.
+export const arabic = Cairo({
   subsets: ['arabic'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-plex-arabic',
+  variable: '--font-arabic',
   display: 'swap',
 });
