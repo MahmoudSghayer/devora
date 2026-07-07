@@ -11,9 +11,10 @@ import Logo from './Logo';
 import LanguageToggle from './LanguageToggle';
 
 const NAV = [
-  {href: '/', key: 'nav_home'},
   {href: '/work', key: 'nav_work'},
   {href: '/services', key: 'nav_services'},
+  {href: '/pricing', key: 'nav_pricing'},
+  {href: '/about', key: 'nav_about'},
   {href: '/contact', key: 'nav_contact'},
 ] as const;
 

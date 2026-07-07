@@ -3,6 +3,7 @@ import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
 import Parallax from '@/components/motion/Parallax';
 import SiteImage from '@/components/ui/SiteImage';
+import {Link} from '@/i18n/navigation';
 import {CASES} from '@/lib/site';
 
 // Alternating case-study row. `reverse` flips BOTH the column ratio
@@ -44,14 +45,22 @@ export default function CaseStudyRow({
       <p className="mt-5 max-w-[520px] text-base leading-[1.7] text-muted">
         {w(descKey)}
       </p>
-      <a
-        href={data.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-8 inline-flex items-center gap-2 rounded-pill border border-border-amber px-6 py-3 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber hover:text-amber"
-      >
-        {w('visit')} <span dir="ltr">↗</span>
-      </a>
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <Link
+          href={`/work/${data.slug}`}
+          className="inline-flex items-center gap-2 rounded-pill bg-amber px-6 py-3 text-sm font-semibold text-on-amber transition-colors hover:bg-amber-hi"
+        >
+          {w('view_case')}
+        </Link>
+        <a
+          href={data.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-pill border border-border-amber px-6 py-3 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber hover:text-amber"
+        >
+          {w('visit')} <span dir="ltr">↗</span>
+        </a>
+      </div>
     </div>
   );
 

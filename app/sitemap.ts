@@ -1,0 +1,40 @@
+import type { MetadataRoute } from 'next'
+
+const BASE_URL = 'https://devora.design'
+const LOCALES = ['en', 'ar'] as const
+const ROUTES = [
+  '',
+  '/work',
+  '/services',
+  '/pricing',
+  '/about',
+  '/process',
+  '/industries',
+  '/faq',
+  '/contact',
+  '/work/zawiya',
+  '/work/aldarb',
+] as const
+
+type Locale = (typeof LOCALES)[number]
+
+const urlFor = (locale: Locale, route: string) => `${BASE_URL}/${locale}${route}`
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date()
+
+  return LOCALES.flatMap((locale) =>
+    ROUTES.map((route) => ({
+      url: urlFor(locale, route),
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: route === '' ? 1.0 : 0.8,
+      alternates: {
+        languages: {
+          en: urlFor('en', route),
+          ar: urlFor('ar', route),
+        },
+      },
+    }))
+  )
+}

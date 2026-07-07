@@ -3,9 +3,7 @@ import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
-import DisciplineRows from '@/components/services/DisciplineRows';
-import ProcessSteps from '@/components/services/ProcessSteps';
-import EngagementModels from '@/components/services/EngagementModels';
+import ProcessDetail from '@/components/process/ProcessDetail';
 import AmberBand from '@/components/ui/AmberBand';
 import Marquee from '@/components/chrome/Marquee';
 
@@ -15,37 +13,35 @@ export async function generateMetadata({
   params: Promise<{locale: string}>;
 }): Promise<Metadata> {
   const {locale} = await params;
-  const t = await getTranslations({locale, namespace: 'services'});
-  const title = t('sv_label');
-  const description = t('sv_sub');
+  const t = await getTranslations({locale, namespace: 'process'});
+  const title = t('pr_label');
+  const description = t('pr_sub');
   return {
     title,
     description,
-    alternates: alternates('/services'),
+    alternates: alternates('/process'),
     openGraph: {title, description},
     twitter: {title, description},
   };
 }
 
-export default async function ServicesPage({
+export default async function ProcessPage({
   params,
 }: {
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
   setRequestLocale(locale);
-  return <ServicesContent />;
+  return <ProcessContent />;
 }
 
-function ServicesContent() {
-  const s = useTranslations('services');
+function ProcessContent() {
+  const p = useTranslations('process');
   const c = useTranslations('common');
   return (
     <>
-      <PageIntro label={s('sv_label')} title={s('sv_title')} sub={s('sv_sub')} />
-      <DisciplineRows />
-      <ProcessSteps />
-      <EngagementModels />
+      <PageIntro label={p('pr_label')} title={p('pr_title')} sub={p('pr_sub')} />
+      <ProcessDetail />
       <AmberBand
         title={c('cta_title')}
         sub={c('cta_sub')}

@@ -7,6 +7,7 @@ import {spaceGrotesk, spaceMono, plexArabic} from '@/lib/fonts';
 import Header from '@/components/chrome/Header';
 import Footer from '@/components/chrome/Footer';
 import ScrollProgress from '@/components/chrome/ScrollProgress';
+import {Analytics} from '@vercel/analytics/next';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}));
@@ -40,6 +41,7 @@ export default async function LocaleLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );

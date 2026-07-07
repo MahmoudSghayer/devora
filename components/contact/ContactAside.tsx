@@ -46,6 +46,10 @@ export default function ContactAside() {
       <Block title={t('a3_t')}>
         <p className="text-base leading-relaxed text-ink-2">{t('a3_d')}</p>
       </Block>
+
+      <Block title={t('a4_t')}>
+        <p className="text-base leading-relaxed text-ink-2">{t('a4_d')}</p>
+      </Block>
     </div>
   );
 }

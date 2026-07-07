@@ -38,14 +38,24 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="grid grid-cols-2 gap-8 nav:grid-cols-3">
+          <div className="grid grid-cols-2 gap-8 nav:grid-cols-4">
             <div className="flex flex-col">
               <ColTitle>{t('footer_pages')}</ColTitle>
               <div className="flex flex-col gap-2.5">
                 <Link href="/" className={linkCls}>{t('nav_home')}</Link>
                 <Link href="/work" className={linkCls}>{t('nav_work')}</Link>
                 <Link href="/services" className={linkCls}>{t('nav_services')}</Link>
-                <Link href="/contact" className={linkCls}>{t('nav_contact')}</Link>
+                <Link href="/pricing" className={linkCls}>{t('nav_pricing')}</Link>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <ColTitle>{t('footer_more')}</ColTitle>
+              <div className="flex flex-col gap-2.5">
+                <Link href="/about" className={linkCls}>{t('nav_about')}</Link>
+                <Link href="/process" className={linkCls}>{t('nav_process')}</Link>
+                <Link href="/industries" className={linkCls}>{t('nav_industries')}</Link>
+                <Link href="/faq" className={linkCls}>{t('nav_faq')}</Link>
               </div>
             </div>
 

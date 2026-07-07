@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
+import {alternates} from '@/lib/seo';
 import Container from '@/components/ui/Container';
 import PageIntro from '@/components/ui/PageIntro';
 import ContactForm from '@/components/contact/ContactForm';
@@ -14,7 +15,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const {locale} = await params;
   const t = await getTranslations({locale, namespace: 'contact'});
-  return {title: t('ct_label')};
+  const title = t('ct_label');
+  const description = t('ct_sub');
+  return {
+    title,
+    description,
+    alternates: alternates('/contact'),
+    openGraph: {title, description},
+    twitter: {title, description},
+  };
 }
 
 export default async function ContactPage({

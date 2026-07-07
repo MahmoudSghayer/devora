@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
+import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
 import CaseStudyRow from '@/components/work/CaseStudyRow';
 import AmberBand from '@/components/ui/AmberBand';
@@ -13,7 +14,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const {locale} = await params;
   const t = await getTranslations({locale, namespace: 'work'});
-  return {title: t('wk_label')};
+  const title = t('wk_label');
+  const description = t('wk_sub');
+  return {
+    title,
+    description,
+    alternates: alternates('/work'),
+    openGraph: {title, description},
+    twitter: {title, description},
+  };
 }
 
 export default async function WorkPage({
