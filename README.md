@@ -121,7 +121,7 @@ components/
   ui/       Container · SectionHeader · PageIntro · AmberBand · ArrowButton · ArrowLink · Chip · SiteImage
   home/     HeroHome · ServicesOverview · SelectedWork · Testimonials · TeamSection
   work/     CaseStudyRow
-  services/ DisciplineRows · ProcessSteps · Packages
+  services/ DisciplineRows · ProcessSteps · EngagementModels
   contact/  ContactForm · ContactAside
 lib/
   motion.ts                      # EASE curve + shared viewport config
@@ -232,7 +232,7 @@ Everything below is grep-able via `TODO(devora)`.
 
 | Item | Where |
 |------|-------|
-| **Pricing** — `from $2,900` / `from $7,500` | `messages/{en,ar}.json` → `services.k1_p`, `k2_p` |
+| **Pricing** ✅ set — `from $3,500` / `from $9,500` / `from $1,200/mo` | `messages/{en,ar}.json` → `pricing.m1_p`, `m2_p`, `m3_p` |
 | **Testimonial quotes** (both) + attributions | `messages/{en,ar}.json` → `home.t1_q`/`t1_a`, `t2_q`/`t2_a` |
 | **Social URLs** (Instagram · X · LinkedIn · Behance) | `lib/site.ts` → `SOCIALS` (currently `#`) |
 | **Contact email** | `lib/site.ts` → `SITE.email` (`hello@devora.design`) |
