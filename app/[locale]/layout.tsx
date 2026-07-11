@@ -4,9 +4,6 @@ import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import {setRequestLocale, getMessages} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
 import {spaceGrotesk, spaceMono, arabic} from '@/lib/fonts';
-import Header from '@/components/chrome/Header';
-import Footer from '@/components/chrome/Footer';
-import ScrollProgress from '@/components/chrome/ScrollProgress';
 import ChatWidget from '@/components/chat/ChatWidget';
 import {Analytics} from '@vercel/analytics/next';
 
@@ -37,10 +34,10 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-dvh flex-col bg-bg text-ink font-display antialiased">
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <ScrollProgress />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          {/* Page chrome (header/footer) is supplied per route: the (marketing)
+              group wraps standard pages; the homepage renders its own. The chat
+              widget stays global so lead capture is available everywhere. */}
+          {children}
           <ChatWidget />
         </NextIntlClientProvider>
         <Analytics />

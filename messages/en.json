@@ -377,5 +377,137 @@
     "err_details": "Tell us a little about the project.",
     "send_success": "Thanks — we'll be in touch within two working days.",
     "send_error": "Something went wrong. Please try again or email us."
+  },
+  "experience": {
+    "preloader_init": "Initializing DEVORA OS",
+    "preloader_compiling": "compiling universe",
+    "tagline": "Growth Partner",
+    "os_version": "DEVORA OS v3.0",
+    "sound": "Sound",
+    "sound_on": "Sound on",
+    "sound_aria": "Toggle ambient sound",
+    "book_call": "Book a call",
+    "skip_link": "Skip to content",
+    "scroll_initiate": "Scroll to initiate",
+    "lat": "LAT",
+    "lon": "LON",
+    "lang_switch_aria": "Switch language",
+    "rail": ["Origin", "Doctrine", "Build", "Systems", "Work", "Contact"],
+    "act_labels": {
+      "hero": "ORIGIN",
+      "dive": "DECONSTRUCT",
+      "manifesto": "DOCTRINE",
+      "build": "BUILD",
+      "services": "SYSTEMS",
+      "cases": "WORK",
+      "stats": "METRICS",
+      "cta": "CONTACT"
+    },
+    "hero": {
+      "eyebrow": "Digital Empire Engineering",
+      "h1a": "We don't build websites.",
+      "h1b": "We build digital empires.",
+      "sub": "One partner for strategy, brand, product, growth & AI — engineered from a single idea into a self-scaling empire.",
+      "cta1": "Book the strategy call",
+      "cta2": "Enter the system"
+    },
+    "dive": {
+      "label": "diving into the core",
+      "title": "Deconstructing the core",
+      "out": "reassembling as systems",
+      "shards": ["Websites", "Brand systems", "Campaigns", "Dashboards", "AI agents", "Growth loops"]
+    },
+    "manifesto": {
+      "label": "the DEVORA doctrine",
+      "h2a": "Most agencies hand you a website.",
+      "h2b": "We hand you an ",
+      "h2c": "operating system for growth.",
+      "principles": [
+        {"n": "01 / One partner", "d": "Strategy through scaling under one roof. No handoffs, no finger-pointing, no lost momentum."},
+        {"n": "02 / Built to compound", "d": "Every asset feeds a system. Brand fuels demand, product retains it, data sharpens the next move."},
+        {"n": "03 / Founder speed", "d": "We move at the pace of ambition. Weeks, not quarters — with the polish of a decade-old brand."}
+      ]
+    },
+    "build": {
+      "label_a": "build sequence — ",
+      "label_b": "idea → empire",
+      "viewport": "DEVORA://build.viewport",
+      "stage_word": "Stage",
+      "stages": [
+        {"t": "The idea", "d": "A single glowing spark of ambition. Everything begins here."},
+        {"t": "Wireframes", "d": "The spark becomes structure — architecture before aesthetics."},
+        {"t": "UI systems", "d": "Structure becomes a living design system, component by component."},
+        {"t": "A living website", "d": "Design becomes a real, fast, breathing product."},
+        {"t": "Traffic flows", "d": "The right people start arriving — engineered, not hoped for."},
+        {"t": "Analytics activate", "d": "Every signal captured. The system learns what works."},
+        {"t": "Marketing engines", "d": "Demand generation kicks in and never stops pulsing."},
+        {"t": "Revenue grows", "d": "Attention converts. The numbers begin to climb."},
+        {"t": "A digital ecosystem", "d": "It all connects into one self-scaling empire."}
+      ]
+    },
+    "services": {
+      "label_a": "service ecosystem — ",
+      "label_b": "12 orbital systems",
+      "system_word": "SYSTEM",
+      "online": "Online",
+      "traverse": "scroll to traverse the ecosystem",
+      "items": [
+        {"name": "Strategy", "tag": "We map the empire before we build it.", "caps": ["Market intelligence", "Positioning", "Roadmapping", "Unit economics"]},
+        {"name": "Branding", "tag": "A brand your rivals learn to fear.", "caps": ["Naming", "Visual identity", "Voice & tone", "Brand systems"]},
+        {"name": "Website Design", "tag": "Interfaces that feel inevitable.", "caps": ["UX architecture", "UI design", "Design systems", "Prototyping"]},
+        {"name": "Website Development", "tag": "Engineered to load fast and convert hard.", "caps": ["Next.js builds", "Headless CMS", "WebGL / 3D", "Performance"]},
+        {"name": "Automation", "tag": "Your business runs while you sleep.", "caps": ["Workflow automation", "Integrations", "Internal tools", "Ops systems"]},
+        {"name": "Marketing", "tag": "Demand on tap.", "caps": ["Paid acquisition", "Lifecycle", "Creative", "Attribution"]},
+        {"name": "SEO", "tag": "Own the search results.", "caps": ["Technical SEO", "Content SEO", "Authority", "Local"]},
+        {"name": "Content Creation", "tag": "Content that compounds.", "caps": ["Editorial", "Video", "Social", "Thought leadership"]},
+        {"name": "Growth Systems", "tag": "Loops, not campaigns.", "caps": ["Funnels", "Experimentation", "Retention", "Referral"]},
+        {"name": "AI Solutions", "tag": "AI that does real work.", "caps": ["Agents", "RAG systems", "Copilots", "Fine-tuning"]},
+        {"name": "Analytics", "tag": "See everything. Guess nothing.", "caps": ["Data pipelines", "Dashboards", "Modeling", "Insight"]},
+        {"name": "Scaling", "tag": "From traction to total dominance.", "caps": ["Infrastructure", "Team", "Process", "Expansion"]}
+      ]
+    },
+    "cases": {
+      "label_a": "case files — ",
+      "label_b": "enter the dimensions",
+      "items": [
+        {"tag": "Dimension 01 · DTC Skincare", "name": "HALLOW", "metric": "+312% revenue", "meta": "6-WEEK REBUILD", "desc": "Full rebrand and headless Shopify build that turned a scrappy DTC line into a category leader in a single season.", "tags": ["Branding", "Shopify", "Lifecycle"]},
+        {"tag": "Dimension 02 · Fintech Infrastructure", "name": "VANTA GRID", "metric": "$4.2M pipeline", "meta": "90 DAYS TO SQLs", "desc": "Positioning, brand and a demand engine for a B2B infrastructure startup that went from stealth to sales-qualified in a single quarter.", "tags": ["Positioning", "Next.js", "Demand gen"]},
+        {"tag": "Dimension 03 · Luxury Mobility", "name": "NOCTURNE", "metric": "1.2M launch views", "meta": "FEATURED · BEHANCE", "desc": "A cinematic WebGL launch for an electric hypercar reveal — a brand world engineered to be felt, not just seen.", "tags": ["WebGL", "Launch film", "Identity"]},
+        {"tag": "Dimension 04 · AI Health", "name": "MERIDIAN", "metric": "40k waitlist", "meta": "3-WEEK SURGE", "desc": "Product, brand and automation for an AI clinical copilot — 40,000 clinicians on the waitlist in three weeks.", "tags": ["AI", "Product", "Automation"]}
+      ]
+    },
+    "stats": {
+      "label": "by the numbers",
+      "title": "The math behind the empire.",
+      "items": [
+        {"label": "Revenue generated for partners"},
+        {"label": "Products & systems shipped"},
+        {"label": "Partner retention"},
+        {"label": "Countries operating in"}
+      ]
+    },
+    "cta": {
+      "label": "initiate partnership",
+      "h2a": "Ready to build",
+      "h2b": "your empire?",
+      "sub": "We take on a limited number of partners each quarter. If you're serious about scale, let's talk.",
+      "btn": "Book your strategy call",
+      "meta": ["48-hour response", "Limited partnerships", "Global"]
+    },
+    "footer": {
+      "tag": "Digital empire engineering. Strategy to scale, one partner.",
+      "navigate": "Navigate",
+      "connect": "Connect",
+      "nav": [
+        {"k": "hero", "label": "Origin"},
+        {"k": "build", "label": "Build"},
+        {"k": "services", "label": "Systems"},
+        {"k": "cases", "label": "Work"}
+      ],
+      "email_label": "Email",
+      "instagram": "Instagram",
+      "copy": "© 2026 DEVORA — Digital Empire Engineering",
+      "back": "Back to origin"
+    }
   }
 }

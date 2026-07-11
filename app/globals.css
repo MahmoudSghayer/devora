@@ -135,3 +135,78 @@
     50% { transform: translateX(-6px); }
   }
 }
+
+/* ══ DEVORA OS — homepage WebGL experience ═══════════════════════════════
+   The immersive homepage lives inside [data-experience]. Its inline styles
+   reference these dv* keyframes by name, so they're defined unconditionally
+   and neutralised for reduced-motion users further down. */
+@keyframes dvSafety { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+@keyframes dvGrain {
+  0% { transform: translate(0, 0); } 10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(-9%, 4%); } 30% { transform: translate(5%, -9%); }
+  40% { transform: translate(-4%, 13%); } 50% { transform: translate(-9%, 5%); }
+  60% { transform: translate(13%, 0); } 70% { transform: translate(0, 9%); }
+  80% { transform: translate(-13%, 0); } 90% { transform: translate(9%, 5%); }
+  100% { transform: translate(4%, 0); }
+}
+@keyframes dvBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes dvCue { 0% { transform: translateY(0); opacity: 0.25; } 50% { opacity: 1; } 100% { transform: translateY(9px); opacity: 0.25; } }
+@keyframes dvPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes dvRing { 0% { transform: scale(0.4); opacity: 0.85; } 100% { transform: scale(2.4); opacity: 0; } }
+@keyframes dvShimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes dvDash { to { stroke-dashoffset: 0; } }
+@keyframes dvFlow { to { stroke-dashoffset: -60; } }
+@keyframes dvRiseBar { 0% { transform: scaleY(0.12); } 100% { transform: scaleY(1); } }
+
+/* Skip link (keyboard) — hidden until focused. */
+[data-experience] .dvx-skip {
+  position: fixed; top: -60px; inset-inline-start: 12px; z-index: 400;
+  background: var(--accent, #f2a84b); color: #0a0805; padding: 10px 16px;
+  border-radius: 8px; font-weight: 600; text-decoration: none;
+  transition: top 0.2s ease;
+}
+[data-experience] .dvx-skip:focus { top: 12px; }
+
+/* Keyboard focus visibility inside the experience. */
+[data-experience] a:focus-visible,
+[data-experience] button:focus-visible {
+  outline: 2px solid var(--accent, #f2a84b);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* RTL: mirror the fixed side-rail to the left, and neutralise Latin letter-
+   spacing on Arabic text (tracking breaks Arabic ligatures) — brand wordmarks
+   opt out via [data-latin]. */
+:root[dir="rtl"] [data-experience] [data-rail-nav] {
+  right: auto; left: clamp(14px, 2.2vw, 30px); align-items: flex-start;
+}
+:root[dir="rtl"] [data-experience] *:not([data-latin]) {
+  letter-spacing: normal !important;
+}
+
+/* Reduced motion: freeze all ambient motion. The controller detects the same
+   preference and renders a fully static, readable page (no WebGL, no smooth
+   scroll); this also lets the preloader's dvSafety fade resolve instantly. */
+@media (prefers-reduced-motion: reduce) {
+  [data-experience] *,
+  [data-experience] *::before,
+  [data-experience] *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Small screens: the fixed HUD is desktop chrome — thin it out so the top and
+   bottom bars never crowd the phone viewport. The design's headings, spacing
+   and particle counts already scale down via clamp() and the mobile caps in
+   setupThree(). */
+@media (max-width: 720px) {
+  [data-experience] [data-hud-center] { display: none !important; }
+}
+@media (max-width: 560px) {
+  [data-experience] [data-coords] { display: none; }
+  [data-experience] [data-rail-nav] { gap: 12px; }
+}

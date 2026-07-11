@@ -7,12 +7,9 @@ export const SITE = {
   email: 'support@devora.design',
 } as const;
 
-// TODO(devora): replace "#" with the real profile URLs.
+// Only Instagram is live today; other channels are added as they launch.
 export const SOCIALS = [
-  {label: 'Instagram', href: '#'},
-  {label: 'X / Twitter', href: '#'},
-  {label: 'LinkedIn', href: '#'},
-  {label: 'Behance', href: '#'},
+  {label: 'Instagram', href: 'https://instagram.com/devora.designs'},
 ] as const;
 
 // Case studies. `slug`, `domain`, `href`, `image` are real (live client sites).
