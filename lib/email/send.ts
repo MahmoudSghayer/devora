@@ -35,6 +35,13 @@ export async function sendMail(opts: {
     port,
     secure: port === 465, // 465 = implicit SSL/TLS; 587 = STARTTLS
     auth: {user, pass},
+    // Fail fast on a serverless function: without these, an unreachable or slow
+    // Zoho SMTP hangs until Vercel kills the function (surfaces as a platform 502
+    // with nothing logged). Bounded timeouts turn that into a clean, logged
+    // ETIMEDOUT the route can report and the admin diagnostic can interpret.
+    connectionTimeout: 8000, // TCP connect
+    greetingTimeout: 8000, // wait for SMTP banner
+    socketTimeout: 10000, // inactivity during the exchange
   });
 
   try {
