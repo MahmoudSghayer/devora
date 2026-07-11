@@ -26,6 +26,7 @@ export default function ConversationsClient() {
   const [detail, setDetail] = useState<Detail | null>(null);
   const [reply, setReply] = useState('');
   const [busy, setBusy] = useState(false);
+  const [sweeping, setSweeping] = useState(false);
   const threadRef = useRef<HTMLDivElement>(null);
   const typingChannelRef = useRef<RealtimeChannel | null>(null);
   const lastTypingRef = useRef(0);
@@ -181,6 +182,19 @@ export default function ConversationsClient() {
     await act('message', {content: text});
   };
 
+  // Manual sweep — close conversations idle past the threshold right now instead
+  // of waiting for the daily cron. Hits the same endpoint the cron does; the
+  // logged-in admin session authorizes the call.
+  const closeStale = useCallback(async () => {
+    setSweeping(true);
+    try {
+      await fetch('/api/cron/close-stale');
+      await fetchList();
+    } finally {
+      setSweeping(false);
+    }
+  }, [fetchList]);
+
   const mode = detail?.conversation.mode;
 
   return (
@@ -208,6 +222,14 @@ export default function ConversationsClient() {
                 {s}
               </button>
             ))}
+            <button
+              onClick={() => void closeStale()}
+              disabled={sweeping}
+              title="Close conversations idle for 15+ minutes now"
+              className="ms-auto rounded-full px-2.5 py-1 text-[12px] text-muted hover:text-ink disabled:opacity-50"
+            >
+              {sweeping ? 'Sweeping…' : 'Close stale'}
+            </button>
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
