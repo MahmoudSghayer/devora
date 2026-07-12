@@ -9,6 +9,7 @@ import ScrollProgress from '@/components/chrome/ScrollProgress';
 export default function MarketingLayout({children}: {children: ReactNode}) {
   return (
     <>
+      <div aria-hidden className="devora-cosmos" />
       <ScrollProgress />
       <Header />
       <main className="flex-1">{children}</main>
