@@ -17,7 +17,7 @@ export default function Crew() {
       <Container className="py-24">
         <div className="grid items-center gap-12 nav:grid-cols-2 nav:gap-16">
           <Reveal>
-            <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-muted-2">
+            <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
               {a('team_label')}
             </p>
             <h2 className="u-track mt-4 font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">

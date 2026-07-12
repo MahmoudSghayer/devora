@@ -45,7 +45,7 @@ export default function PricingModels() {
     <section>
       <Container className="py-24">
         <Reveal>
-          <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-muted-2">
+          <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
             {p('models_label')}
           </p>
           <p className="mt-4 max-w-[640px] text-[17px] text-muted">{p('note')}</p>

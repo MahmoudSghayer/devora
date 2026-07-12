@@ -106,8 +106,28 @@
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(120% 80% at 50% -10%, rgba(242, 168, 75, 0.06), transparent 55%),
-    radial-gradient(120% 90% at 50% 120%, rgba(58, 88, 150, 0.09), transparent 55%);
+    radial-gradient(120% 80% at 50% -10%, rgba(242, 168, 75, 0.09), transparent 55%),
+    radial-gradient(120% 90% at 50% 120%, rgba(58, 88, 150, 0.12), transparent 55%),
+    radial-gradient(120% 120% at 50% 42%, transparent 58%, rgba(2, 3, 6, 0.62) 100%);
+}
+
+/* Film-grain wash — the same fractal-noise texture the homepage uses, held very
+   faint so it only adds tooth to the cosmos. Frozen for reduced motion. */
+.devora-grain {
+  position: fixed;
+  inset: -50%;
+  z-index: -1;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion: no-preference) {
+  .devora-grain {
+    animation: dvGrain 7s steps(9) infinite;
+  }
 }
 
 /* ── ambient decorative loops ────────────────────────────────────────────

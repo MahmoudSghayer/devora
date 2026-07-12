@@ -16,7 +16,7 @@ export default function Difference() {
     <section className="border-b border-border bg-bg-alt">
       <Container className="py-24">
         <Reveal>
-          <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-muted-2">
+          <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
             {a('diff_label')}
           </p>
           <h2 className="u-track mt-4 max-w-[760px] font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">

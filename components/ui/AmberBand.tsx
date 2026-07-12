@@ -2,8 +2,10 @@ import type {CSSProperties} from 'react';
 import Container from '@/components/ui/Container';
 import ArrowButton from '@/components/ui/ArrowButton';
 
-// Amber CTA band with drifting dark hairlines. Two layouts: split (title/sub
-// left, button right — Home & Services) and centered (Work "next" band).
+// DEVORA OS CTA band: a dark panel with a gold glow rising from below, a
+// gold-gradient headline and a gold pill button — echoing the homepage's
+// "Ready to build your empire?" act rather than a solid amber block. Two
+// layouts: split (title/sub left, button right) and centered (Work "next" band).
 export default function AmberBand({
   title,
   sub,
@@ -18,20 +20,28 @@ export default function AmberBand({
   centered?: boolean;
 }) {
   return (
-    <section className="relative overflow-hidden bg-amber">
+    <section className="relative overflow-hidden border-y border-border-amber bg-[#070810]">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 animate-grid-drift"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(75% 140% at 50% 118%, rgba(242,168,75,0.18), transparent 62%)',
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 animate-grid-drift opacity-70"
         style={
           {
             backgroundImage:
-              'repeating-linear-gradient(90deg, rgba(19,17,8,0.06) 0 1px, transparent 1px 80px)',
+              'repeating-linear-gradient(90deg, rgba(242,168,75,0.05) 0 1px, transparent 1px 80px)',
             '--drift': '80px',
             '--drift-dur': '13s',
           } as CSSProperties
         }
       />
-      <Container className="relative py-[110px]">
+      <Container className="relative py-[120px]">
         <div
           className={`flex flex-wrap gap-8 ${
             centered
@@ -41,13 +51,17 @@ export default function AmberBand({
         >
           <div className={centered ? '' : 'max-w-[720px]'}>
             <h2
-              className="u-track font-display font-bold leading-[1] tracking-[-0.03em] text-on-amber"
+              className="u-track bg-[linear-gradient(180deg,#fff,var(--color-amber))] bg-clip-text font-display font-bold leading-[1.02] tracking-[-0.03em] text-transparent"
               style={{fontSize: 'var(--text-cta)'}}
             >
               {title}
             </h2>
             {sub && (
-              <p className="mt-5 max-w-[520px] text-[19px] leading-[1.6] text-[rgba(19,17,8,0.65)]">
+              <p
+                className={`mt-5 max-w-[520px] text-[19px] leading-[1.6] text-muted ${
+                  centered ? 'mx-auto' : ''
+                }`}
+              >
                 {sub}
               </p>
             )}
@@ -55,7 +69,7 @@ export default function AmberBand({
           <ArrowButton
             href={buttonHref}
             label={buttonLabel}
-            variant="dark"
+            variant="amber"
             className="px-10 py-5 text-[17px]"
           />
         </div>

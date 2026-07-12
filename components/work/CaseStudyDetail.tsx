@@ -49,7 +49,7 @@ export default function CaseStudyDetail({
               </span>
               <span className="font-mono text-xs text-faint">{copy.tags}</span>
             </div>
-            <p className="u-mono mt-8 font-mono text-xs uppercase tracking-[0.22em] text-muted-2">
+            <p className="u-mono mt-8 font-mono text-xs uppercase tracking-[0.22em] text-amber">
               {w('detail_overview')}
             </p>
             <p className="mt-3 max-w-[620px] text-[19px] leading-[1.65] text-muted">
