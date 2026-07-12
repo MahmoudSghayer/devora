@@ -9,35 +9,35 @@
   /* the single responsive breakpoint */
   --breakpoint-nav: 920px;
 
-  /* surfaces */
-  --color-bg: #0f0f0f;
-  --color-bg-alt: #121212;
-  --color-bg-foot: #0b0b0b;
-  --color-surface: #141414;
-  --color-surface-2: #151515;
-  --color-featured: #161408;
+  /* surfaces — DEVORA OS: near-black cosmic base, cool glass surfaces */
+  --color-bg: #050609;
+  --color-bg-alt: #0a0c12;
+  --color-bg-foot: #04050a;
+  --color-surface: #0d0f16;
+  --color-surface-2: #12141c;
+  --color-featured: #17120a;
 
-  /* borders */
-  --color-border: #232323;
-  --color-border-sub: #1d1d1d;
-  --color-border-card: #2a2a28;
-  --color-border-chip: #333330;
-  --color-border-ghost: #3a3a3a;
-  --color-border-amber: #3d3620;
+  /* borders — cool, low-contrast hairlines (depth from surface shifts + glow) */
+  --color-border: #1b1e27;
+  --color-border-sub: #15181f;
+  --color-border-card: #232732;
+  --color-border-chip: #2b2f3a;
+  --color-border-ghost: #3a3f4c;
+  --color-border-amber: #4a3a1e;
 
-  /* text */
-  --color-ink: #f2f2ef;
-  --color-ink-2: #c9c9c2;
-  --color-muted: #9a9a94;
-  --color-muted-2: #8f8f8a;
-  --color-faint: #6a6a66;
-  --color-faint-2: #55554f;
+  /* text — cool whites/greys (matches the homepage HUD) */
+  --color-ink: #f5f6f8;
+  --color-ink-2: #cdd0d6;
+  --color-muted: #9aa0ab;
+  --color-muted-2: #8b909b;
+  --color-faint: #6a6f7a;
+  --color-faint-2: #565b66;
 
-  /* accent */
-  --color-amber: #f4c542;
-  --color-amber-hi: #ffd75e;
-  --color-on-amber: #131108;
-  --color-dark-btn-hi: #2a2712;
+  /* accent — DEVORA gold */
+  --color-amber: #f2a84b;
+  --color-amber-hi: #ffc46b;
+  --color-on-amber: #0a0805;
+  --color-dark-btn-hi: #241a0e;
 
   /* fonts (next/font vars set on <html>; Arabic (Cairo) fallback in the stack) */
   --font-display: var(--font-space-grotesk), var(--font-arabic), sans-serif;
@@ -93,6 +93,21 @@
     padding-bottom: 0.24em !important;
     margin-bottom: -0.24em !important;
   }
+}
+
+/* DEVORA OS cosmic backdrop for the marketing pages (fixed, behind content).
+   The homepage draws its own WebGL universe; these gradients give the static
+   pages the same near-black cosmic glow — a warm gold wash from the top and a
+   cool blue from below — without the cost of WebGL. Sections with their own
+   surface colour sit on top; transparent sections reveal the glow. */
+.devora-cosmos {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(242, 168, 75, 0.06), transparent 55%),
+    radial-gradient(120% 90% at 50% 120%, rgba(58, 88, 150, 0.09), transparent 55%);
 }
 
 /* ── ambient decorative loops ────────────────────────────────────────────
