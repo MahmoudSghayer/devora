@@ -17,7 +17,7 @@ export default function ProcessSteps() {
     <section className="bg-bg-alt">
       <Container className="py-24">
         <Reveal>
-          <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-muted-2">
+          <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
             {s('pr_label')}
           </p>
           <h2 className="u-track mt-4 max-w-[720px] font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">

@@ -43,7 +43,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`font-display text-sm font-medium transition-colors ${
+                className={`font-mono text-[11px] uppercase tracking-[0.18em] transition-colors ${
                   isActive(item.href)
                     ? 'text-amber'
                     : 'text-muted-2 hover:text-ink'

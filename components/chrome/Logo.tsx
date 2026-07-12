@@ -1,20 +1,22 @@
 import {Link} from '@/i18n/navigation';
 import DevoraMark from './DevoraMark';
 
-// Nav lockup: devora mark + wordmark, links home. Stays LTR in RTL (brand name).
+// Nav lockup: DEVORA OS wordmark — mark + "DEVORA" + a mono "Growth Partner"
+// tagline, echoing the homepage HUD. Links home. Stays LTR in RTL (brand name).
 export default function Logo({className = ''}: {className?: string}) {
   return (
     <Link
       href="/"
       dir="ltr"
-      aria-label="devora.design — home"
+      aria-label="devora — home"
       className={`inline-flex items-center gap-[10px] ${className}`}
     >
-      <DevoraMark size={30} />
-      <span className="font-display text-[19px] font-bold leading-none tracking-[-0.01em]">
-        <span className="text-ink">devora</span>
-        <span className="text-amber">.</span>
-        <span className="font-normal text-muted-2">design</span>
+      <DevoraMark size={26} />
+      <span className="font-display text-[19px] font-semibold leading-none tracking-[0.2em] text-ink">
+        DEVORA
+      </span>
+      <span className="hidden font-mono text-[9px] uppercase leading-none tracking-[0.28em] text-faint nav:inline">
+        Growth Partner
       </span>
     </Link>
   );
