@@ -42,7 +42,7 @@ export interface ExperienceCopy extends DevoraCopy {
     label_a: string; label_b: string;
     items: {tag: string; name: string; metric: string; meta: string; desc: string; tags: string[]}[];
   };
-  stats: {label: string; title: string; items: {label: string}[]};
+  stats: {label: string; title: string; items: {value: string; label: string}[]};
   cta: {label: string; h2a: string; h2b: string; sub: string; btn: string; meta: string[]};
   footer: {
     tag: string; navigate: string; connect: string;
@@ -69,20 +69,11 @@ const FM = "var(--font-mono), var(--font-arabic), monospace";
 const esc = (s: string) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-// Stat targets/format are language-neutral; labels come from copy.
-const STATS = [
-  {target: 180, prefix: '$', suffix: 'M+'},
-  {target: 240, prefix: '', suffix: '+'},
-  {target: 96, prefix: '', suffix: '%'},
-  {target: 14, prefix: '', suffix: ''},
-];
-
-// Per-case visual identity (accent, glow, ghost-number side, preview domain).
+// Per-case visual identity (accent, glow, ghost-number side, live domain, screenshot).
+// Two entries = two real case studies (see messages `experience.cases.items`).
 const CASE_META = [
-  {c: '#F2A84B', side: 'left', pos: '18% 45%', domain: 'hallow.co'},
-  {c: '#6FD3FF', side: 'right', pos: '82% 45%', domain: 'vantagrid.io'},
-  {c: '#9B8CFF', side: 'left', pos: '18% 55%', domain: 'nocturne.auto'},
-  {c: '#37E0A0', side: 'right', pos: '82% 55%', domain: 'meridian.ai'},
+  {c: '#F2A84B', side: 'left', pos: '18% 45%', domain: 'zawiya.studio', image: '/images/zawiya.png'},
+  {c: '#6FD3FF', side: 'right', pos: '82% 55%', domain: 'aldarb.co', image: '/images/aldarb.png'},
 ];
 
 function hexA(hex: string, a: number) {
@@ -106,15 +97,15 @@ function caseWorld(i: number, item: ExperienceCopy['cases']['items'][number]) {
   </div>`;
   const imageBlock = `<div style="flex:1;position:relative;min-width:0;max-width:520px;">
     <div style="position:relative;border-radius:14px;overflow:hidden;border:1px solid ${hexA(m.c, 0.34)};box-shadow:0 40px 110px rgba(0,0,0,.6),0 0 70px ${hexA(m.c, 0.16)};background:#0a0c12;">
-      <div style="height:34px;display:flex;align-items:center;gap:7px;padding:0 13px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);"><span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;"></span><span style="width:9px;height:9px;border-radius:50%;background:#febc2e;"></span><span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span><span style="flex:1;text-align:center;font-family:${FM};font-size:10px;letter-spacing:.12em;color:rgba(245,246,248,.42);">${m.domain}</span></div>
-      <div style="aspect-ratio:16/10;position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 120% at 50% 0%, ${hexA(m.c, 0.16)}, transparent 60%), linear-gradient(160deg, #0c0e15, #070810);">
-        <div style="font-family:${FD};font-weight:600;font-size:clamp(24px,4vw,42px);letter-spacing:.04em;color:${hexA(m.c, 0.85)};text-shadow:0 0 40px ${hexA(m.c, 0.4)};">${esc(item.name)}</div>
-        <div style="position:absolute;bottom:12px;inset-inline-start:14px;font-family:${FM};font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,246,248,.35);">${m.domain} · preview</div>
+      <div style="height:34px;display:flex;align-items:center;gap:7px;padding:0 13px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);"><span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;"></span><span style="width:9px;height:9px;border-radius:50%;background:#febc2e;"></span><span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span><span style="flex:1;text-align:center;font-family:${FM};font-size:10px;letter-spacing:.12em;color:rgba(245,246,248,.42);" dir="ltr">${m.domain}</span></div>
+      <div style="aspect-ratio:16/10;position:relative;background:linear-gradient(160deg, #0c0e15, #070810);">
+        <img src="${m.image}" alt="${esc(item.name)} — ${m.domain}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+        <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 0%, ${hexA(m.c, 0.14)}, transparent 55%);"></div>
       </div>
     </div>
   </div>`;
   const inner = i % 2 === 0 ? textBlock + imageBlock : imageBlock + textBlock;
-  return `<div data-world="${num}" data-screen-label="Dimension ${num} — ${esc(item.name)}" style="width:25%;height:100%;position:relative;display:flex;align-items:center;padding:0 clamp(40px,8vw,130px);gap:clamp(28px,4vw,64px);">
+  return `<div data-world="${num}" data-screen-label="Dimension ${num} — ${esc(item.name)}" style="width:50%;height:100%;position:relative;display:flex;align-items:center;padding:0 clamp(40px,8vw,130px);gap:clamp(28px,4vw,64px);">
     <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(70% 90% at ${m.pos}, ${hexA(m.c, 0.16)}, transparent 62%);pointer-events:none;"></div>
     ${ghost}
     ${inner}
@@ -337,17 +328,15 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
     </section>
 
     <!-- ACT 06 — CASES -->
-    <section id="act-cases" data-screen-label="Act 06 — Case study dimensions" style="position:relative;height:480vh;">
+    <section id="act-cases" data-screen-label="Act 06 — Case study dimensions" style="position:relative;height:240vh;">
       <div style="position:sticky;top:0;height:100vh;overflow:hidden;">
         <div style="position:absolute;z-index:3;top:22px;inset-inline-start:clamp(24px,5vw,80px);${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.6);')}">// ${esc(c.cases.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.cases.label_b)}</span></div>
         <div aria-hidden="true" style="position:absolute;z-index:3;top:22px;inset-inline-end:clamp(24px,5vw,80px);display:flex;gap:8px;">
           <span data-case-dot="0" style="width:22px;height:3px;border-radius:2px;background:#fff;transition:all .4s;"></span>
           <span data-case-dot="1" style="width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:all .4s;"></span>
-          <span data-case-dot="2" style="width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:all .4s;"></span>
-          <span data-case-dot="3" style="width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:all .4s;"></span>
         </div>
         <div data-case-flash aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;mix-blend-mode:screen;background:radial-gradient(60% 60% at 50% 50%, rgba(242,168,75,.33), transparent 70%);transition:opacity .7s ease;"></div>
-        <div data-case-track style="position:absolute;top:0;left:0;height:100%;width:400%;display:flex;will-change:transform;">
+        <div data-case-track style="position:absolute;top:0;left:0;height:100%;width:200%;display:flex;will-change:transform;">
           ${c.cases.items.map((it, i) => caseWorld(i, it)).join('\n          ')}
         </div>
       </div>
@@ -358,7 +347,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
       <div data-reveal style="${monoLabel('letter-spacing:.4em;color:var(--accent,#F2A84B);margin-bottom:20px;')}">// ${esc(c.stats.label)}</div>
       <h2 data-reveal style="margin:0 0 60px;font-family:${FD};font-weight:500;font-size:clamp(26px,4vw,56px);line-height:1.05;color:#F5F6F8;">${esc(c.stats.title)}</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px 40px;width:100%;max-width:1000px;">
-        ${STATS.map((s, i) => `<div data-reveal><div style="font-family:${FD};font-weight:600;font-size:clamp(44px,6vw,84px);line-height:1;color:#fff;"><span data-count data-target="${s.target}" data-prefix="${s.prefix}" data-suffix="${s.suffix}">${s.prefix}0</span></div><div style="${monoLabel('font-size:11px;letter-spacing:.2em;color:rgba(245,246,248,.5);margin-top:12px;')}">${esc(c.stats.items[i].label)}</div></div>`).join('\n        ')}
+        ${c.stats.items.map((s) => `<div data-reveal><div style="font-family:${FD};font-weight:600;font-size:clamp(30px,4.4vw,58px);line-height:1.02;letter-spacing:-.01em;background:linear-gradient(130deg,#fff,var(--accent,#F2A84B));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">${esc(s.value)}</div><div style="${monoLabel('font-size:11px;letter-spacing:.2em;color:rgba(245,246,248,.5);margin-top:14px;')}">${esc(s.label)}</div></div>`).join('\n        ')}
       </div>
     </section>
 

@@ -38,8 +38,10 @@ const SERVICE_COLORS = [
   '#F2A84B', '#FF8A3C', '#FFC46B', '#6FD3FF', '#7CF0C6', '#FF6A9C',
   '#9B8CFF', '#FFD36B', '#37E0A0', '#62E0FF', '#B0A0FF', '#FFB24D',
 ];
+// Two entries — one 3D scene tint per real case (gold, cyan). Keep parallel to
+// `updateCasesDOM` colors and markup `CASE_META`.
 const CASE_COLORS = [
-  [1.0, 0.72, 0.4], [0.46, 0.84, 1.0], [0.66, 0.58, 1.0], [0.3, 0.94, 0.68],
+  [1.0, 0.72, 0.4], [0.46, 0.84, 1.0],
 ];
 
 export class DevoraUniverse {
@@ -828,8 +830,8 @@ export class DevoraUniverse {
   updateCasesDOM() {
     if (this.active !== 'cases') return;
     const p = this.acts.cases || 0;
-    const N = 4;
-    const colors = ['#F2A84B', '#6FD3FF', '#9B8CFF', '#37E0A0'];
+    const N = 2;
+    const colors = ['#F2A84B', '#6FD3FF'];
     const track = this.q('[data-case-track]');
     const rtl = getComputedStyle(this.root).direction === 'rtl';
     if (track) track.style.transform = `translateX(${(rtl ? 1 : -1) * (p * ((N - 1) / N) * 100)}%)`;

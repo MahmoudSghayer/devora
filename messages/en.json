@@ -470,20 +470,18 @@
       "label_a": "case files — ",
       "label_b": "enter the dimensions",
       "items": [
-        {"tag": "Dimension 01 · DTC Skincare", "name": "HALLOW", "metric": "+312% revenue", "meta": "6-WEEK REBUILD", "desc": "Full rebrand and headless Shopify build that turned a scrappy DTC line into a category leader in a single season.", "tags": ["Branding", "Shopify", "Lifecycle"]},
-        {"tag": "Dimension 02 · Fintech Infrastructure", "name": "VANTA GRID", "metric": "$4.2M pipeline", "meta": "90 DAYS TO SQLs", "desc": "Positioning, brand and a demand engine for a B2B infrastructure startup that went from stealth to sales-qualified in a single quarter.", "tags": ["Positioning", "Next.js", "Demand gen"]},
-        {"tag": "Dimension 03 · Luxury Mobility", "name": "NOCTURNE", "metric": "1.2M launch views", "meta": "FEATURED · BEHANCE", "desc": "A cinematic WebGL launch for an electric hypercar reveal — a brand world engineered to be felt, not just seen.", "tags": ["WebGL", "Launch film", "Identity"]},
-        {"tag": "Dimension 04 · AI Health", "name": "MERIDIAN", "metric": "40k waitlist", "meta": "3-WEEK SURGE", "desc": "Product, brand and automation for an AI clinical copilot — 40,000 clinicians on the waitlist in three weeks.", "tags": ["AI", "Product", "Automation"]}
+        {"tag": "Dimension 01 · zawiya.studio", "name": "Zawiya", "metric": "Creative studio", "meta": "Brand + web, end to end", "desc": "A complete brand and website for a creative studio — identity, art direction and a fast, custom build.", "tags": ["Brand", "Web design", "Development"]},
+        {"tag": "Dimension 02 · aldarb.co", "name": "Aldarb", "metric": "Digital platform", "meta": "Strategy → launch", "desc": "Strategy, design and a ground-up build for Aldarb — shipped end to end by one team.", "tags": ["Strategy", "Web design", "Development"]}
       ]
     },
     "stats": {
-      "label": "by the numbers",
-      "title": "The math behind the empire.",
+      "label": "why devora",
+      "title": "Why teams choose devora.",
       "items": [
-        {"label": "Revenue generated for partners"},
-        {"label": "Products & systems shipped"},
-        {"label": "Partner retention"},
-        {"label": "Countries operating in"}
+        {"value": "EN · AR", "label": "Bilingual & RTL-native"},
+        {"value": "End to end", "label": "Strategy to launch — and after"},
+        {"value": "One team", "label": "Senior, in-house, no handoffs"},
+        {"value": "You own it", "label": "No lock-in — your code, your CMS"}
       ]
     },
     "cta": {
