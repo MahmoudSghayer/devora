@@ -4,7 +4,7 @@ import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import {setRequestLocale, getMessages} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
 import {spaceGrotesk, spaceMono, arabic} from '@/lib/fonts';
-import ChatWidget from '@/components/chat/ChatWidget';
+import ChatWidget from '@/components/chat/ChatWidgetLazy';
 import {Analytics} from '@vercel/analytics/next';
 
 export function generateStaticParams() {

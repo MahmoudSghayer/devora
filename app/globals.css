@@ -129,6 +129,13 @@
     animation: dvGrain 7s steps(9) infinite;
   }
 }
+/* Touch devices: a full-screen animated overlay is a needless repaint cost —
+   keep the grain, drop its animation. */
+@media (pointer: coarse) {
+  .devora-grain {
+    animation: none;
+  }
+}
 
 /* ── ambient decorative loops ────────────────────────────────────────────
    Gated behind no-preference so reduced-motion simply never starts them. */
