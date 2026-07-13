@@ -114,6 +114,15 @@ export class DevoraUniverse {
       this.init();
     } else {
       this.startPreload();
+      // Cap how long the preloader can cover the server-rendered hero: reveal it
+      // fast and let the WebGL fade in whenever the libraries finish loading,
+      // rather than blocking the first paint behind the Three.js download.
+      this._preloaderMax = window.setTimeout(() => {
+        if (!this.destroyed) {
+          this._preloaderEarly = true;
+          this.hidePreloader();
+        }
+      }, 1800);
       this.loadLibs();
     }
   }
@@ -125,6 +134,9 @@ export class DevoraUniverse {
     } catch {}
     try {
       clearInterval(this._preIv);
+    } catch {}
+    try {
+      clearTimeout(this._preloaderMax);
     } catch {}
     window.removeEventListener('resize', this._onResize);
     try {
@@ -177,7 +189,7 @@ export class DevoraUniverse {
   }
   hidePreloader() {
     const pl = this.q('[data-preloader]');
-    if (!pl) return;
+    if (!pl || pl.style.display === 'none') return;
     const bar = this.q('[data-preload-bar]'), num = this.q('[data-preload-num]');
     if (bar) bar.style.width = '100%';
     if (num) num.textContent = '100';
@@ -263,7 +275,9 @@ export class DevoraUniverse {
     setTimeout(() => this.measure(), 1200);
     this.hidePreloader();
 
-    if (this.gsap && motionOK) {
+    if (this.gsap && motionOK && !this._preloaderEarly) {
+      // Skip the entrance if the hero was already revealed by the preloader cap
+      // (slow load) — otherwise it would re-fade from 0 and flash.
       this.gsap.from(this.qa('#act-hero [data-reveal]'), {
         y: 44, opacity: 0, duration: 1.1, stagger: 0.13, ease: 'power3.out', delay: 0.5,
       });
@@ -275,21 +289,36 @@ export class DevoraUniverse {
   /* ---------- THREE ---------- */
   setupThree() {
     const THREE = this.THREE;
+    const nav = navigator as Navigator & {deviceMemory?: number};
+    const mobile =
+      window.innerWidth < 820 ||
+      (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
+    // Cut GPU/fill cost on phones and low-core / low-memory machines.
+    const lowPower =
+      mobile || (nav.hardwareConcurrency || 8) <= 4 || (nav.deviceMemory || 8) <= 4;
     const counts =
       this.quality === 'Cinematic' ? {u: 16000, d: 2600, det: 5}
       : this.quality === 'Performance' ? {u: 5000, d: 900, det: 2}
       : {u: 10000, d: 1700, det: 4};
-    if (window.innerWidth < 760) {
-      counts.u = Math.min(counts.u, 5000);
-      counts.d = Math.min(counts.d, 900);
+    if (lowPower) {
+      counts.u = Math.min(counts.u, 4200);
+      counts.d = Math.min(counts.d, 800);
       counts.det = Math.min(counts.det, 3);
     }
     this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas, antialias: this.quality !== 'Performance', alpha: true,
-      powerPreference: 'high-performance', preserveDrawingBuffer: true,
+      canvas: this.canvas,
+      antialias: !lowPower && this.quality !== 'Performance',
+      alpha: true,
+      powerPreference: 'high-performance',
+      // preserveDrawingBuffer was only needed for the design-canvas export;
+      // in production it forces an extra buffer copy every frame.
+      preserveDrawingBuffer: false,
     });
     this.renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio || 1, this.quality === 'Performance' ? 1.3 : 2)
+      Math.min(
+        window.devicePixelRatio || 1,
+        lowPower ? 1.4 : this.quality === 'Performance' ? 1.3 : 1.9
+      )
     );
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.scene = new THREE.Scene();
