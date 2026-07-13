@@ -381,7 +381,7 @@
   "experience": {
     "preloader_init": "Initializing DEVORA OS",
     "preloader_compiling": "compiling universe",
-    "tagline": "Growth Partner",
+    "tagline": "Full-stack web studio",
     "os_version": "DEVORA OS v3.0",
     "sound": "Sound",
     "sound_on": "Sound on",
@@ -392,24 +392,24 @@
     "lat": "LAT",
     "lon": "LON",
     "lang_switch_aria": "Switch language",
-    "rail": ["Origin", "Doctrine", "Build", "Systems", "Work", "Contact"],
+    "rail": ["Origin", "Studio", "Build", "Services", "Work", "Contact"],
     "act_labels": {
       "hero": "ORIGIN",
       "dive": "DECONSTRUCT",
-      "manifesto": "DOCTRINE",
+      "manifesto": "STUDIO",
       "build": "BUILD",
-      "services": "SYSTEMS",
+      "services": "SERVICES",
       "cases": "WORK",
-      "stats": "METRICS",
+      "stats": "WHY US",
       "cta": "CONTACT"
     },
     "hero": {
-      "eyebrow": "Digital Empire Engineering",
-      "h1a": "We don't build websites.",
-      "h1b": "We build digital empires.",
-      "sub": "One partner for strategy, brand, product, growth & AI — engineered from a single idea into a self-scaling empire.",
-      "cta1": "Book the strategy call",
-      "cta2": "Enter the system"
+      "eyebrow": "dev + aura",
+      "h1a": "We design, build",
+      "h1b": "& launch websites.",
+      "sub": "One senior team for strategy, brand, design, code and growth — from the first call to launch day and everything after. Dev meets aura: websites with a presence you can feel.",
+      "cta1": "Start a project",
+      "cta2": "How we work"
     },
     "dive": {
       "label": "diving into the core",
@@ -418,19 +418,19 @@
       "shards": ["Websites", "Brand systems", "Campaigns", "Dashboards", "AI agents", "Growth loops"]
     },
     "manifesto": {
-      "label": "the DEVORA doctrine",
-      "h2a": "Most agencies hand you a website.",
-      "h2b": "We hand you an ",
-      "h2c": "operating system for growth.",
+      "label": "dev + aura",
+      "h2a": "Dev meets aura.",
+      "h2b": "The rigor of engineering, and the ",
+      "h2c": "presence great design leaves behind.",
       "principles": [
-        {"n": "01 / One partner", "d": "Strategy through scaling under one roof. No handoffs, no finger-pointing, no lost momentum."},
-        {"n": "02 / Built to compound", "d": "Every asset feeds a system. Brand fuels demand, product retains it, data sharpens the next move."},
-        {"n": "03 / Founder speed", "d": "We move at the pace of ambition. Weeks, not quarters — with the polish of a decade-old brand."}
+        {"n": "01 / One team", "d": "Strategy, design and engineering under one roof. No handoffs, no finger-pointing, no lost momentum."},
+        {"n": "02 / Craft you own", "d": "Fast, custom builds on clean code — with a CMS your team can run long after launch. No lock-in."},
+        {"n": "03 / Senior, end to end", "d": "A small, senior team from the first call to launch day and beyond. Weeks, not quarters — done properly."}
       ]
     },
     "build": {
       "label_a": "build sequence — ",
-      "label_b": "idea → empire",
+      "label_b": "brief → launch",
       "viewport": "DEVORA://build.viewport",
       "stage_word": "Stage",
       "stages": [
@@ -442,7 +442,7 @@
         {"t": "Analytics activate", "d": "Every signal captured. The system learns what works."},
         {"t": "Marketing engines", "d": "Demand generation kicks in and never stops pulsing."},
         {"t": "Revenue grows", "d": "Attention converts. The numbers begin to climb."},
-        {"t": "A digital ecosystem", "d": "It all connects into one self-scaling empire."}
+        {"t": "A living system", "d": "It all connects into one fast, living site that keeps working for you."}
       ]
     },
     "services": {
@@ -452,18 +452,18 @@
       "online": "Online",
       "traverse": "scroll to traverse the ecosystem",
       "items": [
-        {"name": "Strategy", "tag": "We map the empire before we build it.", "caps": ["Market intelligence", "Positioning", "Roadmapping", "Unit economics"]},
-        {"name": "Branding", "tag": "A brand your rivals learn to fear.", "caps": ["Naming", "Visual identity", "Voice & tone", "Brand systems"]},
+        {"name": "Strategy", "tag": "We plan the whole thing before we build it.", "caps": ["Market intelligence", "Positioning", "Roadmapping", "Unit economics"]},
+        {"name": "Branding", "tag": "A brand with a presence you can feel.", "caps": ["Naming", "Visual identity", "Voice & tone", "Brand systems"]},
         {"name": "Website Design", "tag": "Interfaces that feel inevitable.", "caps": ["UX architecture", "UI design", "Design systems", "Prototyping"]},
         {"name": "Website Development", "tag": "Engineered to load fast and convert hard.", "caps": ["Next.js builds", "Headless CMS", "WebGL / 3D", "Performance"]},
         {"name": "Automation", "tag": "Your business runs while you sleep.", "caps": ["Workflow automation", "Integrations", "Internal tools", "Ops systems"]},
         {"name": "Marketing", "tag": "Demand on tap.", "caps": ["Paid acquisition", "Lifecycle", "Creative", "Attribution"]},
-        {"name": "SEO", "tag": "Own the search results.", "caps": ["Technical SEO", "Content SEO", "Authority", "Local"]},
+        {"name": "SEO", "tag": "Get found in search.", "caps": ["Technical SEO", "Content SEO", "Authority", "Local"]},
         {"name": "Content Creation", "tag": "Content that compounds.", "caps": ["Editorial", "Video", "Social", "Thought leadership"]},
         {"name": "Growth Systems", "tag": "Loops, not campaigns.", "caps": ["Funnels", "Experimentation", "Retention", "Referral"]},
         {"name": "AI Solutions", "tag": "AI that does real work.", "caps": ["Agents", "RAG systems", "Copilots", "Fine-tuning"]},
         {"name": "Analytics", "tag": "See everything. Guess nothing.", "caps": ["Data pipelines", "Dashboards", "Modeling", "Insight"]},
-        {"name": "Scaling", "tag": "From traction to total dominance.", "caps": ["Infrastructure", "Team", "Process", "Expansion"]}
+        {"name": "Scaling", "tag": "Built to grow with you.", "caps": ["Infrastructure", "Team", "Process", "Expansion"]}
       ]
     },
     "cases": {
@@ -485,26 +485,26 @@
       ]
     },
     "cta": {
-      "label": "initiate partnership",
-      "h2a": "Ready to build",
-      "h2b": "your empire?",
-      "sub": "We take on a limited number of partners each quarter. If you're serious about scale, let's talk.",
-      "btn": "Book your strategy call",
-      "meta": ["48-hour response", "Limited partnerships", "Global"]
+      "label": "let's work together",
+      "h2a": "Let's build",
+      "h2b": "yours.",
+      "sub": "We take on a handful of projects at a time. Tell us where you're headed — we'll take it all the way to launch.",
+      "btn": "Start a project",
+      "meta": ["2-day reply", "Remote — MENA & worldwide", "EN & AR"]
     },
     "footer": {
-      "tag": "Digital empire engineering. Strategy to scale, one partner.",
+      "tag": "Full-stack web studio. From first sketch to live site — and everything after.",
       "navigate": "Navigate",
       "connect": "Connect",
       "nav": [
         {"k": "hero", "label": "Origin"},
         {"k": "build", "label": "Build"},
-        {"k": "services", "label": "Systems"},
+        {"k": "services", "label": "Services"},
         {"k": "cases", "label": "Work"}
       ],
       "email_label": "Email",
       "instagram": "Instagram",
-      "copy": "© 2026 DEVORA — Digital Empire Engineering",
+      "copy": "© 2026 devora — full-stack web studio",
       "back": "Back to origin"
     }
   }

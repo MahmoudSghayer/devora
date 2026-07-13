@@ -15,10 +15,12 @@ export async function generateMetadata({
   const {locale} = await params;
   const messages = (await getMessages({locale})) as {experience: ExperienceCopy};
   const t = messages.experience;
-  const title = 'DEVORA — Digital Empire Engineering';
+  const title = 'devora — full-stack web studio';
   const description = t.hero.sub;
   return {
-    title,
+    // Absolute so the root `%s · devora` template isn't appended (the title
+    // already carries the brand name — otherwise it doubles to "… · devora").
+    title: {absolute: title},
     description,
     alternates: alternates(''),
     openGraph: {title, description},
