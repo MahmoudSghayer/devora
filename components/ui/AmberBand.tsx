@@ -4,7 +4,7 @@ import ArrowButton from '@/components/ui/ArrowButton';
 
 // DEVORA OS CTA band: a dark panel with a gold glow rising from below, a
 // gold-gradient headline and a gold pill button — echoing the homepage's
-// "Ready to build your empire?" act rather than a solid amber block. Two
+// "Let's build yours." act rather than a solid amber block. Two
 // layouts: split (title/sub left, button right) and centered (Work "next" band).
 export default function AmberBand({
   title,

@@ -226,7 +226,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
     </section>
 
     <!-- ACT 03 — MANIFESTO -->
-    <section id="act-manifesto" data-screen-label="Act 03 — Doctrine / Manifesto" style="position:relative;min-height:110vh;display:flex;align-items:center;padding:14vh clamp(24px,7vw,140px);">
+    <section id="act-manifesto" data-screen-label="Act 03 — The studio / dev + aura" style="position:relative;min-height:110vh;display:flex;align-items:center;padding:14vh clamp(24px,7vw,140px);">
       <div style="max-width:1100px;">
         <div data-reveal style="${monoLabel('letter-spacing:.4em;color:var(--accent,#F2A84B);margin-bottom:34px;')}">// ${esc(c.manifesto.label)}</div>
         <h2 data-reveal style="margin:0;font-family:${FD};font-weight:500;font-size:clamp(30px,5vw,74px);line-height:1.04;letter-spacing:-.015em;color:#F5F6F8;">${esc(c.manifesto.h2a)}<br><span style="color:rgba(245,246,248,.42);">${esc(c.manifesto.h2b)}</span><span style="background:linear-gradient(120deg,#fff,var(--accent,#F2A84B));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">${esc(c.manifesto.h2c)}</span></h2>
