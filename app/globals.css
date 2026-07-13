@@ -252,6 +252,13 @@
     animation-delay: 0s !important;
     animation-duration: 0.45s !important;
   }
+  /* The right-hand section rail is a hover scrubber: its labels only reveal on
+     hover, and its invisible labels reserve ~100px of width with pointer-events
+     enabled, so on touch it silently intercepts taps meant for content. Hide it
+     on touch — the bottom progress bar and footer nav cover wayfinding. */
+  [data-experience] [data-rail-nav] {
+    display: none !important;
+  }
 }
 
 /* Small screens: the fixed HUD is desktop chrome — thin it out so the top and
@@ -264,4 +271,11 @@
 @media (max-width: 560px) {
   [data-experience] [data-coords] { display: none; }
   [data-experience] [data-rail-nav] { gap: 12px; }
+  /* Header: drop the decorative tagline and the ambient-sound toggle (no WebGL
+     audio on the mobile-lite path) so the language switch and the Book-a-call
+     button fit the viewport instead of spilling off the right edge. */
+  [data-experience] header [data-latin] + span,
+  [data-experience] header [data-sound] {
+    display: none !important;
+  }
 }
