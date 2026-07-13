@@ -16,7 +16,10 @@ const COLORS = [
   'rgba(111,211,255,', // cyan
 ];
 
-export default function StarField() {
+// `className` lets a caller re-layer the canvas. The marketing layout uses the
+// default (behind transparent page content); the homepage mobile-lite hero
+// passes a higher z so the stars sit above the experience root's opaque base.
+export default function StarField({className}: {className?: string} = {}) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -129,7 +132,7 @@ export default function StarField() {
     <canvas
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full"
+      className={className ?? 'pointer-events-none fixed inset-0 -z-10 h-full w-full'}
     />
   );
 }
