@@ -241,6 +241,19 @@
   }
 }
 
+/* Mobile-lite: coarse-pointer devices take the same no-WebGL static path as
+   reduced-motion (DevoraExperience forces it), so there's nothing heavy to wait
+   for behind the preloader. Resolve its dvSafety fade almost immediately so the
+   server-rendered hero — not the preloader — is the LCP; the controller's
+   hidePreloader() still runs when its chunk loads. Doesn't touch desktop or the
+   other ambient dv* animations. */
+@media (pointer: coarse) {
+  [data-experience] [data-preloader] {
+    animation-delay: 0s !important;
+    animation-duration: 0.45s !important;
+  }
+}
+
 /* Small screens: the fixed HUD is desktop chrome — thin it out so the top and
    bottom bars never crowd the phone viewport. The design's headings, spacing
    and particle counts already scale down via clamp() and the mobile caps in
