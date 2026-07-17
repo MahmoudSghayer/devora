@@ -279,3 +279,54 @@
     display: none !important;
   }
 }
+
+/* Narrow screens: several acts are built as two side-by-side, absolutely
+   positioned columns that assume desktop width. Reflow them to a single column
+   so nothing overlaps or spills off-screen. The acts stay scroll-driven, so the
+   remaining panel still cycles through its content as you scroll. */
+@media (max-width: 760px) {
+  /* ACT 05 — Services: the left index list + hover reticle don't fit beside the
+     detail card. Show only the card (it advances through the 12 services on
+     scroll), centered and wider. */
+  [data-experience] [data-svc-list],
+  [data-experience] [data-svc-reticle] { display: none !important; }
+  [data-experience] [data-svc-card] {
+    inset-inline: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: min(90vw, 460px) !important;
+  }
+
+  /* ACT 06 — Cases: the 200%-wide track scrubs sideways on scroll, which on a
+     phone just clips panels and shows two half-cases at once. Convert it to a
+     normal vertical stack — one case per block, text over its screenshot. The
+     controller's translateX is inline (no !important) so `transform:none` wins. */
+  [data-experience] #act-cases { height: auto !important; }
+  [data-experience] #act-cases > div {
+    position: relative !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  [data-experience] [data-case-track] {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    transform: none !important;
+  }
+  [data-experience] [data-world] {
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 56px 22px !important;
+    gap: 20px !important;
+  }
+  [data-experience] [data-world] > * { max-width: 100% !important; }
+  [data-experience] [data-case-ghost] { display: none !important; }
+  /* In a vertical stack the section label + horizontal position dots are
+     redundant (each case is self-labelled) and overlap the first case. */
+  [data-experience] [data-case-heading],
+  [data-experience] [data-case-dots] { display: none !important; }
+}
