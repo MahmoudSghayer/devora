@@ -379,6 +379,7 @@
     "send_error": "Something went wrong. Please try again or email us."
   },
   "experience": {
+    "meta_title": "devora — full-stack web studio",
     "preloader_init": "Initializing DEVORA OS",
     "preloader_compiling": "compiling universe",
     "tagline": "Full-stack web studio",
@@ -392,6 +393,8 @@
     "lat": "LAT",
     "lon": "LON",
     "lang_switch_aria": "Switch language",
+    "home_aria": "DEVORA — home",
+    "sections_aria": "Sections",
     "rail": ["Origin", "Studio", "Build", "Services", "Work", "Contact"],
     "act_labels": {
       "hero": "ORIGIN",

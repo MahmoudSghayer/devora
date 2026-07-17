@@ -43,7 +43,7 @@ try {
   check('EN widget streams a grounded reply', /\$1,650|launch|studio|growth/i.test(reply));
 
   // 2. Arabic page is RTL and the launcher is localized.
-  await page.goto(`${BASE}/ar`, {waitUntil: 'domcontentloaded'});
+  await page.goto(`${BASE}/`, {waitUntil: 'domcontentloaded'});
   check('AR page is RTL', (await page.evaluate(() => document.documentElement.dir)) === 'rtl');
   check(
     'AR launcher is localized',

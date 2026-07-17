@@ -3,7 +3,7 @@ import {ImageResponse} from 'next/og';
 // Image metadata
 export const size = {width: 1200, height: 630};
 export const contentType = 'image/png';
-export const alt = 'devora.design — full-stack web studio';
+export const alt = 'devora — dev + aura — استوديو ويب متكامل';
 
 const BG = '#0f0f0f';
 const INK = '#f2f2ef';

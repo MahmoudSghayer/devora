@@ -14,6 +14,7 @@ import type {DevoraCopy} from '@/lib/experience/devora-universe';
 
 // Full copy shape (superset of the controller's DevoraCopy).
 export interface ExperienceCopy extends DevoraCopy {
+  meta_title: string;
   preloader_init: string;
   preloader_compiling: string;
   tagline: string;
@@ -27,6 +28,8 @@ export interface ExperienceCopy extends DevoraCopy {
   lat: string;
   lon: string;
   lang_switch_aria: string;
+  home_aria: string;
+  sections_aria: string;
   rail: string[];
   hero: {eyebrow: string; h1a: string; h1b: string; sub: string; cta1: string; cta2: string};
   dive: {label: string; title: string; out: string; shards: string[]};
@@ -153,7 +156,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
   <!-- TOP HUD -->
   <header style="position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:22px clamp(18px,3vw,40px);pointer-events:none;">
     <div style="display:flex;align-items:baseline;gap:12px;pointer-events:auto;">
-      <a data-goto="act-hero" href="#act-hero" data-latin aria-label="DEVORA — home" style="font-family:${FD};font-weight:600;font-size:19px;letter-spacing:.22em;color:#fff;cursor:pointer;text-decoration:none;">DEVORA</a>
+      <a data-goto="act-hero" href="#act-hero" data-latin aria-label="${esc(c.home_aria)}" style="font-family:${FD};font-weight:600;font-size:19px;letter-spacing:.22em;color:#fff;cursor:pointer;text-decoration:none;">DEVORA</a>
       <span style="${monoLabel('font-size:9px;letter-spacing:.3em;color:rgba(245,246,248,.4);')}">${esc(c.tagline)}</span>
     </div>
     <div style="display:none;align-items:center;gap:9px;${monoLabel('font-size:10px;letter-spacing:.25em;color:rgba(245,246,248,.5);')}" data-hud-center>
@@ -172,7 +175,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
   </header>
 
   <!-- RIGHT RAIL -->
-  <nav data-rail-nav aria-label="Sections" style="position:fixed;right:clamp(14px,2.2vw,30px);top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:18px;align-items:flex-end;">
+  <nav data-rail-nav aria-label="${esc(c.sections_aria)}" style="position:fixed;right:clamp(14px,2.2vw,30px);top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:18px;align-items:flex-end;">
     ${railLink('hero', 'hero', c.rail[0], '01')}
     ${railLink('manifesto', 'manifesto', c.rail[1], '02')}
     ${railLink('build', 'build', c.rail[2], '03')}

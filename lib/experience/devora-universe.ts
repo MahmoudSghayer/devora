@@ -793,10 +793,11 @@ export class DevoraUniverse {
     }
     const nm = this.q('[data-svc-name]');
     if (nm) nm.style.color = s.color;
+    const rtl = getComputedStyle(this.root).direction === 'rtl';
     this.qa('[data-svc]').forEach((el) => {
       const on = +el.getAttribute('data-svc')! === idx;
       el.style.opacity = on ? '1' : '0.4';
-      el.style.transform = on ? 'translateX(8px)' : 'none';
+      el.style.transform = on ? `translateX(${rtl ? -8 : 8}px)` : 'none';
       (el.querySelector('span:last-child') as HTMLElement).style.color = on ? '#fff' : 'rgba(245,246,248,.8)';
       (el.querySelector('span:first-child') as HTMLElement).style.boxShadow = on ? `0 0 10px ${s.color}` : 'none';
       (el.querySelector('span:first-child') as HTMLElement).style.transform = on ? 'scale(1.6)' : 'scale(1)';
