@@ -87,7 +87,7 @@ const monoLabel = (extra = '') =>
 function caseWorld(i: number, item: ExperienceCopy['cases']['items'][number]) {
   const m = CASE_META[i];
   const num = String(i + 1).padStart(2, '0');
-  const ghost = `<div aria-hidden="true" style="position:absolute;${m.side === 'left' ? 'left' : 'right'}:clamp(24px,6vw,80px);top:12vh;font-family:${FD};font-weight:700;font-size:clamp(80px,14vw,200px);line-height:.8;color:rgba(255,255,255,.035);pointer-events:none;user-select:none;">${num}</div>`;
+  const ghost = `<div data-case-ghost aria-hidden="true" style="position:absolute;${m.side === 'left' ? 'left' : 'right'}:clamp(24px,6vw,80px);top:12vh;font-family:${FD};font-weight:700;font-size:clamp(80px,14vw,200px);line-height:.8;color:rgba(255,255,255,.035);pointer-events:none;user-select:none;">${num}</div>`;
   const textBlock = `<div style="flex:1;position:relative;min-width:0;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="width:26px;height:1px;background:${m.c};"></span><span style="${monoLabel(`color:${m.c};font-size:11px;letter-spacing:.3em;`)}">${esc(item.tag)}</span></div>
     <h3 style="margin:0;font-family:${FD};font-weight:600;font-size:clamp(38px,5.6vw,88px);line-height:.9;letter-spacing:-.01em;color:#fff;">${esc(item.name)}</h3>
@@ -227,7 +227,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
 
     <!-- ACT 03 — MANIFESTO -->
     <section id="act-manifesto" data-screen-label="Act 03 — The studio / dev + aura" style="position:relative;min-height:110vh;display:flex;align-items:center;padding:14vh clamp(24px,7vw,140px);">
-      <div style="max-width:1100px;">
+      <div style="max-width:1100px;min-width:0;">
         <div data-reveal style="${monoLabel('letter-spacing:.4em;color:var(--accent,#F2A84B);margin-bottom:34px;')}">// ${esc(c.manifesto.label)}</div>
         <h2 data-reveal style="margin:0;font-family:${FD};font-weight:500;font-size:clamp(30px,5vw,74px);line-height:1.04;letter-spacing:-.015em;color:#F5F6F8;">${esc(c.manifesto.h2a)}<br><span style="color:rgba(245,246,248,.42);">${esc(c.manifesto.h2b)}</span><span style="background:linear-gradient(120deg,#fff,var(--accent,#F2A84B));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">${esc(c.manifesto.h2c)}</span></h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;margin-top:56px;max-width:900px;">
@@ -239,7 +239,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
     <!-- ACT 04 — BUILD SEQUENCE -->
     <section id="act-build" data-screen-label="Act 04 — Build sequence" style="position:relative;height:420vh;">
       <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;">
-        <div style="padding:22px clamp(24px,5vw,80px) 0;${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.5);')}">// ${esc(c.build.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.build.label_b)}</span></div>
+        <div style="padding:72px clamp(24px,5vw,80px) 0;${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.5);')}">// ${esc(c.build.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.build.label_b)}</span></div>
         <div style="flex:1;display:grid;grid-template-columns:1fr;align-items:center;position:relative;padding:0 clamp(24px,5vw,80px);">
           <div data-build-num aria-hidden="true" style="position:absolute;left:clamp(10px,4vw,70px);top:50%;transform:translateY(-50%);font-family:${FD};font-weight:700;font-size:clamp(120px,28vw,420px);line-height:.8;color:rgba(255,255,255,.035);pointer-events:none;user-select:none;">01</div>
           <div style="justify-self:center;width:min(46vw,560px);height:min(56vh,440px);position:relative;border-radius:18px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 40px 120px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden;">
@@ -306,7 +306,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
     <!-- ACT 05 — SERVICES -->
     <section id="act-services" data-screen-label="Act 05 — Services ecosystem" style="position:relative;height:520vh;">
       <div style="position:sticky;top:0;height:100vh;overflow:hidden;">
-        <div style="position:absolute;top:22px;inset-inline-start:clamp(24px,5vw,80px);${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.5);')}">// ${esc(c.services.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.services.label_b)}</span></div>
+        <div style="position:absolute;top:72px;inset-inline-start:clamp(24px,5vw,80px);${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.5);')}">// ${esc(c.services.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.services.label_b)}</span></div>
         <div data-svc-list style="position:absolute;inset-inline-start:clamp(24px,5vw,80px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:3px;"></div>
         <div data-svc-reticle aria-hidden="true" style="position:absolute;z-index:4;left:0;top:0;width:0;height:0;pointer-events:none;opacity:0;transition:opacity .45s;">
           <div data-svc-reticle-box style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:118px;height:118px;">
@@ -317,7 +317,7 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
           </div>
           <div style="position:absolute;left:0;top:0;transform:translate(-50%,46px);white-space:nowrap;font-family:${FM};font-size:9px;letter-spacing:.3em;color:var(--accent,#F2A84B);text-transform:uppercase;">◇ <span data-svc-reticle-name>${esc(svc0.name)}</span></div>
         </div>
-        <div style="position:absolute;inset-inline-end:clamp(24px,5vw,70px);top:50%;transform:translateY(-50%);width:min(38vw,420px);padding:30px;border-radius:20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 40px 120px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);">
+        <div data-svc-card style="position:absolute;inset-inline-end:clamp(24px,5vw,70px);top:50%;transform:translateY(-50%);width:min(38vw,420px);padding:30px;border-radius:20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 40px 120px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;"><span data-svc-idx style="font-family:${FM};font-size:11px;letter-spacing:.3em;color:var(--accent,#F2A84B);">${esc(c.services.system_word)} 01/12</span><span style="font-family:${FM};font-size:10px;letter-spacing:.2em;color:rgba(245,246,248,.4);text-transform:uppercase;">${esc(c.services.online)}</span></div>
           <h3 data-svc-name style="margin:0;font-family:${FD};font-weight:600;font-size:clamp(28px,3.4vw,46px);line-height:1;color:#fff;">${esc(svc0.name)}</h3>
           <p data-svc-tag style="margin:14px 0 24px;font-size:16px;line-height:1.5;color:rgba(245,246,248,.7);">${esc(svc0.tag)}</p>
@@ -330,8 +330,8 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
     <!-- ACT 06 — CASES -->
     <section id="act-cases" data-screen-label="Act 06 — Case study dimensions" style="position:relative;height:240vh;">
       <div style="position:sticky;top:0;height:100vh;overflow:hidden;">
-        <div style="position:absolute;z-index:3;top:22px;inset-inline-start:clamp(24px,5vw,80px);${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.6);')}">// ${esc(c.cases.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.cases.label_b)}</span></div>
-        <div aria-hidden="true" style="position:absolute;z-index:3;top:22px;inset-inline-end:clamp(24px,5vw,80px);display:flex;gap:8px;">
+        <div data-case-heading style="position:absolute;z-index:3;top:72px;inset-inline-start:clamp(24px,5vw,80px);${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.6);')}">// ${esc(c.cases.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.cases.label_b)}</span></div>
+        <div data-case-dots aria-hidden="true" style="position:absolute;z-index:3;top:72px;inset-inline-end:clamp(24px,5vw,80px);display:flex;gap:8px;">
           <span data-case-dot="0" style="width:22px;height:3px;border-radius:2px;background:#fff;transition:all .4s;"></span>
           <span data-case-dot="1" style="width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:all .4s;"></span>
         </div>
