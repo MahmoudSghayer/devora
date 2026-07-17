@@ -299,9 +299,9 @@ export class DevoraUniverse {
     const lowPower =
       mobile || (nav.hardwareConcurrency || 8) <= 4 || (nav.deviceMemory || 8) <= 4;
     const counts =
-      this.quality === 'Cinematic' ? {u: 16000, d: 2600, det: 5}
-      : this.quality === 'Performance' ? {u: 5000, d: 900, det: 2}
-      : {u: 10000, d: 1700, det: 4};
+      this.quality === 'Cinematic' ? {u: 9600, d: 1700, det: 5}
+      : this.quality === 'Performance' ? {u: 3000, d: 600, det: 2}
+      : {u: 6000, d: 1100, det: 4};
     if (lowPower) {
       counts.u = Math.min(counts.u, 4200);
       counts.d = Math.min(counts.d, 800);
