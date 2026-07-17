@@ -221,8 +221,18 @@
    spacing on Arabic text (tracking breaks Arabic ligatures) — brand wordmarks
    opt out via [data-latin]. */
 :root[dir="rtl"] [data-experience] [data-rail-nav] {
-  right: auto; left: clamp(14px, 2.2vw, 30px); align-items: flex-start;
+  right: auto !important; left: clamp(14px, 2.2vw, 30px) !important; align-items: flex-start;
 }
+:root[dir="rtl"] [data-experience] [data-build-num] {
+  left: auto !important; right: clamp(10px, 4vw, 70px) !important;
+}
+/* [data-svc-reticle] is intentionally left unmirrored: it's a zero-size JS
+   transform anchor (see updateServicesDOM/render3D in devora-universe.ts),
+   positioned via `transform: translate(sx, sy)` computed in physical window
+   pixels to track the WebGL-rendered planet, which itself isn't direction-
+   aware. Its left:0/top:0 anchor and the corner-bracket children's symmetric
+   border-left/border-right pairs already render identically in RTL — flipping
+   left/right here would offset the anchor and misalign the reticle. */
 :root[dir="rtl"] [data-experience] *:not([data-latin]) {
   letter-spacing: normal !important;
 }

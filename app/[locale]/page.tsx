@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import {getMessages, setRequestLocale} from 'next-intl/server';
+import {getPathname} from '@/i18n/navigation';
 import {alternates} from '@/lib/seo';
 import {SITE} from '@/lib/site';
 import DevoraExperience from '@/components/experience/DevoraExperience';
@@ -15,14 +16,14 @@ export async function generateMetadata({
   const {locale} = await params;
   const messages = (await getMessages({locale})) as {experience: ExperienceCopy};
   const t = messages.experience;
-  const title = 'devora — full-stack web studio';
+  const title = t.meta_title;
   const description = t.hero.sub;
   return {
     // Absolute so the root `%s · devora` template isn't appended (the title
     // already carries the brand name — otherwise it doubles to "… · devora").
     title: {absolute: title},
     description,
-    alternates: alternates(''),
+    alternates: alternates('', locale as 'en' | 'ar'),
     openGraph: {title, description},
     twitter: {title, description},
   };
@@ -44,9 +45,9 @@ export default async function HomePage({
   const other = locale === 'ar' ? 'en' : 'ar';
 
   const html = buildExperienceMarkup(copy, {
-    otherLocaleHref: `/${other}`,
+    otherLocaleHref: getPathname({href: '/', locale: other}),
     otherLocaleLabel: messages.common.lang_toggle,
-    contactHref: `/${locale}/contact`,
+    contactHref: getPathname({href: '/contact', locale}),
     email: SITE.email,
     instagramHref: INSTAGRAM,
   });

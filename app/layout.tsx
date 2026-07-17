@@ -6,11 +6,11 @@ import type {Metadata} from 'next';
 export const metadata: Metadata = {
   metadataBase: new URL('https://devora.design'),
   title: {
-    default: 'devora — full-stack web studio',
+    default: 'devora — استوديو ويب متكامل',
     template: '%s · devora',
   },
   description:
-    'devora — dev + aura. A bilingual full-stack web studio: strategy, brand, design, code and growth. One team from first call to launch day.',
+    'devora — dev + aura. استوديو ويب متكامل ثنائي اللغة: استراتيجية، هوية بصرية، تصميم، برمجة، ونمو. فريق واحد من أول اتصال وحتى يوم الإطلاق.',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
