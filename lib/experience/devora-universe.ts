@@ -839,7 +839,14 @@ export class DevoraUniverse {
     const colors = CASE_HEX;
     const track = this.q('[data-case-track]');
     const rtl = getComputedStyle(this.root).direction === 'rtl';
-    if (track) track.style.transform = `translateX(${(rtl ? 1 : -1) * (p * ((N - 1) / N) * 100)}%)`;
+    // The track is `left:0` and N*100% wide, but a `direction:rtl` flex row lays
+    // world 01 at the FAR RIGHT. So RTL has to start scrolled fully left (-span)
+    // and travel back to 0, rather than mirroring the LTR sign — mirroring parks
+    // world 01 off-screen and scrolls into empty space, showing only one case.
+    const span = ((N - 1) / N) * 100;
+    if (track) {
+      track.style.transform = `translateX(${rtl ? span * (p - 1) : -span * p}%)`;
+    }
     const focus = this.clamp(Math.round(p * (N - 1)), 0, N - 1);
     dots.forEach((d) => {
       const i = +d.getAttribute('data-case-dot')!;
