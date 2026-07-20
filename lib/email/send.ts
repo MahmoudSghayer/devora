@@ -18,9 +18,11 @@ export async function sendMail(opts: {
   html?: string;
   replyTo?: string;
 }): Promise<{delivered: boolean}> {
-  const user = process.env.ZOHO_SMTP_USER;
-  const pass = process.env.ZOHO_SMTP_PASS;
-  const to = process.env.CONTACT_TO || user;
+  // Trim to defuse a classic silent "535 Authentication Failed": a trailing
+  // space/newline accidentally pasted into the Vercel secret value.
+  const user = process.env.ZOHO_SMTP_USER?.trim();
+  const pass = process.env.ZOHO_SMTP_PASS?.trim();
+  const to = process.env.CONTACT_TO?.trim() || user;
 
   if (!user || !pass || !to) {
     console.warn('[email] SMTP not configured — logging instead:', {
