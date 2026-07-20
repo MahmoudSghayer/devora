@@ -8,7 +8,8 @@ export type AnalyticsType =
   | 'takeover'
   | 'released'
   | 'out_of_scope'
-  | 'language_detected';
+  | 'language_detected'
+  | 'cache_usage';
 
 // Fire-and-forget analytics. Never throws, never blocks the response path, and
 // no-ops when Supabase isn't configured.

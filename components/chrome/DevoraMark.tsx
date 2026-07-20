@@ -22,17 +22,17 @@ export default function DevoraMark({
     >
       <defs>
         <radialGradient id="dvDot" cx="50%" cy="42%" r="55%">
-          <stop offset="0%" stopColor="#fff1c4" />
-          <stop offset="45%" stopColor="#ffce4d" />
-          <stop offset="100%" stopColor="#f4b73a" />
+          <stop offset="0%" stopColor="#ffe7c4" />
+          <stop offset="45%" stopColor="#ffc46b" />
+          <stop offset="100%" stopColor="#f2a84b" />
         </radialGradient>
         <filter id="dvGlow" x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur stdDeviation="26" />
         </filter>
       </defs>
-      <circle cx="256" cy="256" r="58" fill="#f4c542" opacity="0.4" filter="url(#dvGlow)" />
+      <circle cx="256" cy="256" r="58" fill="#f2a84b" opacity="0.4" filter="url(#dvGlow)" />
       <g
-        stroke="#f4c542"
+        stroke="#f2a84b"
         strokeWidth="46"
         strokeLinecap="round"
         strokeLinejoin="round"

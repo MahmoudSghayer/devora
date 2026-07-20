@@ -25,4 +25,7 @@ export const arabic = Cairo({
   subsets: ['arabic'],
   variable: '--font-arabic',
   display: 'swap',
+  // Only Arabic pages render Cairo — don't preload it on the (default) English
+  // pages, where it would otherwise download unused. It loads on demand for AR.
+  preload: false,
 });

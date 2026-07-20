@@ -44,7 +44,7 @@ export default function ScrollToggle() {
       onClick={handleClick}
       aria-label={label}
       title={label}
-      className="fixed bottom-6 start-6 z-40 flex h-12 w-12 items-center justify-center rounded-pill border border-border-ghost bg-[rgba(15,15,15,0.85)] text-ink backdrop-blur-[12px] transition-colors hover:border-amber hover:text-amber print:hidden"
+      className="fixed bottom-6 start-6 z-40 flex h-12 w-12 items-center justify-center rounded-pill border border-border-ghost bg-[rgba(5,6,9,0.82)] text-ink backdrop-blur-[12px] transition-colors hover:border-amber hover:text-amber print:hidden"
     >
       <motion.span
         aria-hidden

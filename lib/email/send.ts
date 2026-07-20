@@ -18,9 +18,11 @@ export async function sendMail(opts: {
   html?: string;
   replyTo?: string;
 }): Promise<{delivered: boolean}> {
-  const user = process.env.ZOHO_SMTP_USER;
-  const pass = process.env.ZOHO_SMTP_PASS;
-  const to = process.env.CONTACT_TO || user;
+  // Trim to defuse a classic silent "535 Authentication Failed": a trailing
+  // space/newline accidentally pasted into the Vercel secret value.
+  const user = process.env.ZOHO_SMTP_USER?.trim();
+  const pass = process.env.ZOHO_SMTP_PASS?.trim();
+  const to = process.env.CONTACT_TO?.trim() || user;
 
   if (!user || !pass || !to) {
     console.warn('[email] SMTP not configured — logging instead:', {
@@ -29,20 +31,34 @@ export async function sendMail(opts: {
     return {delivered: false};
   }
 
+  const port = Number(process.env.ZOHO_SMTP_PORT || 465);
   const transporter = nodemailer.createTransport({
     host: process.env.ZOHO_SMTP_HOST || 'smtp.zoho.com',
-    port: Number(process.env.ZOHO_SMTP_PORT || 465),
-    secure: true, // 465 = implicit TLS
+    port,
+    secure: port === 465, // 465 = implicit SSL/TLS; 587 = STARTTLS
     auth: {user, pass},
+    // Fail fast on a serverless function: without these, an unreachable or slow
+    // Zoho SMTP hangs until Vercel kills the function (surfaces as a platform 502
+    // with nothing logged). Bounded timeouts turn that into a clean, logged
+    // ETIMEDOUT the route can report and the admin diagnostic can interpret.
+    connectionTimeout: 8000, // TCP connect
+    greetingTimeout: 8000, // wait for SMTP banner
+    socketTimeout: 10000, // inactivity during the exchange
   });
 
-  await transporter.sendMail({
-    from: `devora.design <${user}>`,
-    to,
-    replyTo: opts.replyTo,
-    subject: opts.subject,
-    text: opts.text,
-    html: opts.html,
-  });
-  return {delivered: true};
+  try {
+    await transporter.sendMail({
+      from: `devora.design <${user}>`, // must match the authenticated mailbox
+      to,
+      replyTo: opts.replyTo,
+      subject: opts.subject,
+      text: opts.text,
+      html: opts.html,
+    });
+    return {delivered: true};
+  } catch (err) {
+    // Surface the real SMTP error (auth / connection / relaying) in the logs.
+    console.error('[email] send failed:', err);
+    throw err;
+  }
 }

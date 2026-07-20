@@ -3,7 +3,7 @@
 > **devora** — a bilingual (English + Arabic / RTL) marketing website for a full-stack web studio.
 > The name is **dev + aura**: engineering with a presence you can feel.
 
-A dark, editorial, type-driven, motion-rich site. Four pages — **Home · Work · Services · Contact** — in **English (`/en`)** and **Arabic (`/ar`, RTL)**, sharing a sticky header, footer, and marquee.
+A dark, editorial, type-driven, motion-rich site. Four pages — **Home · Work · Services · Contact** — in **Arabic (`/`, default, RTL)** and **English (`/en`)**, sharing a sticky header, footer, and marquee.
 
 **Repo:** https://github.com/MahmoudSghayer/devora
 **Stack:** Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Motion (Framer) · next-intl · Zod
@@ -76,12 +76,12 @@ devora positions the studio as **one team, end to end** — strategy, brand, des
 | **TypeScript** | Type-safe components, props, and validation. |
 | **Tailwind CSS v4 (`@theme`)** | CSS-first design tokens live in `app/globals.css`; a single custom `nav:` breakpoint (920px) drives all responsiveness. |
 | **Motion (Framer)** | Idiomatic React motion (`whileInView`, `useScroll`, springs) with `useReducedMotion`; imported from `motion/react`. |
-| **next-intl** | Locale routing (`/en`, `/ar`), `dir`/`lang` per locale, cookie persistence, message dictionaries. |
+| **next-intl** | Locale routing (`/` for Arabic, `/en` for English), `dir`/`lang` per locale, cookie persistence, message dictionaries. |
 | **Zod** | Server-side validation of the contact payload. |
 | **npm** | Package manager (no pnpm/yarn). |
 
 **Notable decisions**
-- **Locale routing over DOM text-swap** — the prototype swapped text via `localStorage`; production uses `/en` · `/ar` routes with the `NEXT_LOCALE` cookie.
+- **Locale routing over DOM text-swap** — the prototype swapped text via `localStorage`; production uses `/` (Arabic, default, unprefixed) · `/en` (English, prefixed) routes with the `NEXT_LOCALE` cookie.
 - **`proxy.ts` not `middleware.ts`** — Next 16 renamed the middleware convention to `proxy`.
 - **SSR-identical motion initial states** — entrance animations use the same `initial` on server and client, so there are no hydration mismatches; reduced-motion collapses transitions to instant (content always visible).
 - **No box-shadows anywhere** — a hard design rule; depth is borders, surface shifts, `translateY(-6px)` hover lifts, and motion.
@@ -92,14 +92,14 @@ devora positions the studio as **one team, end to end** — strategy, brand, des
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000  → redirects to /en
+npm run dev        # http://localhost:3000  → serves Arabic (default, unprefixed)
 npm run build      # production build (all pages prerendered per-locale)
 npm start          # serve the production build
 npm run lint       # ESLint
 ```
 
 - Requires **Node 18+** (built on Node 24).
-- Visit `/en` or `/ar`; the language toggle switches locale in place and persists via cookie.
+- Visit `/` (Arabic, default) or `/en` (English); the language toggle switches locale in place and persists via cookie.
 
 ---
 
@@ -125,7 +125,7 @@ components/
   contact/  ContactForm · ContactAside
 lib/
   motion.ts                      # EASE curve + shared viewport config
-  fonts.ts                       # next/font (Space Grotesk, Space Mono, IBM Plex Sans Arabic)
+  fonts.ts                       # next/font (Space Grotesk, Space Mono, Cairo)
   site.ts                        # brand constants + placeholders (SITE, SOCIALS, CASES)
   validation.ts                  # Zod schema + client validators
   hooks/    useMagnetic · useParallax · useScrollDirection
@@ -156,7 +156,7 @@ All tokens are defined in `app/globals.css` via Tailwind v4 `@theme` and consume
 | Text | `ink #f2f2ef` · `ink-2 #c9c9c2` · `muted #9a9a94` · `muted-2 #8f8f8a` · `faint #6a6a66` · `faint-2 #55554f` |
 | Accent | `amber #f4c542` · `amber-hi #ffd75e` · `on-amber #131108` · `dark-btn-hi #2a2712` |
 
-**Typography** — **Space Grotesk** (display/body, 400–700) · **Space Mono** (labels, numbers, tags, marquee, 400/700) · **IBM Plex Sans Arabic** (Arabic fallback, 400–700). Loaded via `next/font` (self-hosted, no layout shift). Fluid heading sizes as tokens: `text-h1`, `text-h1-sub`, `text-h2`, `text-cta`, `text-case`.
+**Typography** — **Space Grotesk** (display/body, 400–700) · **Space Mono** (labels, numbers, tags, marquee, 400/700) · **Cairo** (Arabic display/body, variable, 400–700). Loaded via `next/font` (self-hosted, no layout shift). Fluid heading sizes as tokens: `text-h1`, `text-h1-sub`, `text-h2`, `text-cta`, `text-case`.
 
 **Layout** — container `max-w-1360px`, side padding `24px` (mobile) / `40px` (≥ `nav`). **Single breakpoint: `nav` = 920px** (`nav:` / `max-nav:`), never `md`/`lg`.
 
@@ -183,7 +183,7 @@ Master easing `cubic-bezier(0.22, 1, 0.36, 1)` (`lib/motion.ts` → `EASE`). Eve
 
 ## 8. Internationalization & RTL
 
-- **Routing** — `next-intl` with `localePrefix: 'always'` → `/en`, `/ar`. Config in `i18n/routing.ts`, `request.ts`, `navigation.ts`; `proxy.ts` runs the middleware.
+- **Routing** — `next-intl` with `defaultLocale: 'ar'` and `localePrefix: 'as-needed'` → Arabic serves unprefixed at `/` (default), English stays prefixed at `/en`. `localeDetection: false` so `/` deterministically serves Arabic regardless of the visitor's `Accept-Language` header or locale cookie, which keeps SEO crawling consistent. Old `/ar/...` URLs redirect automatically to their unprefixed equivalents via next-intl's own middleware — no custom redirect code needed. Config in `i18n/routing.ts`, `request.ts`, `navigation.ts`; `proxy.ts` runs the middleware.
 - **Per-locale document** — `app/[locale]/layout.tsx` sets `<html lang dir>` (`rtl` for Arabic) and calls `setRequestLocale` for static rendering.
 - **Language toggle** — switches locale on the same page (`router.replace(pathname, {locale})`); persisted via the `NEXT_LOCALE` cookie.
 - **RTL handling** — logical CSS properties (`ms-*`, `start-*`, `ps-*`) so layout mirrors automatically; Arabic forces `letter-spacing: 0` (negative tracking breaks ligatures) via `[dir="rtl"]` rules on `.u-track`/`.u-mono`/headings; directional arrows (`→`/`←`) are a translated glyph (`common.arrow`); brand names, the marquee, and prices stay LTR (`dir="ltr"` / bidi).
@@ -242,7 +242,7 @@ Everything below is grep-able via `TODO(devora)`.
 
 ### 12.2 Recommended next — technical polish
 
-- **SEO & metadata** — per-page `generateMetadata` for Home/Work titles + descriptions, Open Graph / Twitter card images, `sitemap.ts`, `robots.ts`, canonical + `hreflang` alternates for `/en` ↔ `/ar`.
+- **SEO & metadata** — per-page `generateMetadata` for Home/Work titles + descriptions, Open Graph / Twitter card images, `sitemap.ts`, `robots.ts`, canonical + `hreflang` alternates for `/` (ar) ↔ `/en`.
 - **Favicons / app icons** — replace the default favicon with a devora mark set (`icon.png`, `apple-icon.png`).
 - **Analytics & consent** — privacy-friendly analytics (e.g. Vercel Analytics / Plausible), plus a cookie/consent note if required.
 - **Performance & a11y pass** — Lighthouse run, image sizing/priorities, focus-visible audit, color-contrast check, keyboard nav for the mobile menu.

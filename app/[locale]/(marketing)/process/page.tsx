@@ -3,10 +3,7 @@ import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
-import Story from '@/components/about/Story';
-import Difference from '@/components/about/Difference';
-import Values from '@/components/about/Values';
-import Crew from '@/components/about/Crew';
+import ProcessDetail from '@/components/process/ProcessDetail';
 import AmberBand from '@/components/ui/AmberBand';
 import Marquee from '@/components/chrome/Marquee';
 
@@ -16,38 +13,35 @@ export async function generateMetadata({
   params: Promise<{locale: string}>;
 }): Promise<Metadata> {
   const {locale} = await params;
-  const t = await getTranslations({locale, namespace: 'about'});
-  const title = t('a_label');
-  const description = t('a_sub');
+  const t = await getTranslations({locale, namespace: 'process'});
+  const title = t('pr_label');
+  const description = t('pr_sub');
   return {
     title,
     description,
-    alternates: alternates('/about'),
+    alternates: alternates('/process', locale as 'en' | 'ar'),
     openGraph: {title, description},
     twitter: {title, description},
   };
 }
 
-export default async function AboutPage({
+export default async function ProcessPage({
   params,
 }: {
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
   setRequestLocale(locale);
-  return <AboutContent />;
+  return <ProcessContent />;
 }
 
-function AboutContent() {
-  const a = useTranslations('about');
+function ProcessContent() {
+  const p = useTranslations('process');
   const c = useTranslations('common');
   return (
     <>
-      <PageIntro label={a('a_label')} title={a('a_title')} sub={a('a_sub')} />
-      <Story />
-      <Difference />
-      <Values />
-      <Crew />
+      <PageIntro label={p('pr_label')} title={p('pr_title')} sub={p('pr_sub')} />
+      <ProcessDetail />
       <AmberBand
         title={c('cta_title')}
         sub={c('cta_sub')}

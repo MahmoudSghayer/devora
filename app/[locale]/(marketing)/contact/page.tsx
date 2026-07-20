@@ -20,7 +20,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: alternates('/contact'),
+    alternates: alternates('/contact', locale as 'en' | 'ar'),
     openGraph: {title, description},
     twitter: {title, description},
   };

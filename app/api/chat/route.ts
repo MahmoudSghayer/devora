@@ -1,3 +1,4 @@
+import type Anthropic from '@anthropic-ai/sdk';
 import {NextResponse} from 'next/server';
 import {chatMessageSchema} from '@/lib/validation';
 import {getConversation, getMessages, insertMessage} from '@/lib/chat/store';
@@ -23,13 +24,14 @@ const sse = (event: ChatStreamEvent) =>
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-// Graceful reply used when ANTHROPIC_API_KEY isn't set — grounded in known
-// facts so the widget is fully demoable without a key.
+// Honest fallback shown ONLY when ANTHROPIC_API_KEY isn't reaching the app.
+// It does not pretend to answer — it says the AI is offline and offers a human
+// handoff, so a misconfiguration is obvious instead of masquerading as a reply.
 function fallbackReply(locale: ChatLocale): string {
   if (locale === 'ar') {
-    return 'أهلًا! أنا مساعد ديفورا. ديفورا استوديو ويب متكامل — استراتيجية وهوية وتصميم وبرمجة ونمو وذكاء اصطناعي، من الألف إلى الياء. باقات البناء تبدأ من 1,650$ (الانطلاقة) و2,650$ (الاستوديو) و5,000$ (النمو)، مع اشتراك شهري بسيط للاستضافة والتحديثات والدعم. أخبِرني بما تودّ بناءه لأرشدك إلى الأنسب، أو شارِكني بريدك ليتواصل معك الفريق.';
+    return 'أهلًا، أنا نور من ديفورا 👋 مساعدي الذكي غير متاح على هذه البيئة الآن، لكنني لا أريد أن أتركك تنتظر — أخبِرني بما تحتاجه وشارِكني بريدك الإلكتروني وسيتابع معك الفريق مباشرةً.';
   }
-  return "Hi! I'm devora's assistant. devora is a full-stack web studio — strategy, brand, design, code, growth and AI, end to end. Build packages start at $1,650 (Launch), $2,650 (Studio) and $5,000 (Growth), each with a low monthly for hosting, updates and support. Tell me what you're building and I'll point you to the right fit — or share your email and the team will follow up.";
+  return "Hi, I'm Noor from devora 👋 My AI isn't reachable on this environment right now, but I don't want to leave you waiting — tell me what you need and share your email, and the team will get right back to you.";
 }
 
 function chunk(text: string, size = 3): string[] {
@@ -117,7 +119,19 @@ export async function POST(request: Request) {
       : (clientHistory ?? []).map((t) => ({role: t.role, content: t.content}))
   ).slice(-20);
 
-  const claudeMessages = [...priorTurns, {role: 'user' as const, content: message}];
+  // Trailing cache_control breakpoint on the newest message so prior turns become
+  // a cache read instead of fresh input tokens. 5m (not 1h): turns arrive seconds
+  // apart, so 5m always still holds the growing prefix — and since this tail is
+  // rewritten every turn, a longer TTL would just pay the higher write premium.
+  const claudeMessages: Anthropic.MessageParam[] = [
+    ...priorTurns,
+    {
+      role: 'user',
+      content: [
+        {type: 'text', text: message, cache_control: {type: 'ephemeral', ttl: '5m'}},
+      ],
+    },
+  ];
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -137,8 +151,27 @@ export async function POST(request: Request) {
             assistantText += t;
             controller.enqueue(sse({type: 'delta', text: t}));
           });
-          await claudeStream.finalMessage();
+          const final = await claudeStream.finalMessage();
+          // Cache telemetry: turn 1 shows a large cache_creation and ~0 read; from
+          // turn 2 on, cache_read jumps to the KB-prefix size and climbs. Nullable
+          // cache fields → `?? 0`. Fire-and-forget, never blocks the response.
+          const u = final.usage;
+          void logEvent('cache_usage', {
+            conversationId,
+            locale,
+            props: {
+              model: CHAT_MODEL,
+              input_tokens: u.input_tokens,
+              output_tokens: u.output_tokens,
+              cache_read_input_tokens: u.cache_read_input_tokens ?? 0,
+              cache_creation_input_tokens: u.cache_creation_input_tokens ?? 0,
+              turns: claudeMessages.length,
+            },
+          });
         } else {
+          console.warn(
+            '[chat] ANTHROPIC_API_KEY not set on this deployment — serving offline fallback. Set the key and redeploy so Claude answers.'
+          );
           const text = fallbackReply(locale);
           for (const piece of chunk(text)) {
             assistantText += piece;

@@ -4,10 +4,10 @@
     "launcher_aria": "Open the devora assistant",
     "close_aria": "Close chat",
     "reset_aria": "Start a new chat",
-    "title": "devora assistant",
+    "title": "Noor · devora",
     "status_ai": "AI assistant · available 24/7",
     "status_online": "Online representative available",
-    "greeting": "Hi 👋 I'm devora's assistant. Ask about our work, services, pricing or process — or tell me what you're building.",
+    "greeting": "Hi 👋 I'm Noor from devora — happy to help. Ask me about our work, services, pricing or process, or tell me what you're building.",
     "placeholder": "Type your message…",
     "send": "Send",
     "send_aria": "Send message",
@@ -86,10 +86,14 @@
     "proc_link": "See the process",
     "work_label": "Selected work",
     "work_link": "All work",
-    "w1_d": "Full brand and site for a creative studio.",
-    "w1_tags": "Brand · Design · Build",
-    "w2_d": "Strategy, design and a ground-up build.",
-    "w2_tags": "Strategy · Design · Build",
+    "w1_d": "An AI-assisted gallery platform for photographers.",
+    "w1_tags": "Product · SaaS · Build",
+    "w2_d": "An Arabic-first platform for articles and opinions.",
+    "w2_tags": "Strategy · Editorial · Build",
+    "w3_d": "A custom store for paintings, tees and hoodies.",
+    "w3_tags": "Brand · E-commerce · Build",
+    "w4_d": "A portfolio built so the reel plays first.",
+    "w4_tags": "Design · Build",
     "ind_label": "Who we build for",
     "ind_title": "Made for teams that live by their website.",
     "ind_sub": "Studios, shops and founders who need their site to do real work — not just look the part.",
@@ -125,10 +129,14 @@
     "wk_sub": "Every project delivered whole — from strategy to well past launch.",
     "visit": "Visit site",
     "view_case": "View case study",
-    "c1_tags": "Brand · Web design · Development",
-    "c1_d": "A complete brand and site for a creative studio — identity, art direction and a fast custom build.",
-    "c2_tags": "Strategy · Web design · Development",
-    "c2_d": "Strategy, design and a ground-up build for Aldarb — shipped end to end by one team.",
+    "c1_tags": "Product design · SaaS · Development",
+    "c1_d": "An AI-assisted client-gallery platform for photographers — delivery, bookings, invoices and contracts in one bilingual product.",
+    "c2_tags": "Strategy · Editorial product · Development",
+    "c2_d": "An Arabic-first publishing platform where anyone can share articles, opinions and ideas openly.",
+    "c3_tags": "Brand · E-commerce · Development",
+    "c3_d": "A custom storefront for Rabea Hamoud — original paintings alongside printed and embroidered t-shirts and hoodies.",
+    "c4_tags": "Web design · Development",
+    "c4_d": "A custom portfolio for a video editor sharing his work and craft — built so the reel plays first and loads fast.",
     "next_t": "Your project could be next.",
     "detail_overview": "Overview",
     "detail_challenge": "The challenge",
@@ -377,5 +385,140 @@
     "err_details": "Tell us a little about the project.",
     "send_success": "Thanks — we'll be in touch within two working days.",
     "send_error": "Something went wrong. Please try again or email us."
+  },
+  "experience": {
+    "meta_title": "devora — full-stack web studio",
+    "preloader_init": "Initializing DEVORA OS",
+    "preloader_compiling": "compiling universe",
+    "tagline": "Full-stack web studio",
+    "os_version": "DEVORA OS v3.0",
+    "sound": "Sound",
+    "sound_on": "Sound on",
+    "sound_aria": "Toggle ambient sound",
+    "book_call": "Book a call",
+    "skip_link": "Skip to content",
+    "scroll_initiate": "Scroll to initiate",
+    "lat": "LAT",
+    "lon": "LON",
+    "lang_switch_aria": "Switch language",
+    "home_aria": "DEVORA — home",
+    "sections_aria": "Sections",
+    "rail": ["Origin", "Studio", "Build", "Services", "Work", "Contact"],
+    "act_labels": {
+      "hero": "ORIGIN",
+      "dive": "DECONSTRUCT",
+      "manifesto": "STUDIO",
+      "build": "BUILD",
+      "services": "SERVICES",
+      "cases": "WORK",
+      "stats": "WHY US",
+      "cta": "CONTACT"
+    },
+    "hero": {
+      "eyebrow": "dev + aura",
+      "h1a": "We design, build",
+      "h1b": "& launch websites.",
+      "sub": "One senior team for strategy, brand, design, code and growth — from the first call to launch day and everything after. Dev meets aura: websites with a presence you can feel.",
+      "cta1": "Start a project",
+      "cta2": "How we work"
+    },
+    "dive": {
+      "label": "diving into the core",
+      "title": "Deconstructing the core",
+      "out": "reassembling as systems",
+      "shards": ["Websites", "Brand systems", "Campaigns", "Dashboards", "AI agents", "Growth loops"]
+    },
+    "manifesto": {
+      "label": "dev + aura",
+      "h2a": "Dev meets aura.",
+      "h2b": "The rigor of engineering, and the ",
+      "h2c": "presence great design leaves behind.",
+      "principles": [
+        {"n": "01 / One team", "d": "Strategy, design and engineering under one roof. No handoffs, no finger-pointing, no lost momentum."},
+        {"n": "02 / Craft you own", "d": "Fast, custom builds on clean code — with a CMS your team can run long after launch. No lock-in."},
+        {"n": "03 / Senior, end to end", "d": "A small, senior team from the first call to launch day and beyond. Weeks, not quarters — done properly."}
+      ]
+    },
+    "build": {
+      "label_a": "build sequence — ",
+      "label_b": "brief → launch",
+      "viewport": "DEVORA://build.viewport",
+      "stage_word": "Stage",
+      "stages": [
+        {"t": "The idea", "d": "A single glowing spark of ambition. Everything begins here."},
+        {"t": "Wireframes", "d": "The spark becomes structure — architecture before aesthetics."},
+        {"t": "UI systems", "d": "Structure becomes a living design system, component by component."},
+        {"t": "A living website", "d": "Design becomes a real, fast, breathing product."},
+        {"t": "Traffic flows", "d": "The right people start arriving — engineered, not hoped for."},
+        {"t": "Analytics activate", "d": "Every signal captured. The system learns what works."},
+        {"t": "Marketing engines", "d": "Demand generation kicks in and never stops pulsing."},
+        {"t": "Revenue grows", "d": "Attention converts. The numbers begin to climb."},
+        {"t": "A living system", "d": "It all connects into one fast, living site that keeps working for you."}
+      ]
+    },
+    "services": {
+      "label_a": "service ecosystem — ",
+      "label_b": "12 orbital systems",
+      "system_word": "SYSTEM",
+      "online": "Online",
+      "traverse": "scroll to traverse the ecosystem",
+      "items": [
+        {"name": "Strategy", "tag": "We plan the whole thing before we build it.", "caps": ["Market intelligence", "Positioning", "Roadmapping", "Unit economics"]},
+        {"name": "Branding", "tag": "A brand with a presence you can feel.", "caps": ["Naming", "Visual identity", "Voice & tone", "Brand systems"]},
+        {"name": "Website Design", "tag": "Interfaces that feel inevitable.", "caps": ["UX architecture", "UI design", "Design systems", "Prototyping"]},
+        {"name": "Website Development", "tag": "Engineered to load fast and convert hard.", "caps": ["Next.js builds", "Headless CMS", "WebGL / 3D", "Performance"]},
+        {"name": "Automation", "tag": "Your business runs while you sleep.", "caps": ["Workflow automation", "Integrations", "Internal tools", "Ops systems"]},
+        {"name": "Marketing", "tag": "Demand on tap.", "caps": ["Paid acquisition", "Lifecycle", "Creative", "Attribution"]},
+        {"name": "SEO", "tag": "Get found in search.", "caps": ["Technical SEO", "Content SEO", "Authority", "Local"]},
+        {"name": "Content Creation", "tag": "Content that compounds.", "caps": ["Editorial", "Video", "Social", "Thought leadership"]},
+        {"name": "Growth Systems", "tag": "Loops, not campaigns.", "caps": ["Funnels", "Experimentation", "Retention", "Referral"]},
+        {"name": "AI Solutions", "tag": "AI that does real work.", "caps": ["Agents", "RAG systems", "Copilots", "Fine-tuning"]},
+        {"name": "Analytics", "tag": "See everything. Guess nothing.", "caps": ["Data pipelines", "Dashboards", "Modeling", "Insight"]},
+        {"name": "Scaling", "tag": "Built to grow with you.", "caps": ["Infrastructure", "Team", "Process", "Expansion"]}
+      ]
+    },
+    "cases": {
+      "label_a": "case files — ",
+      "label_b": "enter the dimensions",
+      "items": [
+        {"tag": "Dimension 01 · zawiya.studio", "name": "Zawiya", "metric": "SaaS · Photography", "meta": "Product, end to end", "desc": "An AI-assisted client-gallery platform for photographers — delivery, bookings, invoices and contracts in one bilingual product.", "tags": ["Product design", "SaaS", "Development"]},
+        {"tag": "Dimension 02 · aldarb.co", "name": "Aldarb", "metric": "Publishing platform", "meta": "Strategy → launch", "desc": "An Arabic-first publishing platform where anyone can share articles, opinions and ideas openly.", "tags": ["Strategy", "Editorial", "Development"]},
+        {"tag": "Dimension 03 · rabea.art", "name": "Rabea Hamoud", "metric": "Art · E-commerce", "meta": "Brand → storefront", "desc": "A custom storefront for an artist — original paintings alongside printed and embroidered t-shirts and hoodies.", "tags": ["Brand", "E-commerce", "Development"]},
+        {"tag": "Dimension 04 · kareem.video", "name": "Kareem", "metric": "Video editing", "meta": "Design → build", "desc": "A portfolio for a video editor sharing his work and craft — built so the reel plays first.", "tags": ["Web design", "Development"]}
+      ]
+    },
+    "stats": {
+      "label": "why devora",
+      "title": "Why teams choose devora.",
+      "items": [
+        {"value": "EN · AR", "label": "Bilingual & RTL-native"},
+        {"value": "End to end", "label": "Strategy to launch — and after"},
+        {"value": "One team", "label": "Senior, in-house, no handoffs"},
+        {"value": "You own it", "label": "No lock-in — your code, your CMS"}
+      ]
+    },
+    "cta": {
+      "label": "let's work together",
+      "h2a": "Let's build",
+      "h2b": "yours.",
+      "sub": "We take on a handful of projects at a time. Tell us where you're headed — we'll take it all the way to launch.",
+      "btn": "Start a project",
+      "meta": ["2-day reply", "Remote — MENA & worldwide", "EN & AR"]
+    },
+    "footer": {
+      "tag": "Full-stack web studio. From first sketch to live site — and everything after.",
+      "navigate": "Navigate",
+      "connect": "Connect",
+      "nav": [
+        {"k": "hero", "label": "Origin"},
+        {"k": "build", "label": "Build"},
+        {"k": "services", "label": "Services"},
+        {"k": "cases", "label": "Work"}
+      ],
+      "email_label": "Email",
+      "instagram": "Instagram",
+      "copy": "© 2026 devora — full-stack web studio",
+      "back": "Back to origin"
+    }
   }
 }

@@ -18,9 +18,9 @@ export default function CaseStudyRow({
 }) {
   const w = useTranslations('work');
   const data = CASES[index];
-  const num = index === 0 ? '01' : '02';
-  const tagsKey = index === 0 ? 'c1_tags' : 'c2_tags';
-  const descKey = index === 0 ? 'c1_d' : 'c2_d';
+  const num = String(index + 1).padStart(2, '0');
+  const tagsKey = `c${index + 1}_tags`;
+  const descKey = `c${index + 1}_d`;
 
   const image = (
     <Parallax speed={0.08} className="aspect-[4/3] rounded-[16px]">

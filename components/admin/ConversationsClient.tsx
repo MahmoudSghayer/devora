@@ -26,6 +26,7 @@ export default function ConversationsClient() {
   const [detail, setDetail] = useState<Detail | null>(null);
   const [reply, setReply] = useState('');
   const [busy, setBusy] = useState(false);
+  const [sweeping, setSweeping] = useState(false);
   const threadRef = useRef<HTMLDivElement>(null);
   const typingChannelRef = useRef<RealtimeChannel | null>(null);
   const lastTypingRef = useRef(0);
@@ -48,20 +49,41 @@ export default function ConversationsClient() {
     }
   }, []);
 
-  // Poll the list (Phase 4 replaces this with Supabase Realtime).
+  // Keep the latest fetchers in refs so the realtime subscriptions below don't
+  // tear down and re-subscribe every time the search text or filter changes.
+  const fetchListRef = useRef(fetchList);
+  const fetchDetailRef = useRef(fetchDetail);
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional load-on-mount
-    void fetchList();
-    const t = setInterval(() => void fetchList(), 6000);
-    return () => clearInterval(t);
+    fetchListRef.current = fetchList;
+    fetchDetailRef.current = fetchDetail;
+  });
+
+  // Load the list on mount and when the filter/search changes — debounced so
+  // typing in the search box doesn't fire a request per keystroke.
+  useEffect(() => {
+    const t = setTimeout(() => void fetchList(), 250);
+    return () => clearTimeout(t);
   }, [fetchList]);
 
-  // Poll the open thread.
+  // Fallback polling ONLY when realtime is unavailable; otherwise realtime
+  // drives updates and an interval would just add load.
   useEffect(() => {
-    if (!selectedId) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional load-on-open
+    if (isRealtimeConfigured()) return;
+    const t = setInterval(() => void fetchListRef.current(), 15000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Load the open thread when the selection changes; fallback-poll only when
+  // realtime is off.
+  useEffect(() => {
+    if (!selectedId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- clear on deselect
+      setDetail(null);
+      return;
+    }
     void fetchDetail(selectedId);
-    const t = setInterval(() => void fetchDetail(selectedId), 4000);
+    if (isRealtimeConfigured()) return;
+    const t = setInterval(() => void fetchDetailRef.current(selectedId), 8000);
     return () => clearInterval(t);
   }, [selectedId, fetchDetail]);
 
@@ -70,7 +92,8 @@ export default function ConversationsClient() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [detail?.messages.length]);
 
-  // Realtime — live inbox + open thread (postgres_changes, RLS-gated to admins).
+  // Realtime — live inbox (subscribe ONCE; the ref keeps the fetcher current so
+  // search/filter changes don't churn the subscription).
   useEffect(() => {
     if (!isRealtimeConfigured()) return;
     const supabase = createSupabaseBrowserClient();
@@ -79,14 +102,15 @@ export default function ConversationsClient() {
       .on(
         'postgres_changes',
         {event: '*', schema: 'public', table: 'conversations'},
-        () => void fetchList()
+        () => void fetchListRef.current()
       )
       .subscribe();
     return () => {
       void supabase.removeChannel(ch);
     };
-  }, [fetchList]);
+  }, []);
 
+  // Realtime — the open thread (re-subscribes only when the selection changes).
   useEffect(() => {
     if (!selectedId || !isRealtimeConfigured()) return;
     const supabase = createSupabaseBrowserClient();
@@ -100,13 +124,13 @@ export default function ConversationsClient() {
           table: 'messages',
           filter: `conversation_id=eq.${selectedId}`,
         },
-        () => void fetchDetail(selectedId)
+        () => void fetchDetailRef.current(selectedId)
       )
       .subscribe();
     return () => {
       void supabase.removeChannel(ch);
     };
-  }, [selectedId, fetchDetail]);
+  }, [selectedId]);
 
   // Broadcast channel to the visitor for the "agent is typing" indicator.
   useEffect(() => {
@@ -158,6 +182,19 @@ export default function ConversationsClient() {
     await act('message', {content: text});
   };
 
+  // Manual sweep — close conversations idle past the threshold right now instead
+  // of waiting for the daily cron. Hits the same endpoint the cron does; the
+  // logged-in admin session authorizes the call.
+  const closeStale = useCallback(async () => {
+    setSweeping(true);
+    try {
+      await fetch('/api/cron/close-stale');
+      await fetchList();
+    } finally {
+      setSweeping(false);
+    }
+  }, [fetchList]);
+
   const mode = detail?.conversation.mode;
 
   return (
@@ -185,6 +222,14 @@ export default function ConversationsClient() {
                 {s}
               </button>
             ))}
+            <button
+              onClick={() => void closeStale()}
+              disabled={sweeping}
+              title="Close conversations idle for 15+ minutes now"
+              className="ms-auto rounded-full px-2.5 py-1 text-[12px] text-muted hover:text-ink disabled:opacity-50"
+            >
+              {sweeping ? 'Sweeping…' : 'Close stale'}
+            </button>
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">

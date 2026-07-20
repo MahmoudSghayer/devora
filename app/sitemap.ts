@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { CASES } from '@/lib/site'
 
 const BASE_URL = 'https://devora.design'
 const LOCALES = ['en', 'ar'] as const
@@ -12,13 +13,15 @@ const ROUTES = [
   '/industries',
   '/faq',
   '/contact',
-  '/work/zawiya',
-  '/work/aldarb',
-] as const
+  ...CASES.map((c) => `/work/${c.slug}`),
+]
 
 type Locale = (typeof LOCALES)[number]
 
-const urlFor = (locale: Locale, route: string) => `${BASE_URL}/${locale}${route}`
+// Arabic is the default locale (as-needed prefix) and serves unprefixed;
+// English keeps its explicit '/en' prefix.
+const urlFor = (locale: Locale, route: string) =>
+  locale === 'ar' ? `${BASE_URL}${route || '/'}` : `${BASE_URL}/en${route}`
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
@@ -33,6 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           en: urlFor('en', route),
           ar: urlFor('ar', route),
+          'x-default': urlFor('ar', route),
         },
       },
     }))

@@ -32,7 +32,7 @@ export default function Header() {
       initial={false}
       animate={{y: hidden ? '-105%' : '0%'}}
       transition={{duration: 0.4, ease: EASE}}
-      className="sticky top-0 z-50 border-b border-border bg-[rgba(15,15,15,0.85)] backdrop-blur-[12px]"
+      className="sticky top-0 z-50 border-b border-border bg-[rgba(5,6,9,0.82)] backdrop-blur-[12px]"
     >
       <Container className="flex h-[76px] items-center gap-6">
         <Logo />
@@ -43,7 +43,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`font-display text-sm font-medium transition-colors ${
+                className={`font-mono text-[11px] uppercase tracking-[0.18em] transition-colors ${
                   isActive(item.href)
                     ? 'text-amber'
                     : 'text-muted-2 hover:text-ink'
@@ -79,7 +79,7 @@ export default function Header() {
       </Container>
 
       {open && (
-        <nav className="border-t border-border bg-[rgba(15,15,15,0.97)] backdrop-blur-[12px] nav:hidden">
+        <nav className="border-t border-border bg-[rgba(5,6,9,0.97)] backdrop-blur-[12px] nav:hidden">
           <Container className="flex flex-col py-2">
             {NAV.map((item) => (
               <Link
