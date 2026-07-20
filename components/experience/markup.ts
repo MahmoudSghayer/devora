@@ -73,10 +73,21 @@ const esc = (s: string) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // Per-case visual identity (accent, glow, ghost-number side, live domain, screenshot).
-// Two entries = two real case studies (see messages `experience.cases.items`).
-const CASE_META = [
+// One entry per real case study — keep parallel to messages `experience.cases.items`
+// and to CASE_COLORS in lib/experience/devora-universe.ts.
+// `image` may be omitted when a site has no screenshot yet; a labelled placeholder
+// renders instead (same idea as components/ui/SiteImage).
+const CASE_META: {
+  c: string;
+  side: 'left' | 'right';
+  pos: string;
+  domain: string;
+  image?: string;
+}[] = [
   {c: '#F2A84B', side: 'left', pos: '18% 45%', domain: 'zawiya.studio', image: '/images/zawiya.png'},
   {c: '#6FD3FF', side: 'right', pos: '82% 55%', domain: 'aldarb.co', image: '/images/aldarb.png'},
+  {c: '#FF6A9C', side: 'left', pos: '22% 50%', domain: 'rabea.art', image: '/images/rabea.png'},
+  {c: '#9B8CFF', side: 'right', pos: '78% 50%', domain: 'kareem.video'},
 ];
 
 function hexA(hex: string, a: number) {
@@ -87,7 +98,7 @@ function hexA(hex: string, a: number) {
 const monoLabel = (extra = '') =>
   `font-family:${FM};font-size:11px;letter-spacing:.36em;text-transform:uppercase;${extra}`;
 
-function caseWorld(i: number, item: ExperienceCopy['cases']['items'][number]) {
+function caseWorld(i: number, item: ExperienceCopy['cases']['items'][number], n: number) {
   const m = CASE_META[i];
   const num = String(i + 1).padStart(2, '0');
   const ghost = `<div data-case-ghost aria-hidden="true" style="position:absolute;${m.side === 'left' ? 'left' : 'right'}:clamp(24px,6vw,80px);top:12vh;font-family:${FD};font-weight:700;font-size:clamp(80px,14vw,200px);line-height:.8;color:rgba(255,255,255,.035);pointer-events:none;user-select:none;">${num}</div>`;
@@ -102,13 +113,17 @@ function caseWorld(i: number, item: ExperienceCopy['cases']['items'][number]) {
     <div style="position:relative;border-radius:14px;overflow:hidden;border:1px solid ${hexA(m.c, 0.34)};box-shadow:0 40px 110px rgba(0,0,0,.6),0 0 70px ${hexA(m.c, 0.16)};background:#0a0c12;">
       <div style="height:34px;display:flex;align-items:center;gap:7px;padding:0 13px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);"><span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;"></span><span style="width:9px;height:9px;border-radius:50%;background:#febc2e;"></span><span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span><span style="flex:1;text-align:center;font-family:${FM};font-size:10px;letter-spacing:.12em;color:rgba(245,246,248,.42);" dir="ltr">${m.domain}</span></div>
       <div style="aspect-ratio:16/10;position:relative;background:linear-gradient(160deg, #0c0e15, #070810);">
-        <img src="${m.image}" alt="${esc(item.name)} — ${m.domain}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+        ${
+          m.image
+            ? `<img src="${m.image}" alt="${esc(item.name)} — ${m.domain}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">`
+            : `<div aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:${FM};font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,246,248,.32);" dir="ltr">${m.domain}</div>`
+        }
         <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 0%, ${hexA(m.c, 0.14)}, transparent 55%);"></div>
       </div>
     </div>
   </div>`;
   const inner = i % 2 === 0 ? textBlock + imageBlock : imageBlock + textBlock;
-  return `<div data-world="${num}" data-screen-label="Dimension ${num} — ${esc(item.name)}" style="width:50%;height:100%;position:relative;display:flex;align-items:center;padding:0 clamp(40px,8vw,130px);gap:clamp(28px,4vw,64px);">
+  return `<div data-world="${num}" data-screen-label="Dimension ${num} — ${esc(item.name)}" style="width:${100 / n}%;height:100%;position:relative;display:flex;align-items:center;padding:0 clamp(40px,8vw,130px);gap:clamp(28px,4vw,64px);">
     <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(70% 90% at ${m.pos}, ${hexA(m.c, 0.16)}, transparent 62%);pointer-events:none;"></div>
     ${ghost}
     ${inner}
@@ -331,16 +346,20 @@ export function buildExperienceMarkup(c: ExperienceCopy, o: MarkupOptions): stri
     </section>
 
     <!-- ACT 06 — CASES -->
-    <section id="act-cases" data-screen-label="Act 06 — Case study dimensions" style="position:relative;height:240vh;">
+    <section id="act-cases" data-screen-label="Act 06 — Case study dimensions" style="position:relative;height:${c.cases.items.length * 120}vh;">
       <div style="position:sticky;top:0;height:100vh;overflow:hidden;">
         <div data-case-heading style="position:absolute;z-index:3;top:72px;inset-inline-start:clamp(24px,5vw,80px);${monoLabel('letter-spacing:.36em;color:rgba(245,246,248,.6);')}">// ${esc(c.cases.label_a)}<span style="color:var(--accent,#F2A84B);">${esc(c.cases.label_b)}</span></div>
         <div data-case-dots aria-hidden="true" style="position:absolute;z-index:3;top:72px;inset-inline-end:clamp(24px,5vw,80px);display:flex;gap:8px;">
-          <span data-case-dot="0" style="width:22px;height:3px;border-radius:2px;background:#fff;transition:all .4s;"></span>
-          <span data-case-dot="1" style="width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:all .4s;"></span>
+          ${c.cases.items
+            .map(
+              (_, i) =>
+                `<span data-case-dot="${i}" style="width:22px;height:3px;border-radius:2px;background:${i === 0 ? '#fff' : 'rgba(255,255,255,.25)'};transition:all .4s;"></span>`
+            )
+            .join('\n          ')}
         </div>
         <div data-case-flash aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;mix-blend-mode:screen;background:radial-gradient(60% 60% at 50% 50%, rgba(242,168,75,.33), transparent 70%);transition:opacity .7s ease;"></div>
-        <div data-case-track style="position:absolute;top:0;left:0;height:100%;width:200%;display:flex;will-change:transform;">
-          ${c.cases.items.map((it, i) => caseWorld(i, it)).join('\n          ')}
+        <div data-case-track style="position:absolute;top:0;left:0;height:100%;width:${c.cases.items.length * 100}%;display:flex;will-change:transform;">
+          ${c.cases.items.map((it, i) => caseWorld(i, it, c.cases.items.length)).join('\n          ')}
         </div>
       </div>
     </section>

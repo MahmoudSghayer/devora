@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {alternates} from '@/lib/seo';
+import {CASES} from '@/lib/site';
 import PageIntro from '@/components/ui/PageIntro';
 import CaseStudyRow from '@/components/work/CaseStudyRow';
 import AmberBand from '@/components/ui/AmberBand';
@@ -41,8 +42,9 @@ function WorkContent() {
   return (
     <>
       <PageIntro label={w('wk_label')} title={w('wk_title')} sub={w('wk_sub')} />
-      <CaseStudyRow index={0} reverse={false} />
-      <CaseStudyRow index={1} reverse={true} />
+      {CASES.map((c, i) => (
+        <CaseStudyRow key={c.slug} index={i} reverse={i % 2 === 1} />
+      ))}
       <AmberBand title={w('next_t')} buttonLabel={c('nav_cta')} centered />
       <Marquee />
     </>

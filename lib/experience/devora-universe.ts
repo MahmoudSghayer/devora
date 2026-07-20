@@ -38,11 +38,13 @@ const SERVICE_COLORS = [
   '#F2A84B', '#FF8A3C', '#FFC46B', '#6FD3FF', '#7CF0C6', '#FF6A9C',
   '#9B8CFF', '#FFD36B', '#37E0A0', '#62E0FF', '#B0A0FF', '#FFB24D',
 ];
-// Two entries — one 3D scene tint per real case (gold, cyan). Keep parallel to
-// `updateCasesDOM` colors and markup `CASE_META`.
+// One 3D scene tint per real case (gold, cyan, pink, violet). Keep parallel to
+// `CASE_HEX` below and markup `CASE_META`.
 const CASE_COLORS = [
-  [1.0, 0.72, 0.4], [0.46, 0.84, 1.0],
+  [1.0, 0.72, 0.4], [0.46, 0.84, 1.0], [1.0, 0.42, 0.61], [0.61, 0.55, 1.0],
 ];
+// Same accents as hex, for the DOM dots/flash.
+const CASE_HEX = ['#F2A84B', '#6FD3FF', '#FF6A9C', '#9B8CFF'];
 
 export class DevoraUniverse {
   root: HTMLElement;
@@ -831,16 +833,18 @@ export class DevoraUniverse {
   updateCasesDOM() {
     if (this.active !== 'cases') return;
     const p = this.acts.cases || 0;
-    const N = 2;
-    const colors = ['#F2A84B', '#6FD3FF'];
+    // Derived from the rendered dots so adding a case needs no change here.
+    const dots = this.qa('[data-case-dot]');
+    const N = dots.length || 1;
+    const colors = CASE_HEX;
     const track = this.q('[data-case-track]');
     const rtl = getComputedStyle(this.root).direction === 'rtl';
     if (track) track.style.transform = `translateX(${(rtl ? 1 : -1) * (p * ((N - 1) / N) * 100)}%)`;
     const focus = this.clamp(Math.round(p * (N - 1)), 0, N - 1);
-    this.qa('[data-case-dot]').forEach((d) => {
+    dots.forEach((d) => {
       const i = +d.getAttribute('data-case-dot')!;
       const on = i === focus;
-      d.style.background = on ? colors[i] : 'rgba(255,255,255,.25)';
+      d.style.background = on ? colors[i] || '#F2A84B' : 'rgba(255,255,255,.25)';
       d.style.width = on ? '34px' : '22px';
       d.style.boxShadow = on ? `0 0 10px ${colors[i]}` : 'none';
     });

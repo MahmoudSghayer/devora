@@ -6,10 +6,13 @@ import Parallax from '@/components/motion/Parallax';
 import SiteImage from '@/components/ui/SiteImage';
 import {CASES} from '@/lib/site';
 
-const CARDS = [
-  {...CASES[0], tags: 'w1_tags', d: 'w1_d'},
-  {...CASES[1], tags: 'w2_tags', d: 'w2_d'},
-] as const;
+// Every case, short-form. The auto-fit grid below reflows as cases are added;
+// each needs a matching w{n}_d / w{n}_tags pair in the home namespace.
+const CARDS = CASES.map((c, i) => ({
+  ...c,
+  tags: `w${i + 1}_tags`,
+  d: `w${i + 1}_d`,
+}));
 
 export default function SelectedWork() {
   const h = useTranslations('home');

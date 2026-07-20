@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { CASES } from '@/lib/site'
 
 const BASE_URL = 'https://devora.design'
 const LOCALES = ['en', 'ar'] as const
@@ -12,9 +13,8 @@ const ROUTES = [
   '/industries',
   '/faq',
   '/contact',
-  '/work/zawiya',
-  '/work/aldarb',
-] as const
+  ...CASES.map((c) => `/work/${c.slug}`),
+]
 
 type Locale = (typeof LOCALES)[number]
 
