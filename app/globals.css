@@ -4,7 +4,10 @@
    Values are verbatim from the design handoff. Custom color names generate
    bg, text and border color utilities; --breakpoint-nav generates the nav
    and max-nav variants (the only responsive breakpoint used, never md/lg).
-   No shadows: depth comes from borders, surface shifts, hover lifts, motion. */
+   No shadows: depth comes from borders, translucent glass layers, radial light
+   (the .spot / .aura / .glass utilities below), hover lifts and motion.
+   v2 additions: cool "signal" accent (automation / AI / data visuals only),
+   pillar tints, glass surfaces, z-index + spacing tokens. See docs/design-system.md. */
 @theme {
   /* the single responsive breakpoint */
   --breakpoint-nav: 920px;
@@ -39,6 +42,23 @@
   --color-on-amber: #0a0805;
   --color-dark-btn-hi: #241a0e;
 
+  /* signal — cool accent, reserved for automation / AI / data visuals so amber
+     stays the single brand + CTA colour */
+  --color-signal: #5cc8ff;
+  --color-signal-hi: #8ddcff;
+  --color-signal-lo: #0e2431;
+  /* pillar hues: subtle tints only (never full-bleed fills) */
+  --color-pillar-web: #f2a84b;
+  --color-pillar-auto: #5cc8ff;
+  --color-pillar-soft: #a99bff;
+  --color-positive: #6fd9a0;
+
+  /* glass surfaces (pair with backdrop-blur via .glass) */
+  --color-glass: rgb(18 20 28 / 0.55);
+  --color-glass-hi: rgb(28 31 42 / 0.62);
+  --color-glass-border: rgb(255 255 255 / 0.09);
+  --color-hairline: rgb(255 255 255 / 0.06);
+
   /* fonts (next/font vars set on <html>; Arabic (Cairo) fallback in the stack) */
   --font-display: var(--font-space-grotesk), var(--font-arabic), sans-serif;
   --font-mono: var(--font-space-mono), var(--font-arabic), monospace;
@@ -46,8 +66,10 @@
   /* radii */
   --radius-pill: 999px;
   --radius-card: 18px;
+  --radius-panel: 28px;
   --radius-img: 16px;
   --radius-input: 10px;
+  --radius-chip: 8px;
 
   /* fluid heading sizes */
   --text-h1: clamp(40px, 8vw, 128px);
@@ -55,6 +77,29 @@
   --text-h2: clamp(28px, 4vw, 56px);
   --text-cta: clamp(38px, 6.5vw, 96px);
   --text-case: clamp(32px, 3.4vw, 48px);
+  --text-display: clamp(44px, 9.5vw, 148px);
+  --text-h3: clamp(22px, 2.3vw, 32px);
+  --text-lead: clamp(17px, 1.5vw, 21px);
+  --text-stat: clamp(40px, 6vw, 88px);
+
+  /* easing (mirrors lib/motion.ts EASE) */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* z-index scale — never use raw z-[n] in components. */
+:root {
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 30;
+  --z-header: 50;
+  --z-sheet: 60;
+  --z-overlay: 80;
+  --z-chat: 90;
+  --z-toast: 100;
+  --z-cursor: 110;
+  /* vertical rhythm between page sections */
+  --space-section: clamp(72px, 9vw, 144px);
+  --space-block: clamp(32px, 4vw, 64px);
 }
 
 @layer base {
@@ -177,6 +222,124 @@
     50% { transform: translateX(-6px); }
   }
 }
+
+/* ══ v2 surface + light utilities ════════════════════════════════════════ */
+@layer utilities {
+  .py-section { padding-block: var(--space-section); }
+  .gap-block { gap: var(--space-block); }
+
+  /* Translucent glass panel: blur + hairline border, no shadow. */
+  .glass {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    -webkit-backdrop-filter: blur(14px) saturate(1.25);
+    backdrop-filter: blur(14px) saturate(1.25);
+  }
+  .glass-hi {
+    background: var(--color-glass-hi);
+    border: 1px solid var(--color-glass-border);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+  }
+
+  /* Ambient radial "light" behind a block: set --aura-color (defaults amber).
+     Replaces ad-hoc box-shadow glows. */
+  .aura { position: relative; isolation: isolate; }
+  .aura::before {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto;
+    height: 70%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(60% 100% at 50% 0%,
+      color-mix(in oklab, var(--aura-color, var(--color-amber)) 22%, transparent), transparent 70%);
+  }
+  .aura-signal { --aura-color: var(--color-signal); }
+  .aura-soft { --aura-color: var(--color-pillar-soft); }
+
+  /* Cursor-following spotlight on a surface + its border. <Spotlight> (or any
+     pointermove handler) writes --mx / --my in px. Hidden until hover and
+     without a fine pointer it simply never lights. */
+  .spot { position: relative; isolation: isolate; }
+  .spot::before,
+  .spot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-out-quint);
+  }
+  .spot::before {
+    z-index: -1;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--spot-color, var(--color-amber)) 16%, transparent), transparent 62%);
+  }
+  .spot::after {
+    padding: 1px;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--spot-color, var(--color-amber)) 70%, transparent), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .spot:hover::before,
+    .spot:hover::after { opacity: 1; }
+  }
+  .spot-signal { --spot-color: var(--color-signal); }
+  .spot-soft { --spot-color: var(--color-pillar-soft); }
+
+  /* Specular highlight that rides with <TiltCard> (--hx / --hy in %). */
+  .tilt-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(240px circle at var(--hx, 50%) var(--hy, 0%),
+      rgb(255 255 255 / 0.10), transparent 60%);
+    opacity: var(--sheen, 0);
+    transition: opacity 0.3s ease;
+  }
+
+  /* Tabular numerals for counters / prices. */
+  .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  /* Soft vertical fade used at the edge of scrolling regions. */
+  .fade-y {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  }
+}
+
+/* Page transitions (React <ViewTransition> via experimental.viewTransition). */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(.page-out) { animation: pageOut 0.22s ease both; }
+  ::view-transition-new(.page-in) { animation: pageIn 0.5s var(--ease-out-quint) both; }
+  @keyframes pageOut { to { opacity: 0; transform: translateY(-6px); } }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(14px); } }
+}
+
+/* Visible keyboard focus everywhere (components may override the colour). */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+/* Honour reduced motion for any remaining transitions/animations. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Lenis (smooth scroll) — required rules. */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 
 /* ══ DEVORA OS — homepage WebGL experience ═══════════════════════════════
    The immersive homepage lives inside [data-experience]. Its inline styles
@@ -340,3 +503,11 @@
   [data-experience] [data-case-heading],
   [data-experience] [data-case-dots] { display: none !important; }
 }
+
+/* KineticHeadline entrance: transform + opacity from .25, never fully hidden
+   (keeps the headline an immediate LCP candidate). */
+@media (prefers-reduced-motion: no-preference) {
+  .kinetic-word { animation: kRise 0.7s var(--ease-out-quint) both; }
+  @keyframes kRise { from { opacity: 0.25; transform: translateY(0.32em); } }
+}
+.kinetic [data-k] { transition: font-weight 0.12s linear; }

@@ -1,4 +1,5 @@
-import {useTranslations} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
+import {pricingParams} from '@/lib/pricing/config';
 import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
 import {Link} from '@/i18n/navigation';
@@ -40,6 +41,7 @@ const MODELS = [
 
 export default function PricingModels() {
   const p = useTranslations('pricing');
+  const params = pricingParams(useLocale());
 
   return (
     <section>
@@ -75,10 +77,10 @@ export default function PricingModels() {
                 <h3 className="text-2xl font-semibold">{p(pk.n)}</h3>
                 <p className="mt-3 text-[15px] text-muted">{p(pk.d)}</p>
                 <p className="mt-5 font-mono text-[22px] text-amber" dir="ltr">
-                  {p(pk.p)}
+                  {p(pk.p, params)}
                 </p>
                 <p className="mt-1 font-mono text-[13px] text-muted-2" dir="ltr">
-                  {p(pk.mo)}
+                  {p(pk.mo, params)}
                 </p>
                 <ul className="mt-6 flex flex-1 flex-col gap-3">
                   {pk.feats.map((f) => (

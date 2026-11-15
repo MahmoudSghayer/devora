@@ -2,11 +2,11 @@ import {z} from 'zod';
 
 // Server-side schema (used by the API route).
 export const contactSchema = z.object({
-  name: z.string().trim().min(1),
-  email: z.string().trim().email(),
-  company: z.string().trim().optional(),
-  budget: z.string().trim().optional(),
-  details: z.string().trim().min(1),
+  name: z.string().trim().min(1).max(120),
+  email: z.string().trim().max(254).email(),
+  company: z.string().trim().max(160).optional(),
+  budget: z.string().trim().max(120).optional(),
+  details: z.string().trim().min(1).max(4000),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
@@ -102,3 +102,10 @@ export function validateLead(values: {
   if (!values.request?.trim()) errors.request = 'err_request';
   return errors;
 }
+
+// ── Admin: lead status ──────────────────────────────────────────────────────
+
+export const LEAD_STATUSES = ['new', 'qualified', 'contacted', 'won', 'lost'] as const;
+export const leadStatusSchema = z.strictObject({status: z.enum(LEAD_STATUSES)});
+export const leadIdSchema = z.uuid();
+export type LeadStatus = (typeof LEAD_STATUSES)[number];

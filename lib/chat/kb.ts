@@ -67,7 +67,7 @@ export function compileKbDocuments(locale: ChatLocale): KbDocument[] {
 
   // Every content namespace from the message dictionary for this locale.
   // Skip the chatbot's own UI copy — it's not company knowledge.
-  const SKIP_NS = new Set(['chat']);
+  const SKIP_NS = new Set(['chat', 'estimator', 'roi']);
   const messages = MESSAGES[locale];
   for (const [ns, val] of Object.entries(messages)) {
     if (SKIP_NS.has(ns)) continue;

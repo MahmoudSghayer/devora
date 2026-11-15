@@ -2,7 +2,8 @@
 
 import type {ReactNode} from 'react';
 import {useState} from 'react';
-import {useTranslations} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
+import {budgetParams} from '@/lib/pricing/budget';
 import Magnetic from '@/components/motion/Magnetic';
 import {validateContact, type ContactErrorKey} from '@/lib/validation';
 
@@ -35,6 +36,7 @@ function Field({
 
 export default function ContactForm() {
   const t = useTranslations('contact');
+  const bp = budgetParams(useLocale());
   const [errors, setErrors] = useState<
     Partial<Record<'name' | 'email' | 'details', ContactErrorKey>>
   >({});
@@ -86,8 +88,8 @@ export default function ContactForm() {
       <Field label={t('f_budget')}>
         <select name="budget" className={inputCls}>
           {budgetOptions.map((o) => (
-            <option key={o} value={t(o)}>
-              {t(o)}
+            <option key={o} value={t(o, bp)}>
+              {t(o, bp)}
             </option>
           ))}
         </select>

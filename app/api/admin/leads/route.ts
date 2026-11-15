@@ -9,7 +9,16 @@ export async function GET(request: Request) {
   if (!admin) {
     return NextResponse.json({ok: false, error: 'unauthorized'}, {status: 401});
   }
-  const status = new URL(request.url).searchParams.get('status') ?? undefined;
-  const leads = await listLeads(status);
-  return NextResponse.json({ok: true, leads});
+  const sp = new URL(request.url).searchParams;
+  try {
+    const leads = await listLeads({
+      status: sp.get('status') ?? undefined,
+      source: sp.get('source') ?? undefined,
+      q: sp.get('q') ?? undefined,
+    });
+    return NextResponse.json({ok: true, leads});
+  } catch (err) {
+    console.error('[admin/leads] list failed:', err);
+    return NextResponse.json({ok: false, error: 'query_failed'}, {status: 500});
+  }
 }

@@ -1,11 +1,12 @@
 import type {Metadata} from 'next';
-import {useTranslations} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
 import Container from '@/components/ui/Container';
 import PricingModels from '@/components/pricing/PricingModels';
 import Included from '@/components/pricing/Included';
+import {pricingParams} from '@/lib/pricing/config';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import AmberBand from '@/components/ui/AmberBand';
 import Marquee from '@/components/chrome/Marquee';
@@ -43,9 +44,10 @@ function PricingContent() {
   const f = useTranslations('faq');
   const c = useTranslations('common');
 
+  const params = pricingParams(useLocale());
   const items = [
-    {q: f('q5'), a: f('a5')},
-    {q: f('q6'), a: f('a6')},
+    {q: f('q5'), a: f('a5', params)},
+    {q: f('q6'), a: f('a6', params)},
     {q: f('q7'), a: f('a7')},
   ];
 

@@ -2,6 +2,11 @@
 // Run the app first (npm run dev OR npm start), then: npm run test:e2e
 // Requires a Chromium browser: npx playwright install chromium
 import {chromium} from 'playwright';
+// Price strings come from the single pricing source (Node strips the TS types).
+import {TIERS, formatMoney} from '../lib/pricing/config.ts';
+
+const LAUNCH_PRICE = formatMoney(TIERS.launch.from, 'en').replace(/[$.*+?^${}()|[\]\\]/g, '\\$&');
+const PRICE_RE = new RegExp(`${LAUNCH_PRICE}|launch|studio|growth`, 'i');
 
 const BASE = process.env.BASE_URL || 'http://localhost:3000';
 let failures = 0;
@@ -25,14 +30,15 @@ try {
   );
   await page.click('button[aria-label="Send message"]');
   await page.waitForFunction(
-    () => {
+    (src) => {
       const b = [...document.querySelectorAll('[role="dialog"] .whitespace-pre-wrap')];
       // Wait until the assistant reply has actually streamed the grounded facts.
       return (
         b.length >= 3 &&
-        /\$1,650|launch|studio|growth/i.test(b[b.length - 1].textContent || '')
+        new RegExp(src, 'i').test(b[b.length - 1].textContent || '')
       );
     },
+    PRICE_RE.source,
     {timeout: 20000}
   );
   const reply = await page.evaluate(
@@ -40,14 +46,14 @@ try {
       [...document.querySelectorAll('[role="dialog"] .whitespace-pre-wrap')].pop()
         ?.textContent || ''
   );
-  check('EN widget streams a grounded reply', /\$1,650|launch|studio|growth/i.test(reply));
+  check('EN widget streams a grounded reply', PRICE_RE.test(reply));
 
   // 2. Arabic page is RTL and the launcher is localized.
   await page.goto(`${BASE}/`, {waitUntil: 'domcontentloaded'});
   check('AR page is RTL', (await page.evaluate(() => document.documentElement.dir)) === 'rtl');
   check(
     'AR launcher is localized',
-    (await page.locator('button[aria-label="افتح مساعد ديفورا"]').count()) > 0
+    (await page.locator('button[aria-label="افتح مساعد devora"]').count()) > 0
   );
 
   // 3. Admin is gated: /admin redirects to the login form.

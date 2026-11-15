@@ -3,15 +3,15 @@ import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
 
 const STEPS = [
-  {n: '01', t: 'p1_t', d: 'p1_d'},
-  {n: '02', t: 'p2_t', d: 'p2_d'},
-  {n: '03', t: 'p3_t', d: 'p3_d'},
-  {n: '04', t: 'p4_t', d: 'p4_d'},
-  {n: '05', t: 'p5_t', d: 'p5_d'},
+  {n: '01', t: 's1_t', d: 's1_d'},
+  {n: '02', t: 's2_t', d: 's2_d'},
+  {n: '03', t: 's3_t', d: 's3_d'},
+  {n: '04', t: 's4_t', d: 's4_d'},
+  {n: '05', t: 's5_t', d: 's5_d'},
 ] as const;
 
 export default function ProcessSteps() {
-  const s = useTranslations('services');
+  const s = useTranslations('process');
 
   return (
     <section className="bg-bg-alt">

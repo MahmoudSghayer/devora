@@ -1,9 +1,9 @@
 import {Space_Grotesk, Space_Mono, Cairo} from 'next/font/google';
 
 // Latin display + body.
+// Variable font (300–700): lets KineticHeadline animate weight smoothly.
 export const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
   variable: '--font-space-grotesk',
   display: 'swap',
 });

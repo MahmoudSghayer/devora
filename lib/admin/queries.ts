@@ -60,18 +60,24 @@ export async function getConversationDetail(id: string): Promise<{
   if (!conversation) return null;
 
   const messages = await getMessages(id, 500);
-  const {data: lead} = await supabase
-    .from('leads')
-    .select('*')
-    .eq('conversation_id', id)
-    .order('created_at', {ascending: false})
-    .maybeSingle();
-  const {data: support} = await supabase
-    .from('support_requests')
-    .select('*')
-    .eq('conversation_id', id)
-    .order('created_at', {ascending: false})
-    .maybeSingle();
+  // A conversation can have several leads/requests: take the newest (never
+  // .maybeSingle(), which errors on 2+ rows and silently yields null).
+  const [{data: leadRows}, {data: supportRows}] = await Promise.all([
+    supabase
+      .from('leads')
+      .select('*')
+      .eq('conversation_id', id)
+      .order('created_at', {ascending: false})
+      .limit(1),
+    supabase
+      .from('support_requests')
+      .select('*')
+      .eq('conversation_id', id)
+      .order('created_at', {ascending: false})
+      .limit(1),
+  ]);
+  const lead = leadRows?.[0] ?? null;
+  const support = supportRows?.[0] ?? null;
 
   return {
     conversation: conversation as AdminConversationRow,
@@ -165,23 +171,52 @@ export async function setOnline(online: boolean, agentId: string): Promise<void>
     .eq('id', 1);
 }
 
-export async function listLeads(status?: string): Promise<Record<string, unknown>[]> {
+export const LEAD_SOURCE_FILTERS = [
+  'chat',
+  'contact',
+  'website_estimate',
+  'automation_roi',
+] as const;
+
+// PostgREST `or()` filters are comma/paren-delimited: strip anything that
+// could break out of the pattern.
+const searchSafe = (q: string) => q.replace(/[,()%*\\"'`]/g, ' ').trim().slice(0, 80);
+
+export async function listLeads(
+  opts: {status?: string; source?: string; q?: string} | string = {}
+): Promise<Record<string, unknown>[]> {
   if (!isSupabaseConfigured()) return [];
+  const o = typeof opts === 'string' ? {status: opts} : opts;
   const supabase = createSupabaseServiceClient();
   let query = supabase
     .from('leads')
     .select('*')
     .order('created_at', {ascending: false})
     .limit(200);
-  if (status && status !== 'all') query = query.eq('status', status);
-  const {data} = await query;
+  if (o.status && o.status !== 'all') query = query.eq('status', o.status);
+  if (o.source && o.source !== 'all') query = query.eq('source', o.source);
+  const q = o.q ? searchSafe(o.q) : '';
+  if (q) {
+    query = query.or(
+      ['name', 'email', 'company', 'lead_ref'].map((c) => `${c}.ilike.%${q}%`).join(',')
+    );
+  }
+  const {data, error} = await query;
+  if (error) throw new Error(`listLeads failed: ${error.message}`);
   return (data ?? []) as Record<string, unknown>[];
 }
 
-export async function updateLeadStatus(id: string, status: string): Promise<void> {
-  if (!isSupabaseConfigured()) return;
+/** Returns false when no lead has that id. Throws on database errors. */
+export async function updateLeadStatus(id: string, status: string): Promise<boolean> {
+  if (!isSupabaseConfigured()) return false;
   const supabase = createSupabaseServiceClient();
-  await supabase.from('leads').update({status}).eq('id', id);
+  const {data, error} = await supabase
+    .from('leads')
+    .update({status})
+    .eq('id', id)
+    .select('id');
+  if (error) throw new Error(`updateLeadStatus failed: ${error.message}`);
+  return (data?.length ?? 0) > 0;
 }
 
 export async function listSupport(
@@ -212,6 +247,7 @@ export async function dashboardStats(): Promise<{
   conversations: number;
   activeConversations: number;
   leads: number;
+  leadsBySource: Record<string, number>;
   openSupport: number;
   online: boolean;
 }> {
@@ -220,13 +256,14 @@ export async function dashboardStats(): Promise<{
       conversations: 0,
       activeConversations: 0,
       leads: 0,
+      leadsBySource: {},
       openSupport: 0,
       online: false,
     };
   }
   const supabase = createSupabaseServiceClient();
 
-  const [conv, active, leadsRes, support, settings] = await Promise.all([
+  const [conv, active, leadsRes, support, settings, ...bySource] = await Promise.all([
     supabase.from('conversations').select('id', {count: 'exact', head: true}),
     supabase
       .from('conversations')
@@ -238,12 +275,24 @@ export async function dashboardStats(): Promise<{
       .select('id', {count: 'exact', head: true})
       .eq('status', 'open'),
     getSettings(),
+    ...LEAD_SOURCE_FILTERS.map((src) =>
+      supabase
+        .from('leads')
+        .select('id', {count: 'exact', head: true})
+        .eq('source', src)
+    ),
   ]);
+
+  const leadsBySource: Record<string, number> = {};
+  LEAD_SOURCE_FILTERS.forEach((src, i) => {
+    leadsBySource[src] = bySource[i]?.count ?? 0;
+  });
 
   return {
     conversations: conv.count ?? 0,
     activeConversations: active.count ?? 0,
     leads: leadsRes.count ?? 0,
+    leadsBySource,
     openSupport: support.count ?? 0,
     online: settings.representative_online,
   };

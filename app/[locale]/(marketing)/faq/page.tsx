@@ -1,9 +1,10 @@
 import type {Metadata} from 'next';
-import {useTranslations} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
 import Container from '@/components/ui/Container';
+import {pricingParams} from '@/lib/pricing/config';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import AmberBand from '@/components/ui/AmberBand';
 import Marquee from '@/components/chrome/Marquee';
@@ -45,6 +46,8 @@ export default async function FaqPage({
 }
 
 function FaqContent() {
+  const locale = useLocale();
+  const params = pricingParams(locale);
   const f = useTranslations('faq');
   const c = useTranslations('common');
   return (
@@ -59,7 +62,7 @@ function FaqContent() {
               </p>
               <div className="mt-6">
                 <FAQAccordion
-                  items={g.pairs.map(([q, a]) => ({q: f(q), a: f(a)}))}
+                  items={g.pairs.map(([q, a]) => ({q: f(q), a: f(a, params)}))}
                 />
               </div>
             </div>

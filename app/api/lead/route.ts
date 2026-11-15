@@ -1,10 +1,13 @@
-import {NextResponse} from 'next/server';
+import {NextResponse, after} from 'next/server';
 import {leadSchema} from '@/lib/validation';
 import {getConversation, getMessages, insertLead} from '@/lib/chat/store';
 import {summarize} from '@/lib/chat/summarize';
 import {leadEmail} from '@/lib/email/templates';
-import {sendMail} from '@/lib/email/send';
-import {isSupabaseConfigured} from '@/lib/supabase/service';
+import {isEmailConfigured, sendMail} from '@/lib/email/send';
+import {
+  createSupabaseServiceClient,
+  isSupabaseConfigured,
+} from '@/lib/supabase/service';
 import {logEvent} from '@/lib/analytics';
 import {rateLimit, getRequestIp} from '@/lib/ratelimit';
 import type {ChatMessage} from '@/lib/chat/types';
@@ -33,7 +36,10 @@ export async function POST(request: Request) {
 
   const rl = await rateLimit('lead', getRequestIp(request));
   if (!rl.success) {
-    return NextResponse.json({ok: false, error: 'rate_limited'}, {status: 429});
+    return NextResponse.json(
+      {ok: false, error: 'rate_limited'},
+      {status: 429, headers: {'Retry-After': String(rl.retryAfterSec ?? 3600)}}
+    );
   }
 
   // Load linked conversation history (token-verified) for the summary + email.
@@ -47,28 +53,29 @@ export async function POST(request: Request) {
     }
   }
 
-  const aiSummary = await summarize({
-    locale: d.locale,
-    kind: 'lead',
-    request: d.request,
-    history,
-  });
+  // 1. Persist (without the AI summary — that's added off the critical path).
+  let leadId: string | null = null;
+  let persistError: unknown = null;
+  if (isSupabaseConfigured()) {
+    try {
+      leadId = await insertLead({
+        conversationId,
+        name: d.name,
+        email: d.email,
+        phone: d.phone,
+        company: d.company,
+        request: d.request,
+        recommendedPackage: d.recommendedPackage,
+        locale: d.locale,
+      });
+    } catch (err) {
+      persistError = err;
+      console.error('[lead] persistence failed:', err);
+    }
+  }
 
-  const leadId = await insertLead({
-    conversationId,
-    name: d.name,
-    email: d.email,
-    phone: d.phone,
-    company: d.company,
-    request: d.request,
-    recommendedPackage: d.recommendedPackage,
-    aiSummary,
-    locale: d.locale,
-  });
-
-  let delivered = false;
-  try {
-    const mail = leadEmail({
+  const buildMail = (aiSummary?: string) =>
+    leadEmail({
       name: d.name,
       email: d.email,
       phone: d.phone,
@@ -79,15 +86,6 @@ export async function POST(request: Request) {
       locale: d.locale,
       history,
     });
-    ({delivered} = await sendMail({
-      subject: mail.subject,
-      text: mail.text,
-      html: mail.html,
-      replyTo: d.email,
-    }));
-  } catch (err) {
-    console.error('[lead] email failed:', err);
-  }
 
   void logEvent('lead_captured', {
     conversationId,
@@ -95,5 +93,74 @@ export async function POST(request: Request) {
     props: {package: d.recommendedPackage ?? null},
   });
 
-  return NextResponse.json({ok: true, delivered, leadId});
+  // 2a. Saved → summarise + email after the response is sent.
+  if (leadId) {
+    const id = leadId;
+    after(async () => {
+      let aiSummary = '';
+      try {
+        aiSummary = await summarize({
+          locale: d.locale,
+          kind: 'lead',
+          request: d.request,
+          history,
+        });
+      } catch (err) {
+        console.error('[lead] summarize failed:', err);
+      }
+      let delivered = false;
+      let emailError: string | null = null;
+      try {
+        const mail = buildMail(aiSummary);
+        ({delivered} = await sendMail({
+          subject: mail.subject,
+          text: mail.text,
+          html: mail.html,
+          replyTo: d.email,
+        }));
+        if (!delivered) emailError = 'smtp_not_configured';
+      } catch (err) {
+        emailError = err instanceof Error ? err.message : String(err);
+        console.error('[lead] email failed:', err);
+      }
+      try {
+        const {error} = await createSupabaseServiceClient()
+          .from('leads')
+          .update({
+            ai_summary: aiSummary || null,
+            email_delivered: delivered,
+            email_error: emailError,
+          })
+          .eq('id', id);
+        if (error) console.error('[lead] post-send update failed:', error);
+      } catch (err) {
+        console.error('[lead] post-send update threw:', err);
+      }
+    });
+    return NextResponse.json({ok: true, delivered: false, queued: true, leadId});
+  }
+
+  // 2b. Not saved (DB unconfigured or failed) → email is the only record, so
+  // send it synchronously and never report success if that fails too.
+  if (isEmailConfigured()) {
+    try {
+      const mail = buildMail();
+      const {delivered} = await sendMail({
+        subject: mail.subject,
+        text: mail.text,
+        html: mail.html,
+        replyTo: d.email,
+      });
+      if (delivered) return NextResponse.json({ok: true, delivered: true});
+    } catch (err) {
+      console.error('[lead] email failed:', err);
+    }
+  }
+  console.error('[lead] neither persistence nor email succeeded', {
+    persistError: persistError ? String(persistError) : null,
+  });
+  return NextResponse.json(
+    {ok: false, error: 'unavailable', retryable: true},
+    {status: 503}
+  );
 }
