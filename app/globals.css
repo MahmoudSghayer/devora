@@ -52,6 +52,7 @@
   --color-pillar-auto: #5cc8ff;
   --color-pillar-soft: #a99bff;
   --color-positive: #6fd9a0;
+  --color-danger: #ff8f78;
 
   /* glass surfaces (pair with backdrop-blur via .glass) */
   --color-glass: rgb(18 20 28 / 0.55);

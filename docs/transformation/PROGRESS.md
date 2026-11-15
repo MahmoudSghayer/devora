@@ -5,12 +5,12 @@ Branch: `claude/zen-wright-dca3b6` · Executor: Sonnet session · Started 2026-1
 ## Status
 | Phase | Status |
 |---|---|
-| 0 Research & baseline | in progress |
-| 1 Foundations | in progress (pricing config, vitest, merge-ns tool done) |
-| 2 Lead backend | queued |
-| 3 Estimator | queued |
-| 4 ROI calculator | queued |
-| 5 Homepage & services | queued |
+| 0 Research & baseline | DONE (docs/research/zawiya-studio.md, AUDIT.md; baseline screenshots in scratchpad) |
+| 1 Foundations | DONE (tokens v2, motion primitives, Lenis, ViewTransition, header/footer IA, pricing single source, unified process) |
+| 2 Lead backend | DONE (migration 0002 committed NOT applied; lib/leads; routes; emails; admin; 93 unit tests) |
+| 3 Estimator | engine DONE + tested; UI in progress |
+| 4 ROI calculator | engine DONE + tested; UI in progress |
+| 5 Homepage & services | in progress (sections + three module + services/pages agents running) |
 | 6 SEO/perf/a11y | queued |
 | 7 Testing & QA | queued |
 | 8 Docs & report | queued |

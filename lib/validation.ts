@@ -11,20 +11,22 @@ export const contactSchema = z.object({
 
 export type ContactInput = z.infer<typeof contactSchema>;
 
-export type ContactErrorKey = 'err_name' | 'err_email' | 'err_details';
+export type ContactErrorKey = 'err_name' | 'err_email' | 'err_details' | 'err_consent';
 
 // Lightweight client validator → maps required/format failures to i18n keys so
-// messages localize. Mirrors the required fields in contactSchema.
+// messages localize. The server (lib/leads/schema.ts) re-validates everything.
 export function validateContact(values: {
   name?: string;
   email?: string;
   details?: string;
-}): Partial<Record<'name' | 'email' | 'details', ContactErrorKey>> {
-  const errors: Partial<Record<'name' | 'email' | 'details', ContactErrorKey>> = {};
+  consent?: boolean;
+}): Partial<Record<'name' | 'email' | 'details' | 'consent', ContactErrorKey>> {
+  const errors: Partial<Record<'name' | 'email' | 'details' | 'consent', ContactErrorKey>> = {};
   if (!values.name?.trim()) errors.name = 'err_name';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((values.email ?? '').trim()))
     errors.email = 'err_email';
   if (!values.details?.trim()) errors.details = 'err_details';
+  if (!values.consent) errors.consent = 'err_consent';
   return errors;
 }
 

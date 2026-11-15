@@ -48,6 +48,18 @@ export default async function AdminOverview() {
         ))}
       </div>
 
+      <div className="mt-4 rounded-[14px] border border-border-sub bg-surface p-5">
+        <h2 className="mb-3 text-[15px] font-semibold">Leads by source</h2>
+        <ul className="flex flex-wrap gap-x-8 gap-y-2 text-[13px]">
+          {Object.entries(stats.leadsBySource).map(([src, n]) => (
+            <li key={src} className="flex items-baseline gap-2">
+              <span className="text-[20px] font-bold text-ink">{n}</span>
+              <span className="text-muted">{src.replace('_', ' ')}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <div className="rounded-[14px] border border-border-sub bg-surface p-5">
           <h2 className="mb-3 text-[15px] font-semibold">Languages</h2>
