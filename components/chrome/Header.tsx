@@ -1,6 +1,6 @@
 'use client';
 
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useRef, useState} from 'react';
 import {motion} from 'motion/react';
 import {useTranslations} from 'next-intl';
 import {Link, usePathname} from '@/i18n/navigation';
@@ -26,14 +26,19 @@ export default function Header() {
   const t = useTranslations('common');
   const pathname = usePathname();
   const hidden = useScrollDirection(320);
-  const [open, setOpen] = useState(false);
+  // The menu is open only for the route it was opened on, so navigating closes it.
+  const [openFor, setOpenFor] = useState<string | null>(null);
+  const open = openFor === pathname;
+  const setOpen = useCallback(
+    (v: boolean | ((o: boolean) => boolean)) =>
+      setOpenFor((cur) => ((typeof v === 'function' ? v(cur === pathname) : v) ? pathname : null)),
+    [pathname],
+  );
   const panelRef = useRef<HTMLDivElement>(null);
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => setOpen(false), [setOpen]);
 
   useFocusTrap(panelRef, open, close);
   useScrollLock(open);
-  // Close on route change.
-  useEffect(() => setOpen(false), [pathname]);
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);

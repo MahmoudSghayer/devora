@@ -33,7 +33,7 @@ export default function ProgressNav({step, canLeaveFirst, onGo}: {step: StepNo; 
                 }`}
               >
                 {done ? <CheckIcon className="size-4" /> : <span className="num">{n}</span>}
-                <span className="u-track hidden whitespace-nowrap nav:inline">{t(`flow.s${n}.short`)}</span>
+                {current ? <span className="u-track hidden whitespace-nowrap nav:inline">{t(`flow.s${n}.short`)}</span> : null}
               </button>
               {n < STEP_COUNT ? <span aria-hidden className="h-px min-w-1 flex-1 bg-border-card" /> : null}
             </li>

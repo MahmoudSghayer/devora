@@ -1245,7 +1245,7 @@
       "costTitle": "Indicative investment",
       "implementation": "One-time implementation",
       "running": "Running cost",
-      "costNote": "Typical figures from our price model for {count} automated task types. Indicative, not a quotation: the real proposal depends on the tools and systems involved.",
+      "costNote": "Typical figures from our price model for {count, plural, one {# automated task type} other {# automated task types}}. Indicative, not a quotation: the real proposal depends on the tools and systems involved.",
       "assumptionTitle": "An assumption you can change",
       "cta": "Like what you see? Get a plan built around your numbers."
     },

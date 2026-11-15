@@ -75,7 +75,7 @@ export function MobileBar({result}: {result: DiscussResult}) {
   const t = useTx();
   return (
     <div
-      className="glass-hi fixed inset-x-0 bottom-0 rounded-t-panel px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 nav:hidden print:hidden"
+      className="glass-hi fixed inset-x-0 bottom-0 rounded-t-panel ps-5 pe-24 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 nav:hidden print:hidden"
       style={{zIndex: 'var(--z-sheet)'}}
     >
       <p className="text-[12px] leading-none text-muted">{t('range.title')}</p>

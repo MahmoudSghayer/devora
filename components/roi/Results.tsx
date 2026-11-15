@@ -88,11 +88,10 @@ export default function Results({
   };
 
   return (
-    <div className="aura aura-signal flex flex-col gap-8 print:gap-6">
+    <div className="aura aura-signal flex flex-col gap-8 overflow-x-clip print:gap-6">
       <p className="sr-only" role="status" aria-live="polite">
         {t('results.live', {hours: num(r.savedHoursMonthly, locale, 1), value: money(r.capacityValueMonthly, locale)})}
       </p>
-      <p className="max-w-[68ch] text-base leading-relaxed text-muted">{t('results.intro')}</p>
       {noAuto && (
         <p role="alert" className="rounded-card border border-amber p-4 text-sm text-amber-hi">
           {t('results.noAutomation')}
