@@ -46,3 +46,8 @@ All subagents were stopped mid-work (TaskStop) and the tree committed as a WIP c
 
 ### Not started
 Homepage assembly (move `app/[locale]/page.tsx` into `(marketing)`, delete `lib/experience`, `components/experience`, `components/home`, `experience` + old `home` namespaces, experience CSS), scoped client messages, chat widget deferral, Lighthouse/a11y pass, Playwright E2E for calculators, visual QA, review pass, README, REPORT.md.
+
+---
+## RESUMED (orchestrator RESUME received)
+Owner decisions applied: particle DevoraMark WebGL hero (poster-only on phones/reduced-motion/no-WebGL, CSS-only breathing glow); 8-section homepage (Hero · Value+Why+proof · Pillars · WhatsApp simulator · Selected work · Calculator cards · Stack · CTA; no process/FAQ sections — linked instead); amber + signal-blue (automation/AI/data only). Review fixes assigned: hero H1 display size, pillars overflow, /pricing gap, remove stats row. Phase 7: per-page overflow assertion at 390/1440 both locales.
+Running agents (6): particle hero, estimator UI, ROI UI, homepage sections, pages (+faq/process/pricing fixes), SEO. Orchestrator (me) will assemble the homepage, delete the experience monolith, wire SEO, then perf/QA/review/docs.
