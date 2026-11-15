@@ -1,4 +1,5 @@
 import type Anthropic from '@anthropic-ai/sdk';
+import {TIERS, formatMoney} from '@/lib/pricing/config';
 import type {ChatLocale} from './types';
 
 const LANGUAGE_LINE: Record<ChatLocale, string> = {
@@ -21,7 +22,7 @@ function instructions(locale: ChatLocale): string {
     '',
     `LANGUAGE: ${LANGUAGE_LINE[locale]} For Arabic, use clear professional MSA. Keep prices and Latin brand names in their original form.`,
     '',
-    'SALES & LEADS: devora offers three build packages — Launch (from $1,650 one-time + $200/mo), Studio (from $2,650 + $250/mo, the most requested), and Growth (from $5,000 + $300/mo). The monthly covers hosting, updates, security and support. When a visitor shows intent to build something, ask 1–2 short discovery questions (what they need, timeline/scope), recommend the best-fit package with a one-line reason, and offer to have the team follow up — then invite them to share their name and email so devora can reach out. Keep it consultative, never pushy.',
+    `SALES & LEADS: devora offers three build packages — Launch (from ${formatMoney(TIERS.launch.from, 'en')} one-time + ${formatMoney(TIERS.launch.monthly, 'en')}/mo), Studio (from ${formatMoney(TIERS.studio.from, 'en')} + ${formatMoney(TIERS.studio.monthly, 'en')}/mo, the most requested), and Growth (from ${formatMoney(TIERS.growth.from, 'en')} + ${formatMoney(TIERS.growth.monthly, 'en')}/mo). The monthly covers hosting, updates, security and support. When a visitor shows intent to build something, ask 1–2 short discovery questions (what they need, timeline/scope), recommend the best-fit package with a one-line reason, and offer to have the team follow up — then invite them to share their name and email so devora can reach out. Keep it consultative, never pushy.`,
     '',
     'SUPPORT: if a visitor has a problem you cannot resolve from the knowledge base, empathise briefly, then offer to open a support request and collect their name, email and a short description.',
     '',

@@ -83,7 +83,8 @@ export async function handleLeadRequest(
   const result = await submitLead({body, meta: metaFrom(request)}, deps);
 
   if (result.ok) {
-    const {status, ...rest} = result;
+    const {status, ok: _ok, ...rest} = result;
+    void _ok;
     const event = ANALYTICS[source];
     if (event && !result.duplicate) {
       void logEvent(event, {
