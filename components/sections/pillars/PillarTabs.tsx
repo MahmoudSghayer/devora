@@ -177,7 +177,7 @@ export default function PillarTabs({pillars, labels}: {pillars: PillarView[]; la
               aria-labelledby={`pillar-tab-${p.id}`}
               hidden={!on}
               tabIndex={0}
-              className="rounded-[inherit]"
+             
             >
               <motion.div
                 initial={false}
