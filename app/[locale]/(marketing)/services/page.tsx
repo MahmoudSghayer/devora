@@ -2,12 +2,14 @@ import type {Metadata} from 'next';
 import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {alternates} from '@/lib/seo';
+import {PILLARS} from '@/lib/pillars';
 import PageIntro from '@/components/ui/PageIntro';
-import DisciplineRows from '@/components/services/DisciplineRows';
+import PillarNav from '@/components/services/PillarNav';
+import PillarHelper from '@/components/services/PillarHelper';
+import PillarSection from '@/components/services/PillarSection';
 import ProcessSteps from '@/components/services/ProcessSteps';
 import EngagementModels from '@/components/services/EngagementModels';
 import AmberBand from '@/components/ui/AmberBand';
-import Marquee from '@/components/chrome/Marquee';
 
 export async function generateMetadata({
   params,
@@ -40,10 +42,17 @@ export default async function ServicesPage({
 function ServicesContent() {
   const s = useTranslations('services');
   const c = useTranslations('common');
+  const navItems = PILLARS.map((p) => ({anchor: p.anchor, label: c(p.navKey)}));
   return (
     <>
-      <PageIntro label={s('sv_label')} title={s('sv_title')} sub={s('sv_sub')} />
-      <DisciplineRows />
+      <div className="aura overflow-x-clip">
+        <PageIntro label={s('sv_label')} title={s('sv_title')} sub={s('sv_sub')} />
+      </div>
+      <PillarNav items={navItems} label={s('nav_aria')} />
+      <PillarHelper />
+      {PILLARS.map((pillar, i) => (
+        <PillarSection key={pillar.id} pillar={pillar} index={i} />
+      ))}
       <ProcessSteps />
       <EngagementModels />
       <AmberBand
@@ -51,7 +60,6 @@ function ServicesContent() {
         sub={c('cta_sub')}
         buttonLabel={c('cta_btn')}
       />
-      <Marquee />
     </>
   );
 }

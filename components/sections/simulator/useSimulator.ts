@@ -3,8 +3,11 @@ import {computeRoi} from '@/lib/roi/engine';
 import {ROI_CONFIG, ROI_TASKS} from '@/lib/pricing/config';
 
 /** The real catalogue row for WhatsApp replies; id and default % come from config. */
-const WHATSAPP = ROI_TASKS.find((t) => t.id === 'whatsappReplies');
-if (!WHATSAPP) throw new Error('ROI_TASKS is missing whatsappReplies');
+const WHATSAPP = (() => {
+  const row = ROI_TASKS.find((t) => t.id === 'whatsappReplies');
+  if (!row) throw new Error('ROI_TASKS is missing whatsappReplies');
+  return row;
+})();
 
 export const WORKDAY_HOURS = 8;
 export const DEFAULTS = {

@@ -2,6 +2,8 @@ import {useLocale, useTranslations} from 'next-intl';
 import {pricingParams} from '@/lib/pricing/config';
 import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
+import TiltCard from '@/components/motion/TiltCard';
+import ArrowLink from '@/components/ui/ArrowLink';
 import {Link} from '@/i18n/navigation';
 
 // Three tiers, each a one-time build fee + a low monthly (hosting, care &
@@ -41,31 +43,42 @@ const MODELS = [
 
 export default function PricingModels() {
   const p = useTranslations('pricing');
+  const pl = useTranslations('pillars');
   const params = pricingParams(useLocale());
 
   return (
-    <section>
-      <Container className="py-24">
+    <section aria-labelledby="pricing-models-title" className="aura overflow-x-clip py-section">
+      <Container>
         <Reveal>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
+            <span aria-hidden>{'// '}</span>
             {p('models_label')}
           </p>
-          <p className="mt-4 max-w-[640px] text-[17px] text-muted">{p('note')}</p>
+          <h2
+            id="pricing-models-title"
+            className="u-track mt-4 max-w-[760px] font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]"
+          >
+            {p('models_title')}
+          </h2>
+          <p className="mt-5 max-w-[640px] text-lead text-muted">{p('note')}</p>
+          <div className="mt-5">
+            <ArrowLink href="/estimate" label={pl('web.cta')} />
+          </div>
         </Reveal>
 
-        <div className="mt-14 grid items-stretch gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
+        <div className="mt-16 grid items-stretch gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
           {MODELS.map((pk, i) => (
             <Reveal key={pk.n} index={i} className="h-full">
-              <div
-                className={`relative flex h-full flex-col rounded-[18px] p-10 transition-transform duration-300 hover:-translate-y-1.5 ${
+              <TiltCard
+                className={`flex h-full flex-col rounded-card p-8 nav:p-10 ${
                   pk.featured
                     ? 'border border-amber bg-featured'
-                    : 'border border-border-card bg-bg-alt'
+                    : 'glass'
                 }`}
               >
                 {'tag' in pk && (
                   <span
-                    className={`absolute -top-[13px] start-8 rounded-pill px-3.5 py-1.5 font-mono text-[11px] font-bold tracking-[0.08em] ${
+                    className={`u-mono absolute -top-[13px] start-8 rounded-pill px-3.5 py-1.5 font-mono text-[11px] font-bold tracking-[0.08em] ${
                       pk.featured
                         ? 'bg-amber text-on-amber'
                         : 'border border-border-amber bg-bg text-amber'
@@ -74,12 +87,12 @@ export default function PricingModels() {
                     {p(pk.tag)}
                   </span>
                 )}
-                <h3 className="text-2xl font-semibold">{p(pk.n)}</h3>
+                <h3 className="font-display text-2xl font-semibold">{p(pk.n)}</h3>
                 <p className="mt-3 text-[15px] text-muted">{p(pk.d)}</p>
-                <p className="mt-5 font-mono text-[22px] text-amber" dir="ltr">
+                <p className="num mt-5 font-mono text-[22px] text-amber" dir="ltr">
                   {p(pk.p, params)}
                 </p>
-                <p className="mt-1 font-mono text-[13px] text-muted-2" dir="ltr">
+                <p className="num mt-1 font-mono text-[13px] text-muted-2" dir="ltr">
                   {p(pk.mo, params)}
                 </p>
                 <ul className="mt-6 flex flex-1 flex-col gap-3">
@@ -95,7 +108,7 @@ export default function PricingModels() {
                 </ul>
                 <Link
                   href="/contact"
-                  className={`mt-8 rounded-pill px-6 py-3 text-center text-sm font-semibold transition-colors ${
+                  className={`mt-8 flex min-h-11 items-center justify-center rounded-pill px-6 py-3 text-center text-sm font-semibold transition-colors ${
                     pk.featured
                       ? 'bg-amber text-on-amber hover:bg-amber-hi'
                       : 'border border-border-ghost hover:border-amber hover:text-amber'
@@ -103,7 +116,7 @@ export default function PricingModels() {
                 >
                   {p(pk.btn)}
                 </Link>
-              </div>
+              </TiltCard>
             </Reveal>
           ))}
         </div>

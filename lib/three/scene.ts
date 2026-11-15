@@ -28,7 +28,7 @@ export type AuraHandle = {
 };
 
 const FOV = 42;
-const FIT_RADIUS = 3.3;
+const FIT_RADIUS = 3.8;
 
 const css = (value: string) => new Color().setStyle(value, LinearSRGBColorSpace);
 
@@ -72,7 +72,7 @@ function buildDust(count: number, c: {amber: Color; signal: Color}, pix: number)
   geo.setAttribute('aSize', new BufferAttribute(siz, 1));
   geo.setAttribute('aSeed', new BufferAttribute(seed, 1));
   const mat = new ShaderMaterial({
-    uniforms: {uTime: {value: 0}, uSize: {value: 0.09}, uPix: {value: pix}, uOpacity: {value: 1}},
+    uniforms: {uTime: {value: 0}, uSize: {value: 0.075}, uPix: {value: pix}, uOpacity: {value: 1}},
     vertexShader: DUST_VERT,
     fragmentShader: DUST_FRAG,
     transparent: true,
@@ -119,7 +119,7 @@ export function createAuraScene(o: AuraSceneOptions): AuraHandle {
   core.add(new Mesh(new SphereGeometry(1.75, 40, 40), haloMat));
 
   const additive = {transparent: true, blending: AdditiveBlending, depthWrite: false} as const;
-  const innerMat = new MeshBasicMaterial({color: amberHi, opacity: 0.85, ...additive});
+  const innerMat = new MeshBasicMaterial({color: amberHi, opacity: 0.45, ...additive});
   core.add(new Mesh(new SphereGeometry(0.45, 24, 24), innerMat));
 
   const wireMat = new LineBasicMaterial({color: amber, transparent: true, opacity: 0.16, blending: AdditiveBlending});
@@ -155,7 +155,7 @@ export function createAuraScene(o: AuraSceneOptions): AuraHandle {
     const k = Math.max(0, intensity);
     coreMat.uniforms.uGlow.value = 0.4 + 0.6 * k;
     haloMat.uniforms.uGlow.value = k;
-    dustMat.uniforms.uOpacity.value = Math.min(1, k);
+    dustMat.uniforms.uOpacity.value = Math.min(1, k) * 0.75;
     bloomMat.opacity = 0.32 * k;
   };
   applyIntensity();

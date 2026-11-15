@@ -42,8 +42,9 @@ export const HALO_FRAG = `
 uniform vec3 uAccent; uniform float uGlow;
 varying vec3 vNw; varying vec3 vV;
 void main(){
-  float f = pow(1.0 - max(dot(normalize(vNw), normalize(vV)), 0.0), 3.0);
-  gl_FragColor = vec4(uAccent, f * uGlow * 0.9);
+  // Back faces: -N faces the viewer, so the halo is brightest next to the core and fades outward.
+  float f = pow(max(dot(-normalize(vNw), normalize(vV)), 0.0), 3.2);
+  gl_FragColor = vec4(uAccent, f * uGlow * 0.6);
 }`;
 
 export const DUST_VERT = `

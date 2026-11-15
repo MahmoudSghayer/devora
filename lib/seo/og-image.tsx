@@ -16,7 +16,8 @@ const FALLBACK_TAG: Record<'en' | 'ar', string> = {
   ar: 'مواقع وأتمتة وبرمجيات مخصصة تُنمّي أعمالك.',
 };
 
-export const ogAlt = (locale: string) => ALT[locale === 'ar' ? 'ar' : 'en'];
+// Route-segment `alt` must be a static export, so both languages share one string.
+export const OG_ALT = `${ALT.en} · ${ALT.ar}`;
 
 async function tagline(locale: 'en' | 'ar'): Promise<string> {
   try {
@@ -56,8 +57,8 @@ export async function renderOgImage(rawLocale: string) {
   const line = await tagline(locale);
 
   const [latin, arabic] = await Promise.all([
-    loadOgFont('Space Grotesk', `${SITE.name}${SITE.domain}`),
-    isAr ? loadOgFont('Cairo', line) : Promise.resolve(null),
+    loadOgFont('Space Grotesk', {text: `${SITE.name}${SITE.domain}${isAr ? '' : line}`}),
+    isAr ? loadOgFont('Cairo', {}) : Promise.resolve(null),
   ]);
   const fonts: OgFont[] = [latin, arabic].filter((f): f is OgFont => f !== null);
   const bodyFamily = isAr && arabic ? 'Cairo' : latin ? 'Space Grotesk' : 'sans-serif';
@@ -122,12 +123,11 @@ export async function renderOgImage(rawLocale: string) {
 
         <div
           style={{
-            display: 'flex',
-            marginTop: 26,
-            maxWidth: 940,
+            display: 'block',
+            marginTop: 22,
+            width: 980,
             textAlign: 'center',
-            justifyContent: 'center',
-            fontSize: isAr ? 46 : 40,
+            fontSize: isAr ? 38 : 40,
             lineHeight: 1.4,
             fontWeight: 700,
             color: C.muted,
@@ -141,7 +141,7 @@ export async function renderOgImage(rawLocale: string) {
         <div
           style={{
             position: 'absolute',
-            bottom: 58,
+            bottom: 50,
             display: 'flex',
             fontSize: 26,
             color: C.amber,

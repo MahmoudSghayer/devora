@@ -9,13 +9,14 @@ export default function Included() {
   const p = useTranslations('pricing');
 
   return (
-    <section className="border-t border-border bg-bg-alt">
-      <Container className="py-24">
+    <section aria-labelledby="included-title" className="border-y border-border bg-bg-alt py-section">
+      <Container>
         <Reveal>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
+            <span aria-hidden>{'// '}</span>
             {p('inc_label')}
           </p>
-          <h2 className="u-track mt-4 font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">
+          <h2 id="included-title" className="u-track mt-4 font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">
             {p('inc_title')}
           </h2>
         </Reveal>
@@ -24,7 +25,7 @@ export default function Included() {
           {ITEMS.map((it, i) => (
             <Reveal key={it} index={i}>
               <div className="flex items-start gap-3 border-t border-border-sub pt-5">
-                <span className="mt-0.5 font-mono text-amber">+</span>
+                <span aria-hidden className="u-mono mt-0.5 font-mono text-amber">+</span>
                 <span className="text-[16px] text-ink-2">{p(it)}</span>
               </div>
             </Reveal>
