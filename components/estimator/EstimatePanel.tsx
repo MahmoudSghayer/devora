@@ -150,9 +150,11 @@ export default function EstimatePanel({
           <Breakdown est={est} />
           <div className="rounded-card border border-border-card p-4">
             <h3 className="text-sm font-medium text-ink-2">{t('panel.maintenance')}</h3>
-            <p dir="ltr" className="num mt-1 text-lg font-semibold text-ink">
-              {formatMoney(est.maintenanceMonthly, locale)}
-              <span className="ms-1 text-sm font-normal text-muted">{t('panel.per_month')}</span>
+            <p className="mt-1 text-lg font-semibold text-ink">
+              <span dir="ltr" className="num inline-block">
+                {formatMoney(est.maintenanceMonthly, locale)}
+              </span>
+              <span className="ms-1.5 text-sm font-normal text-muted">{t('panel.per_month')}</span>
             </p>
             <p className="mt-1 text-[13px] leading-relaxed text-muted">
               {t('panel.maintenance_note', {plan: t(`plan.${est.maintenancePlan}`)})}

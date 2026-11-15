@@ -31,7 +31,7 @@ export default function MobileSheet({est, hasTypes}: {est: EstimateResult; hasTy
       >
         <div className="min-w-0">
           <p className="text-[12px] leading-none text-muted">{t('sheet.bar_label')}</p>
-          <p className="mt-1.5 truncate font-display text-lg font-semibold leading-none text-ink">
+          <p className="mt-1.5 truncate font-display text-base font-semibold leading-none text-ink">
             {hasTypes ? <RangeFigures est={est} /> : <span className="text-sm font-normal text-muted">{t('sheet.bar_empty')}</span>}
           </p>
         </div>

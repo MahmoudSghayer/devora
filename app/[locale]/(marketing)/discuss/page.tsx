@@ -3,7 +3,8 @@ import {getTranslations, setRequestLocale} from 'next-intl/server';
 import Container from '@/components/ui/Container';
 import DiscussApp from '@/components/discuss/DiscussApp';
 import {Link} from '@/i18n/navigation';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd, WebApplicationJsonLd} from '@/components/seo/schemas';
 import {SITE, SOCIALS} from '@/lib/site';
 
 export async function generateMetadata({params}: {params: Promise<{locale: string}>}): Promise<Metadata> {
@@ -11,22 +12,22 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
   const t = await getTranslations({locale, namespace: 'discuss'});
   const title = t('meta.title');
   const description = t('meta.description');
-  return {
-    title,
-    description,
-    alternates: alternates('/discuss', locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: '/discuss', title, description});
 }
 
 export default async function DiscussPage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
   setRequestLocale(locale);
+  const l = locale as 'en' | 'ar';
   const t = await getTranslations({locale, namespace: 'discuss'});
+  const tc = await getTranslations({locale, namespace: 'common'});
+  const title = t('meta.title');
+  const description = t('meta.description');
 
   return (
     <>
+      <WebApplicationJsonLd kind="discuss" locale={l} name={title} description={description} />
+      <BreadcrumbJsonLd locale={l} items={[{name: tc('nav_home'), path: ''}, {name: title, path: '/discuss'}]} />
       <div className="aura aura-soft overflow-x-clip border-b border-border print:hidden">
         <Container className="relative pb-10 pt-[120px] nav:pb-14">
           <p className="flex items-center gap-2.5">

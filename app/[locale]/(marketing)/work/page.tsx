@@ -1,7 +1,8 @@
 import type {Metadata} from 'next';
 import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd} from '@/components/seo/schemas';
 import {CASES} from '@/lib/site';
 import PageIntro from '@/components/ui/PageIntro';
 import CaseStudyRow from '@/components/work/CaseStudyRow';
@@ -16,13 +17,7 @@ export async function generateMetadata({
   const t = await getTranslations({locale, namespace: 'work'});
   const title = t('wk_label');
   const description = t('wk_sub');
-  return {
-    title,
-    description,
-    alternates: alternates('/work', locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: '/work', title, description});
 }
 
 export default async function WorkPage({
@@ -32,7 +27,17 @@ export default async function WorkPage({
 }) {
   const {locale} = await params;
   setRequestLocale(locale);
-  return <WorkContent />;
+  const l = locale as 'en' | 'ar';
+  const [tc, t] = await Promise.all([
+    getTranslations({locale, namespace: 'common'}),
+    getTranslations({locale, namespace: 'work'}),
+  ]);
+  return (
+    <>
+      <BreadcrumbJsonLd locale={l} items={[{name: tc('nav_home'), path: ''}, {name: t('wk_label'), path: '/work'}]} />
+      <WorkContent />
+    </>
+  );
 }
 
 function WorkContent() {

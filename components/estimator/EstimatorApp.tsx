@@ -112,7 +112,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
     headingRef.current?.focus({preventScroll: true});
     const anchor = document.getElementById('est-top');
     if (anchor) {
-      const top = anchor.getBoundingClientRect().top + window.scrollY - 96;
+      const top = anchor.getBoundingClientRect().top + window.scrollY - 120;
       window.scrollTo({top: Math.max(0, top), behavior: reduced ? 'auto' : 'smooth'});
     }
     setStepNote(`${t('step_of', {n: step, total: STEP_COUNT})}: ${t(`flow.s${step}.title`)}`);

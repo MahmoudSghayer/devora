@@ -1,7 +1,8 @@
 import type {Metadata} from 'next';
 import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd} from '@/components/seo/schemas';
 import PageIntro from '@/components/ui/PageIntro';
 import Story from '@/components/about/Story';
 import Difference from '@/components/about/Difference';
@@ -18,13 +19,7 @@ export async function generateMetadata({
   const t = await getTranslations({locale, namespace: 'about'});
   const title = t('a_label');
   const description = t('a_sub');
-  return {
-    title,
-    description,
-    alternates: alternates('/about', locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: '/about', title, description});
 }
 
 export default async function AboutPage({
@@ -34,7 +29,17 @@ export default async function AboutPage({
 }) {
   const {locale} = await params;
   setRequestLocale(locale);
-  return <AboutContent />;
+  const l = locale as 'en' | 'ar';
+  const [tc, t] = await Promise.all([
+    getTranslations({locale, namespace: 'common'}),
+    getTranslations({locale, namespace: 'about'}),
+  ]);
+  return (
+    <>
+      <BreadcrumbJsonLd locale={l} items={[{name: tc('nav_home'), path: ''}, {name: t('a_label'), path: '/about'}]} />
+      <AboutContent />
+    </>
+  );
 }
 
 function AboutContent() {

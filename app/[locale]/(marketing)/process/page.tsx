@@ -1,7 +1,8 @@
 import type {Metadata} from 'next';
 import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd} from '@/components/seo/schemas';
 import PageIntro from '@/components/ui/PageIntro';
 import ProcessDetail from '@/components/process/ProcessDetail';
 import AmberBand from '@/components/ui/AmberBand';
@@ -18,13 +19,7 @@ export async function generateMetadata({
   const t = await getTranslations({locale, namespace: 'process'});
   const title = t('pr_label');
   const description = t('pr_sub');
-  return {
-    title,
-    description,
-    alternates: alternates('/process', locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: '/process', title, description});
 }
 
 export default async function ProcessPage({
@@ -34,7 +29,17 @@ export default async function ProcessPage({
 }) {
   const {locale} = await params;
   setRequestLocale(locale);
-  return <ProcessContent />;
+  const l = locale as 'en' | 'ar';
+  const [tc, t] = await Promise.all([
+    getTranslations({locale, namespace: 'common'}),
+    getTranslations({locale, namespace: 'process'}),
+  ]);
+  return (
+    <>
+      <BreadcrumbJsonLd locale={l} items={[{name: tc('nav_home'), path: ''}, {name: t('pr_label'), path: '/process'}]} />
+      <ProcessContent />
+    </>
+  );
 }
 
 function ProcessContent() {

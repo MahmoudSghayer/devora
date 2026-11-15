@@ -1,7 +1,8 @@
 import type {Metadata} from 'next';
 import {useLocale, useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd, FaqJsonLd} from '@/components/seo/schemas';
 import PageIntro from '@/components/ui/PageIntro';
 import Container from '@/components/ui/Container';
 import {pricingParams} from '@/lib/pricing/config';
@@ -47,13 +48,7 @@ export async function generateMetadata({
   const t = await getTranslations({locale, namespace: 'faq'});
   const title = t('f_label');
   const description = t('f_sub');
-  return {
-    title,
-    description,
-    alternates: alternates('/faq', locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: '/faq', title, description});
 }
 
 export default async function FaqPage({
@@ -63,7 +58,21 @@ export default async function FaqPage({
 }) {
   const {locale} = await params;
   setRequestLocale(locale);
-  return <FaqContent />;
+  const l = locale as 'en' | 'ar';
+  const [tc, t] = await Promise.all([
+    getTranslations({locale, namespace: 'common'}),
+    getTranslations({locale, namespace: 'faq'}),
+  ]);
+  const faqParams = pricingParams(locale);
+  return (
+    <>
+      <FaqJsonLd
+        items={GROUPS.flatMap((g) => g.pairs).map(([q, a]) => ({question: t(q), answer: t(a, faqParams)}))}
+      />
+      <BreadcrumbJsonLd locale={l} items={[{name: tc('nav_home'), path: ''}, {name: t('f_label'), path: '/faq'}]} />
+      <FaqContent />
+    </>
+  );
 }
 
 function FaqContent() {

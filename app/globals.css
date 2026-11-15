@@ -79,6 +79,7 @@
   --text-cta: clamp(38px, 6.5vw, 96px);
   --text-case: clamp(32px, 3.4vw, 48px);
   --text-display: clamp(44px, 9.5vw, 148px);
+  --text-hero: clamp(44px, 6.4vw, 100px);
   --text-h3: clamp(22px, 2.3vw, 32px);
   --text-lead: clamp(17px, 1.5vw, 21px);
   --text-stat: clamp(40px, 6vw, 88px);
@@ -363,3 +364,15 @@ html.lenis, html.lenis body { height: auto; }
 /* Section ambient keyframes (referenced via motion-safe:animate-[…] in components). */
 @keyframes dvFlow { to { stroke-dashoffset: -60; } }
 @keyframes dvCue { 0% { transform: translateY(0); opacity: 0.25; } 50% { opacity: 1; } 100% { transform: translateY(9px); opacity: 0.25; } }
+
+/* Print / save-as-PDF: drop site chrome so calculator summaries print cleanly. */
+@media print {
+  body > header,
+  body > footer,
+  body > canvas,
+  body > a[href="#main"],
+  .devora-cosmos,
+  .devora-grain {
+    display: none !important;
+  }
+}

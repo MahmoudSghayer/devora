@@ -130,20 +130,14 @@ export function SwitchRow({
           aria-labelledby={`${id}-l`}
           aria-describedby={hint ? `${id}-d` : undefined}
           onClick={onChange}
-          className={`relative inline-flex h-11 w-[84px] shrink-0 items-center rounded-pill border px-1 transition-colors ${
-            checked ? 'border-amber bg-amber text-on-amber' : 'border-border-ghost bg-surface-2 text-muted'
+          className={`flex h-11 w-24 shrink-0 items-center gap-1 rounded-pill border p-1 transition-colors ${
+            checked
+              ? 'flex-row-reverse border-amber bg-amber text-on-amber'
+              : 'border-border-ghost bg-surface-2 text-muted'
           }`}
         >
-          <span
-            aria-hidden
-            className={`absolute top-1 size-8 rounded-pill bg-ink transition-[inset-inline-start] motion-reduce:transition-none ${
-              checked ? 'start-[46px]' : 'start-1'
-            }`}
-          />
-          <span
-            aria-hidden
-            className={`u-track relative z-[1] w-full text-[12px] font-semibold ${checked ? 'ps-3 text-start' : 'pe-2 text-end'}`}
-          >
+          <span aria-hidden className="size-8 shrink-0 rounded-pill bg-ink" />
+          <span aria-hidden className="u-track min-w-0 flex-1 text-center text-[12px] font-semibold">
             {checked ? onText : offText}
           </span>
         </button>

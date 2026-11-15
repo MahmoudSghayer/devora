@@ -23,7 +23,7 @@ export default function Hero() {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 end-0 -z-10 w-full opacity-60 nav:w-[62%] nav:opacity-100"
+        className="pointer-events-none absolute inset-y-0 end-0 -z-10 w-full opacity-60 nav:w-[48%] nav:opacity-100"
       >
         <AuraSceneLazy className="absolute inset-0" intensity={1} interactive />
       </div>
@@ -42,10 +42,10 @@ export default function Hero() {
         <KineticHeadline
           text={t('title')}
           emphasis={emphasis}
-          className="mt-7 max-w-[15ch] font-display text-display font-bold leading-[1.02] tracking-[-0.03em] text-ink max-nav:max-w-[11ch] max-nav:text-[clamp(56px,11vw,96px)] nav:max-w-[16ch]"
+          className="mt-7 max-w-[15ch] font-display text-hero font-bold leading-[1.04] tracking-[-0.03em] text-ink max-nav:max-w-[11ch] max-nav:text-[clamp(52px,11vw,96px)] nav:max-w-[54%]"
         />
 
-        <p className="mt-7 max-w-[560px] text-lead leading-[1.6] text-muted">{t('sub')}</p>
+        <p className="mt-7 max-w-[520px] text-lead leading-[1.6] text-muted">{t('sub')}</p>
 
         <div className="mt-10 flex flex-col items-stretch gap-4 max-nav:max-w-[420px] nav:flex-row nav:flex-wrap nav:items-center">
           <ArrowButton

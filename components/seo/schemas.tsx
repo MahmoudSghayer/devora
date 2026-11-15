@@ -121,7 +121,7 @@ export function BreadcrumbJsonLd({
   );
 }
 
-const APP_PATH = {estimate: '/estimate', roi: '/automation-roi'} as const;
+const APP_PATH = {estimate: '/estimate', roi: '/automation-roi', discuss: '/discuss'} as const;
 
 // Free interactive calculators. Title/description are the page's own strings.
 export function WebApplicationJsonLd({

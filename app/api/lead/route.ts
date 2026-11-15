@@ -65,7 +65,6 @@ export async function POST(request: Request) {
         phone: d.phone,
         company: d.company,
         request: d.request,
-        recommendedPackage: d.recommendedPackage,
         locale: d.locale,
       });
     } catch (err) {
@@ -81,7 +80,6 @@ export async function POST(request: Request) {
       phone: d.phone,
       company: d.company,
       request: d.request,
-      recommendedPackage: d.recommendedPackage,
       aiSummary,
       locale: d.locale,
       history,
@@ -90,7 +88,6 @@ export async function POST(request: Request) {
   void logEvent('lead_captured', {
     conversationId,
     locale: d.locale,
-    props: {package: d.recommendedPackage ?? null},
   });
 
   // 2a. Saved → summarise + email after the response is sent.

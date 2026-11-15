@@ -3,28 +3,29 @@ import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {Link} from '@/i18n/navigation';
 import RoiApp from '@/components/roi/RoiApp';
 import Container from '@/components/ui/Container';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd, WebApplicationJsonLd} from '@/components/seo/schemas';
 
 export async function generateMetadata({params}: {params: Promise<{locale: string}>}): Promise<Metadata> {
   const {locale} = await params;
   const t = await getTranslations({locale, namespace: 'roi'});
   const title = t('meta.title');
   const description = t('meta.description');
-  return {
-    title,
-    description,
-    alternates: alternates('/automation-roi', locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: '/automation-roi', title, description});
 }
 
 export default async function AutomationRoiPage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
   setRequestLocale(locale);
+  const l = locale as 'en' | 'ar';
   const t = await getTranslations('roi');
+  const tc = await getTranslations({locale, namespace: 'common'});
+  const title = t('meta.title');
+  const description = t('meta.description');
   return (
     <>
+      <WebApplicationJsonLd kind="roi" locale={l} name={title} description={description} />
+      <BreadcrumbJsonLd locale={l} items={[{name: tc('nav_home'), path: ''}, {name: title, path: '/automation-roi'}]} />
       <header className="aura aura-signal relative overflow-x-clip pb-10 pt-[132px] print:pt-0">
         <Container>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.3em] text-signal">{t('page.eyebrow')}</p>

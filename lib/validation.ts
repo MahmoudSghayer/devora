@@ -68,7 +68,6 @@ export const leadSchema = z.object({
   phone: z.string().trim().max(40).optional(),
   company: z.string().trim().max(120).optional(),
   request: z.string().trim().min(1).max(4000),
-  recommendedPackage: z.enum(['launch', 'studio', 'growth']).optional(),
   locale: localeSchema.default('en'),
   // Honeypot — must stay empty (bots fill it). Not persisted.
   website: z.string().trim().max(0).optional(),

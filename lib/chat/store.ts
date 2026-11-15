@@ -161,7 +161,6 @@ export async function insertLead(input: {
   phone?: string;
   company?: string;
   request: string;
-  recommendedPackage?: string;
   aiSummary?: string;
   locale: ChatLocale;
 }): Promise<string | null> {
@@ -176,7 +175,6 @@ export async function insertLead(input: {
       phone: input.phone ?? null,
       company: input.company ?? null,
       request: input.request,
-      recommended_package: input.recommendedPackage ?? null,
       ai_summary: input.aiSummary ?? null,
       locale: input.locale,
     })

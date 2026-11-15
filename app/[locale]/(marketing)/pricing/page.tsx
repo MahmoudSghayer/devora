@@ -1,7 +1,8 @@
 import type {Metadata} from 'next';
 import {useLocale, useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd, FaqJsonLd} from '@/components/seo/schemas';
 import PageIntro from '@/components/ui/PageIntro';
 import Container from '@/components/ui/Container';
 import HowPricingWorks from '@/components/pricing/HowPricingWorks';
@@ -20,13 +21,7 @@ export async function generateMetadata({
   const t = await getTranslations({locale, namespace: 'pricing'});
   const title = t('p_label');
   const description = t('p_sub');
-  return {
-    title,
-    description,
-    alternates: alternates('/pricing', locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: '/pricing', title, description});
 }
 
 export default async function PricingPage({
@@ -36,7 +31,26 @@ export default async function PricingPage({
 }) {
   const {locale} = await params;
   setRequestLocale(locale);
-  return <PricingContent />;
+  const l = locale as 'en' | 'ar';
+  const [tc, t, f] = await Promise.all([
+    getTranslations({locale, namespace: 'common'}),
+    getTranslations({locale, namespace: 'pricing'}),
+    getTranslations({locale, namespace: 'faq'}),
+  ]);
+  const fp = pricingParams(locale);
+  return (
+    <>
+      <FaqJsonLd
+        items={[
+          {question: f('q5'), answer: f('a5', fp)},
+          {question: f('q6'), answer: f('a6', fp)},
+          {question: f('q7'), answer: f('a7')},
+        ]}
+      />
+      <BreadcrumbJsonLd locale={l} items={[{name: tc('nav_home'), path: ''}, {name: t('p_label'), path: '/pricing'}]} />
+      <PricingContent />
+    </>
+  );
 }
 
 function PricingContent() {
