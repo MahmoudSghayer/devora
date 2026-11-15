@@ -41,6 +41,14 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # Unit tests (pricing/ROI engines, lead service, email templates).
+      - name: Test
+        run: npm test
+
+      # Real SMTP round-trip against a local catcher (no secrets needed).
+      - name: Email integration
+        run: node tests/email-smtp.mjs
+
       - name: Build
         run: npm run build
 

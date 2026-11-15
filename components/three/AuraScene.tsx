@@ -33,7 +33,6 @@ export default function AuraScene({
   className = '', intensity = 1, interactive = true, description, onReady, onError,
 }: AuraSceneProps) {
   const box = useRef<HTMLDivElement>(null);
-  const canvas = useRef<HTMLCanvasElement>(null);
   const live = useRef({intensity, interactive, onReady, onError, handle: null as AuraHandle | null});
 
   useEffect(() => {
@@ -46,8 +45,11 @@ export default function AuraScene({
 
   useEffect(() => {
     const el = box.current;
-    const cv = canvas.current;
-    if (!el || !cv) return;
+    if (!el) return;
+    // A fresh canvas per mount: a context that was force-lost on cleanup can't be reused (StrictMode).
+    const cv = document.createElement('canvas');
+    cv.className = 'absolute inset-0 size-full';
+    el.appendChild(cv);
     const state = live.current;
 
     let handle: AuraHandle;
@@ -66,6 +68,7 @@ export default function AuraScene({
         intensity: state.intensity,
       });
     } catch {
+      cv.remove();
       queueMicrotask(() => state.onError?.());
       return;
     }
@@ -165,6 +168,7 @@ export default function AuraScene({
       cv.removeEventListener('webglcontextrestored', onRestored);
       state.handle = null;
       handle.dispose();
+      cv.remove();
     };
   }, []);
 
@@ -173,8 +177,6 @@ export default function AuraScene({
       ref={box}
       className={`relative size-full overflow-hidden ${className}`}
       {...(description ? {role: 'img', 'aria-label': description} : {'aria-hidden': true})}
-    >
-      <canvas ref={canvas} className="absolute inset-0 size-full" />
-    </div>
+    />
   );
 }

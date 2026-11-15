@@ -30,9 +30,9 @@ export default function PillarSwitcher() {
   }));
 
   return (
-    <section className="border-b border-border py-section" aria-labelledby="pillars-title">
+    <section className="border-b border-border py-section">
       <Container>
-        <SectionHeader label={t('label')} title={t('title')} titleId="pillars-title" />
+        <SectionHeader label={t('label')} title={t('title')} />
         <p className="mt-5 max-w-[640px] text-lead text-muted">{t('sub')}</p>
         <PillarTabs
           pillars={views}
