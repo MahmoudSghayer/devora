@@ -27,7 +27,6 @@ import {
   type LineItem,
   type MaintenancePlan,
   type ProjectType,
-  type SharedId,
 } from './types';
 
 const round10 = (n: number): number => Math.round(n / 10) * 10;

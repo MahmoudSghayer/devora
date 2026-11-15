@@ -1,5 +1,5 @@
 import type {ReactNode} from 'react';
-import {getTranslations} from 'next-intl/server';
+import {getTranslations, setRequestLocale} from 'next-intl/server';
 import Header from '@/components/chrome/Header';
 import Footer from '@/components/chrome/Footer';
 import ScrollProgress from '@/components/chrome/ScrollProgress';
@@ -11,8 +11,17 @@ import CursorAura from '@/components/motion/CursorAura';
 // a cosmic gradient, canvas starfield and film grain behind the content, plus
 // desktop-only smooth scroll and a cursor light (both off for touch and reduced
 // motion). The skip link is the first focusable element.
-export default async function MarketingLayout({children}: {children: ReactNode}) {
-  const t = await getTranslations('common');
+export default async function MarketingLayout({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: Promise<{locale: string}>;
+}) {
+  // Explicit locale keeps the whole subtree statically rendered (SSG).
+  const {locale} = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({locale, namespace: 'common'});
   return (
     <>
       <a

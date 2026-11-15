@@ -19,7 +19,7 @@ export default async function AutomationRoiPage({params}: {params: Promise<{loca
   const {locale} = await params;
   setRequestLocale(locale);
   const l = locale as 'en' | 'ar';
-  const t = await getTranslations('roi');
+  const t = await getTranslations({locale, namespace: 'roi'});
   const tc = await getTranslations({locale, namespace: 'common'});
   const title = t('meta.title');
   const description = t('meta.description');
