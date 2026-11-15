@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
+import ScopedMessages from '@/components/i18n/ScopedMessages';
 import Container from '@/components/ui/Container';
 import DiscussApp from '@/components/discuss/DiscussApp';
 import {Link} from '@/i18n/navigation';
@@ -53,7 +54,9 @@ export default async function DiscussPage({params}: {params: Promise<{locale: st
             </Link>
           </p>
         </noscript>
-        <DiscussApp email={SITE.email} socials={SOCIALS} />
+        <ScopedMessages namespaces={['discuss']}>
+          <DiscussApp email={SITE.email} socials={SOCIALS} />
+        </ScopedMessages>
       </Container>
     </>
   );
