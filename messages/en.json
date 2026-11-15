@@ -200,7 +200,7 @@
     "faq_title": "Before you ask.",
     "custom_label": "Custom needs?",
     "custom_title": "Run the estimator, or tell us what you need.",
-    "custom_sub": "The packages above cover websites. Automation and custom software are scoped around your workflow, so start with the tool that fits. All figures are indicative, not a quotation.",
+    "custom_sub": "Websites, automation and custom software are each scoped differently, so start with the tool that fits. All figures are indicative, not a quotation.",
     "custom_web_d": "Pick features and get an indicative range for your website in a couple of minutes.",
     "custom_auto_d": "Enter your repetitive tasks and see the time and money automation could give back.",
     "custom_soft_d": "Describe the system you need and we will scope it with you.",
@@ -1017,7 +1017,7 @@
         "labor": "What does an hour of work cost you?",
         "potential": "How much of it can be automated?",
         "results": "Your estimated savings",
-        "form": "Get your tailored plan"
+        "form": "Review your answers and get your plan"
       },
       "short": {
         "tasks": "Tasks",
@@ -1051,6 +1051,7 @@
       "number": "Enter a number.",
       "int": "Enter a whole number.",
       "range": "Enter a value between {min} and {max}.",
+      "choose": "Choose one option.",
       "noTask": "Choose at least one task to continue.",
       "perDay": "One employee cannot spend more than 24 hours a day on this. Check times per day and minutes.",
       "noHours": "Total time is zero. Enter a time greater than zero for at least one group.",
@@ -1122,6 +1123,75 @@
       "label": "Share counted as direct cost reduction",
       "valueText": "{pct} percent counted as direct cost reduction",
       "desc": "Freed time does not automatically cut your costs. It does only if you pay for fewer hours, avoid a hire or reduce overtime. The rest becomes capacity for sales, service and growth. We assume {pct} by default. Set it to match your plan."
+    },
+    "exact": {
+      "label": "Enter exact numbers instead",
+      "hint": "Quick options use a typical value for each range. Exact numbers let you type your own; the maths is identical."
+    },
+    "level": {
+      "title": "How standardised are these tasks?",
+      "desc": "This sets a starting automation share for every task. Changing it resets the sliders below to the typical values for that level."
+    },
+    "bucket": {
+      "timesPerDay": {
+        "1-5": "1 to 5 times",
+        "6-15": "6 to 15 times",
+        "16-40": "16 to 40 times",
+        "40+": "More than 40 times"
+      },
+      "minutes": {
+        "lt2": "Under 2 minutes",
+        "2-5": "2 to 5 minutes",
+        "5-15": "5 to 15 minutes",
+        "15-30": "15 to 30 minutes",
+        "30+": "More than 30 minutes"
+      },
+      "people": {
+        "1": "Just 1 person",
+        "2-3": "2 to 3 people",
+        "4-6": "4 to 6 people",
+        "7+": "7 or more people"
+      },
+      "hourly": {
+        "lt40": "Under ₪40 an hour",
+        "40-60": "₪40 to ₪60 an hour",
+        "60-90": "₪60 to ₪90 an hour",
+        "90-150": "₪90 to ₪150 an hour",
+        "150+": "More than ₪150 an hour"
+      },
+      "salary": {
+        "lt8k": "Under ₪8,000 a month",
+        "8-12k": "₪8,000 to ₪12,000 a month",
+        "12-18k": "₪12,000 to ₪18,000 a month",
+        "18-25k": "₪18,000 to ₪25,000 a month",
+        "25k+": "More than ₪25,000 a month"
+      },
+      "labor": {
+        "unknown": "I don't know — use typical values"
+      },
+      "standardisation": {
+        "very": "Very repetitive: the same steps almost every time",
+        "mostly": "Mostly repetitive, with some exceptions",
+        "varies": "Varies a lot: each case is different"
+      }
+    },
+    "summary": {
+      "title": "Review your answers",
+      "intro": "This is what we will base the plan on. Use Edit to change anything.",
+      "tasks": "Tasks",
+      "workload": "Workload",
+      "labor": "Cost of an hour",
+      "automation": "Automation potential",
+      "edit": "Edit",
+      "editLabel": "Edit {section}",
+      "workLine": "{task}: {times} times a day × {minutes} min × {people} people = {hours} h/day",
+      "laborHourly": "{hourly} per hour (fully loaded)",
+      "laborSalary": "Gross salary {gross} × {mult} ÷ {hours} h = {hourly} per hour",
+      "laborUnknown": "Typical values: {hourly} per hour",
+      "days": "{days} working days a month",
+      "level": "Standardisation: {level}",
+      "pctLine": "{task}: {pct} automated",
+      "direct": "{pct} of the freed time counted as direct savings (an assumption)"
     },
     "results": {
       "intro": "Indicative estimate based on the numbers you entered. Not a quotation, not a guarantee.",
@@ -1263,8 +1333,8 @@
       "business": "Business name",
       "optional": "optional",
       "email": "Email",
-      "phone": "Phone number",
-      "details": "Anything we should know?",
+      "phone": "Phone / WhatsApp number",
+      "details": "Anything else we should know?",
       "detailsHint": "Which tools do you use today? What hurts the most?",
       "preferred": "How should we contact you?",
       "channel": {

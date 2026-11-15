@@ -4,9 +4,11 @@ import type {Dispatch} from 'react';
 import {useLocale, useTranslations} from 'next-intl';
 import Spotlight from '@/components/motion/Spotlight';
 import {TaskIcon} from './icons';
-import {MAX_ROWS, fieldId, newId, rowHours, type Action, type FieldErrors, type FieldError, type RowField, type TaskEntry} from './model';
+import {FIELD_BUCKETS, MAX_ROWS, fieldId, newId, rowHours, type Action, type FieldErrors, type FieldError, type RowField, type TaskEntry} from './model';
 import {num} from './format';
-import {NumField, ghostBtn} from './ui';
+import {ExactToggle, NumField, OptionGroup, ghostBtn} from './ui';
+
+const FIELDS: readonly RowField[] = ['times', 'minutes', 'employees'];
 
 function focusSoon(id: string) {
   requestAnimationFrame(() => document.getElementById(id)?.focus());
@@ -16,8 +18,10 @@ export default function Workload({
   tasks,
   errors,
   workingDays,
+  exact,
   dispatch,
 }: {
+  exact: boolean;
   tasks: TaskEntry[];
   errors: FieldErrors;
   workingDays: number;
@@ -30,6 +34,13 @@ export default function Workload({
   return (
     <div className="flex flex-col gap-6">
       <p className="max-w-[68ch] text-base leading-relaxed text-muted">{t('workload.intro')}</p>
+      <ExactToggle
+        id="exact-workload"
+        checked={exact}
+        onChange={(value) => dispatch({type: 'setExact', scope: 'workload', value})}
+        label={t('exact.label')}
+        hint={t('exact.hint')}
+      />
       {tasks.map((task) => {
         const name = t(`task.${task.taskId}`);
         const teamDay = task.rows.reduce((s, r) => s + rowHours(r), 0);
@@ -59,34 +70,38 @@ export default function Workload({
                   return (
                     <fieldset key={row.id} className="min-w-0 rounded-card border border-border-card bg-surface/60 p-4 nav:p-5">
                       <legend className="px-2 text-sm font-semibold text-ink-2">{t('workload.group', {n})}</legend>
-                      <div className="grid grid-cols-1 gap-4 min-[560px]:grid-cols-3">
-                        <NumField
-                          id={idFor('times')}
-                          label={t('workload.times')}
-                          hint={t('workload.timesHint')}
-                          value={row.times}
-                          error={err(errors[idFor('times')])}
-                          onChange={(value) => dispatch({type: 'setRow', taskId: task.taskId, rowId: row.id, field: 'times', value})}
-                        />
-                        <NumField
-                          id={idFor('minutes')}
-                          label={t('workload.minutes')}
-                          hint={t('workload.minutesHint')}
-                          value={row.minutes}
-                          error={err(errors[idFor('minutes')])}
-                          onChange={(value) => dispatch({type: 'setRow', taskId: task.taskId, rowId: row.id, field: 'minutes', value})}
-                        />
-                        <NumField
-                          id={idFor('employees')}
-                          label={t('workload.employees')}
-                          hint={t('workload.employeesHint')}
-                          value={row.employees}
-                          step="1"
-                          inputMode="numeric"
-                          error={err(errors[idFor('employees')])}
-                          onChange={(value) => dispatch({type: 'setRow', taskId: task.taskId, rowId: row.id, field: 'employees', value})}
-                        />
-                      </div>
+                      {exact ? (
+                        <div className="grid grid-cols-1 gap-4 min-[560px]:grid-cols-3">
+                          {FIELDS.map((f) => (
+                            <NumField
+                              key={f}
+                              id={idFor(f)}
+                              label={t(`workload.${f}`)}
+                              hint={t(`workload.${f}Hint`)}
+                              value={row[f]}
+                              step={f === 'employees' ? '1' : 'any'}
+                              inputMode={f === 'employees' ? 'numeric' : 'decimal'}
+                              error={err(errors[idFor(f)])}
+                              onChange={(value) => dispatch({type: 'setRow', taskId: task.taskId, rowId: row.id, field: f, value})}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-5">
+                          {FIELDS.map((f) => (
+                            <OptionGroup
+                              key={f}
+                              name={`opt-${task.taskId}-${row.id}-${f}`}
+                              firstId={idFor(f)}
+                              legend={t(`workload.q.${f}`)}
+                              options={FIELD_BUCKETS[f].map((b) => ({value: String(b.value), label: t(b.i18nKey.replace(/^roi\./, ''))}))}
+                              value={row[f]}
+                              error={err(errors[idFor(f)])}
+                              onSelect={(value) => dispatch({type: 'setRow', taskId: task.taskId, rowId: row.id, field: f, value})}
+                            />
+                          ))}
+                        </div>
+                      )}
                       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                         <p className="text-sm text-muted">
                           {t('workload.groupTotal', {hours: num(perGroup, locale, 2)})}

@@ -176,6 +176,7 @@ export const LEAD_SOURCE_FILTERS = [
   'contact',
   'website_estimate',
   'automation_roi',
+  'software_discovery',
 ] as const;
 
 // PostgREST `or()` filters are comma/paren-delimited: strip anything that

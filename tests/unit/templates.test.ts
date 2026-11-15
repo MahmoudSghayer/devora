@@ -4,11 +4,12 @@ import {
   contactEmail,
   esc,
   leadEmail,
+  softwareDiscoveryEmail,
   websiteEstimateEmail,
 } from '@/lib/email/templates';
 import {estimateProject} from '@/lib/estimator/engine';
 import {computeRoi} from '@/lib/roi/engine';
-import {tierLine} from '@/lib/pricing/config';
+import {estimateDiscuss} from '@/lib/discuss/engine';
 
 const base = {
   leadRef: 'DV-2611-7KQ4',
@@ -86,17 +87,80 @@ describe('calculator emails', () => {
   });
 });
 
+describe('software discovery email', () => {
+  const answers = {
+    purpose: ['replace-spreadsheets' as const, 'ai-tool' as const],
+    users: 'team-2-10' as const,
+    mustHaves: ['auth-roles' as const, 'bilingual' as const],
+    timeline: '1-3m' as const,
+    budget: '15-30k' as const,
+  };
+  const result = estimateDiscuss(answers);
+  const mail = softwareDiscoveryEmail({
+    ...base,
+    contact: {...base.contact, notes: 'We need <b>this</b> by "Q1" & more'},
+    answers,
+    result,
+  });
+
+  it('has the [Discuss ref] subject with the starting range and replies to the visitor', () => {
+    expect(mail.subject).toMatch(/^\[Discuss DV-2611-7KQ4\] .* — ₪[\d,]+–₪[\d,]+$/);
+    expect(mail.replyTo).toBe('dana@example.com');
+  });
+
+  it('lists human-readable options, range, fit, weeks, maintenance and assumptions', () => {
+    expect(mail.text).toContain('Replace spreadsheets and manual processes');
+    expect(mail.text).toContain('Bilingual (Arabic / English)');
+    expect(mail.text).toContain('1–3 months');
+    expect(mail.text).toContain('Budget fit:');
+    expect(mail.text).toContain('weeks');
+    expect(mail.text).toContain('Maintenance:');
+    expect(mail.text).toContain('ASSUMPTIONS');
+    expect(mail.text).toContain(result.assumptions[0]!);
+    expect(mail.text).toContain('ANSWERS (raw)');
+    expect(mail.html).toContain('Chosen options');
+  });
+
+  it('renders the free text prominently and escaped', () => {
+    expect(mail.text).toContain('We need <b>this</b> by "Q1" & more');
+    expect(mail.html).toContain('We need &lt;b&gt;this&lt;/b&gt; by &quot;Q1&quot; &amp; more');
+    expect(mail.html).not.toContain('<b>this</b>');
+    expect(mail.html.indexOf('Anything else we should know')).toBeLessThan(
+      mail.html.indexOf('Indicative starting range')
+    );
+  });
+});
+
+describe('free-text notes appear in every calculator + contact email', () => {
+  const notes = 'NOTE-MARKER-123';
+  const c = {...base, contact: {...base.contact, notes}};
+  const roiA = {
+    tasks: [{taskId: 'invoices' as const, timesPerDay: 5, minutesEach: 10, employees: 2, automationPct: 70}],
+  };
+  it.each([
+    ['estimate', websiteEstimateEmail({...c, answers: {types: ['business']}, result: estimateProject({types: ['business']})})],
+    ['roi', automationRoiEmail({...c, answers: roiA, result: computeRoi(roiA)})],
+    ['contact', contactEmail({...c, message: 'm'})],
+  ])('%s', (_n, m) => {
+    expect(m.text).toContain(notes);
+    expect(m.html).toContain(notes);
+  });
+});
+
 describe('legacy lead email', () => {
-  it('uses config-driven tier prices (no hardcoded USD)', () => {
-    const m = leadEmail({
+  it('has no package line; shows "Interested in" only when non-empty', () => {
+    const withText = leadEmail({
       name: 'A',
       email: 'a@b.co',
       request: 'r',
-      recommendedPackage: 'studio',
+      recommendedPackage: 'a custom portal',
       locale: 'en',
       history: [],
     });
-    expect(m.text).toContain(tierLine('studio'));
-    expect(m.text).not.toContain('$');
+    expect(withText.text).toContain('Interested in: a custom portal');
+    expect(withText.text).not.toMatch(/package|Launch|Studio|Growth/i);
+    const without = leadEmail({name: 'A', email: 'a@b.co', request: 'r', locale: 'en', history: []});
+    expect(without.text).not.toContain('Interested in');
+    expect(without.html).not.toContain('Interested in');
   });
 });

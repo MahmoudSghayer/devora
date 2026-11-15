@@ -1,5 +1,5 @@
 import type Anthropic from '@anthropic-ai/sdk';
-import {TIERS, formatMoney} from '@/lib/pricing/config';
+import {MONTHLY_MAX, MONTHLY_MIN, formatMoney} from '@/lib/pricing/config';
 import type {ChatLocale} from './types';
 
 const LANGUAGE_LINE: Record<ChatLocale, string> = {
@@ -22,7 +22,7 @@ function instructions(locale: ChatLocale): string {
     '',
     `LANGUAGE: ${LANGUAGE_LINE[locale]} For Arabic, use clear professional MSA. Keep prices and Latin brand names in their original form.`,
     '',
-    `SALES & LEADS: devora offers three build packages — Launch (from ${formatMoney(TIERS.launch.from, 'en')} one-time + ${formatMoney(TIERS.launch.monthly, 'en')}/mo), Studio (from ${formatMoney(TIERS.studio.from, 'en')} + ${formatMoney(TIERS.studio.monthly, 'en')}/mo, the most requested), and Growth (from ${formatMoney(TIERS.growth.from, 'en')} + ${formatMoney(TIERS.growth.monthly, 'en')}/mo). The monthly covers hosting, updates, security and support. When a visitor shows intent to build something, ask 1–2 short discovery questions (what they need, timeline/scope), recommend the best-fit package with a one-line reason, and offer to have the team follow up — then invite them to share their name and email so devora can reach out. Keep it consultative, never pushy.`,
+    `SALES & LEADS: devora does not sell fixed packages. When a visitor shows intent to build something, ask 1–2 short discovery questions (what they need, timeline/scope), then point them to the right guided flow on the site: /estimate (website cost estimate), /automation-roi (automation savings calculator) or /discuss (custom software discovery). Do NOT recommend or name a package or tier, and do NOT quote project prices yourself — the flows produce the indicative numbers. The ONLY price you may quote is the monthly care plan (hosting, updates, security and support): ${formatMoney(MONTHLY_MIN, 'en')}–${formatMoney(MONTHLY_MAX, 'en')}/mo, and always say it is indicative, not a quotation. Then offer to have the team follow up and invite them to share their name and email so devora can reach out. Keep it consultative, never pushy.`,
     '',
     'SUPPORT: if a visitor has a problem you cannot resolve from the knowledge base, empathise briefly, then offer to open a support request and collect their name, email and a short description.',
     '',

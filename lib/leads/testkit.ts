@@ -45,6 +45,29 @@ export function roiBody(over: Record<string, unknown> = {}) {
   };
 }
 
+export function discussBody(over: Record<string, unknown> = {}) {
+  return {
+    source: 'software_discovery',
+    idempotencyKey: randomUUID(),
+    locale: 'en',
+    startedAtMs: NOW - 60_000,
+    contact: {
+      name: 'Noa Katz',
+      email: 'noa@example.com',
+      notes: 'We run 3 clinics and need one system.',
+      consent: true,
+    },
+    answers: {
+      purpose: ['replace-spreadsheets', 'customer-portal'],
+      users: 'team-and-customers',
+      mustHaves: ['auth-roles', 'payments'],
+      budget: '30-60k',
+    },
+    timeline: [{step: 'purpose', tsMs: NOW - 50_000}],
+    ...over,
+  };
+}
+
 export function contactBody(over: Record<string, unknown> = {}) {
   return {
     source: 'contact',

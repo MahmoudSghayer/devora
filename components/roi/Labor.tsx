@@ -6,7 +6,8 @@ import Spotlight from '@/components/motion/Spotlight';
 import {ROI_CONFIG} from '@/lib/pricing/config';
 import {LABOR_FIELD_ID, toNum, type Action, type CalcState, type FieldError, type FieldErrors, type LaborMode} from './model';
 import {money, num} from './format';
-import {NumField} from './ui';
+import {HOURLY_COST_BANDS, MONTHLY_SALARY_BANDS} from '@/lib/roi/buckets';
+import {ExactToggle, NumField, OptionGroup} from './ui';
 
 const MODES: LaborMode[] = ['hourly', 'salary', 'unknown'];
 
@@ -64,8 +65,31 @@ export default function Labor({
             })}
           </div>
 
+          {state.laborMode !== 'unknown' && (
+            <div className="mt-5">
+              <ExactToggle
+                id="exact-labor"
+                checked={state.exactLabor}
+                onChange={(value) => dispatch({type: 'setExact', scope: 'labor', value})}
+                label={t('exact.label')}
+                hint={t('exact.hint')}
+              />
+            </div>
+          )}
+
           <div className="mt-6" aria-live="polite">
-            {state.laborMode === 'hourly' && (
+            {state.laborMode === 'hourly' && !state.exactLabor && (
+              <OptionGroup
+                name="band-hourly"
+                firstId={LABOR_FIELD_ID.hourly}
+                legend={t('labor.bandsHourly')}
+                options={HOURLY_COST_BANDS.map((b) => ({value: String(b.value), label: t(b.i18nKey.replace(/^roi\./, ''))}))}
+                value={state.hourly}
+                error={err(errors[LABOR_FIELD_ID.hourly])}
+                onSelect={(value) => dispatch({type: 'setLabor', field: 'hourly', value})}
+              />
+            )}
+            {state.laborMode === 'hourly' && state.exactLabor && (
               <NumField
                 id={LABOR_FIELD_ID.hourly}
                 label={t('labor.hourly')}
@@ -79,7 +103,22 @@ export default function Labor({
             )}
             {state.laborMode === 'salary' && (
               <div className="flex flex-col gap-5">
-                <div className="grid grid-cols-1 gap-4 min-[560px]:grid-cols-2">
+                {!state.exactLabor && (
+                  <OptionGroup
+                    name="band-salary"
+                    firstId={LABOR_FIELD_ID.salary}
+                    legend={t('labor.bandsSalary')}
+                    hint={t('labor.salaryHint')}
+                    options={MONTHLY_SALARY_BANDS.map((b) => ({value: String(b.value), label: t(b.i18nKey.replace(/^roi\./, ''))}))}
+                    value={state.salary}
+                    error={err(errors[LABOR_FIELD_ID.salary])}
+                    onSelect={(value) => dispatch({type: 'setLabor', field: 'salary', value})}
+                  />
+                )}
+                {!state.exactLabor && (
+                  <p className="text-sm leading-relaxed text-muted">{t('labor.multiplierFixed', params)}</p>
+                )}
+                {state.exactLabor && <div className="grid grid-cols-1 gap-4 min-[560px]:grid-cols-2">
                   <NumField
                     id={LABOR_FIELD_ID.salary}
                     label={t('labor.salary')}
@@ -99,7 +138,7 @@ export default function Labor({
                     error={err(errors[LABOR_FIELD_ID.multiplier])}
                     onChange={(value) => dispatch({type: 'setLabor', field: 'multiplier', value})}
                   />
-                </div>
+                </div>}
                 {derived !== null && derived > 0 && (
                   <p className="rounded-card border border-border-card bg-surface/60 p-4 text-sm leading-relaxed text-ink-2">
                     {t('labor.derived', {

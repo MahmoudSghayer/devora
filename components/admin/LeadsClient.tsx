@@ -1,16 +1,31 @@
 'use client';
 
 import {useCallback, useEffect, useMemo, useState} from 'react';
+import {LEAD_SOURCE_LABEL} from '@/lib/leads/types';
+import {
+  BUDGET_FIT_LABEL,
+  BUDGET_LABEL,
+  INTEGRATIONS_LABEL,
+  MUST_HAVE_LABEL,
+  PURPOSE_LABEL,
+  TIMELINE_LABEL,
+  TODAY_LABEL,
+  USERS_LABEL,
+} from '@/lib/leads/discussLabels';
 
 const STATUSES = ['new', 'qualified', 'contacted', 'won', 'lost'] as const;
 const FILTERS = ['all', ...STATUSES] as const;
-const SOURCES = ['all', 'chat', 'contact', 'website_estimate', 'automation_roi'] as const;
+const SOURCES = [
+  'all',
+  'chat',
+  'contact',
+  'website_estimate',
+  'automation_roi',
+  'software_discovery',
+] as const;
 
 const SOURCE_LABEL: Record<string, string> = {
-  chat: 'Chat',
-  contact: 'Contact form',
-  website_estimate: 'Website estimate',
-  automation_roi: 'Automation ROI',
+  ...LEAD_SOURCE_LABEL,
   all: 'All sources',
 };
 
@@ -36,6 +51,55 @@ function scalar(v: Json): string {
   if (typeof v === 'number')
     return new Intl.NumberFormat('en-US', {maximumFractionDigits: 2}).format(v);
   return String(v);
+}
+
+const label = (map: Record<string, string>, v: Json): string =>
+  typeof v === 'string' ? (map[v] ?? v) : scalar(v);
+const labels = (map: Record<string, string>, v: Json): string[] =>
+  Array.isArray(v) ? v.map((x) => label(map, x)) : [];
+
+/**
+ * Software-discovery snapshot → readable sections (labels instead of option
+ * ids, the indicative range instead of the raw engine result).
+ */
+function discussDetails(details: Record<string, Json>): Record<string, Json> {
+  const a = isObj(details.answers) ? details.answers : {};
+  const r = isObj(details.result) ? details.result : {};
+  const weeks = isObj(r.weeks) ? r.weeks : {};
+  const cur = isObj(r.estimate) && typeof r.estimate.currency === 'string' ? r.estimate.currency : 'ILS';
+  const range = money({
+    estimate_low: r.startingLow,
+    estimate_high: r.startingHigh,
+    estimate_currency: cur,
+  });
+  const out: Record<string, Json> = {
+    notes: details.notes,
+    chosen_options: {
+      what_it_is_for: labels(PURPOSE_LABEL, a.purpose),
+      who_will_use_it: label(USERS_LABEL, a.users),
+      how_they_work_today: label(TODAY_LABEL, a.today),
+      integrations: label(INTEGRATIONS_LABEL, a.integrations),
+      must_haves: labels(MUST_HAVE_LABEL, a.mustHaves),
+      timeline: label(TIMELINE_LABEL, a.timeline),
+      budget: label(BUDGET_LABEL, a.budget),
+    },
+    indicative_estimate: {
+      starting_range: range || '—',
+      budget_fit: label(BUDGET_FIT_LABEL, r.budgetFit),
+      timeline_weeks:
+        weeks.low != null ? `${scalar(weeks.low)}–${scalar(weeks.high)} weeks` : '—',
+      maintenance_monthly: r.maintenanceMonthly,
+      assumptions: r.assumptions,
+    },
+    pricing_config_version: details.pricing_config_version ?? r.configVersion,
+    timeline: details.timeline,
+  };
+  return out;
+}
+
+function detailsOf(l: Lead): Record<string, Json> {
+  const d = isObj(l.details) ? l.details : {};
+  return l.source === 'software_discovery' ? discussDetails(d) : d;
 }
 
 const isScalar = (v: Json) => v === null || typeof v !== 'object';
@@ -81,7 +145,7 @@ function scalarLabel(o: Record<string, Json>): string | undefined {
 }
 
 function leadToText(l: Lead): string {
-  const details = isObj(l.details) ? l.details : {};
+  const details = detailsOf(l);
   const head = [
     `Lead ${scalar(l.lead_ref)} (${SOURCE_LABEL[String(l.source)] ?? scalar(l.source)})`,
     `Name: ${scalar(l.name)}`,
@@ -194,8 +258,7 @@ function Fields({data}: {data: Record<string, Json>}) {
 
 function DetailPanel({lead}: {lead: Lead}) {
   const [copied, setCopied] = useState<'ok' | 'fail' | null>(null);
-  const details = isObj(lead.details) ? lead.details : {};
-  const sections = Object.entries(details);
+  const sections = Object.entries(detailsOf(lead));
 
   const copy = async () => {
     try {
@@ -411,11 +474,6 @@ export default function LeadsClient() {
                     {est ? (
                       <span className="rounded-full border border-border-card px-2 py-0.5 text-[11px] text-ink">
                         {est}
-                      </span>
-                    ) : null}
-                    {l.recommended_package ? (
-                      <span className="rounded-full border border-border-card px-2 py-0.5 text-[11px] capitalize text-muted">
-                        {String(l.recommended_package)}
                       </span>
                     ) : null}
                     <select

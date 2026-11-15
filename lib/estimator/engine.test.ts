@@ -3,7 +3,8 @@ import {ESTIMATOR_CONFIG, TIERS} from '@/lib/pricing/config';
 import {estimateProject} from './engine';
 import {estimatorAnswersSchema, type EstimatorAnswers} from './schema';
 import {QUESTIONS, estimatorI18nKeys, visibleQuestions} from './questions';
-import {FEATURE_IDS, INTEGRATION_IDS, PROJECT_TYPES} from './types';
+import {FEATURE_IDS, GOAL_IDS, INTEGRATION_IDS, PROJECT_TYPES} from './types';
+import {GOAL_OPTIONS, GOAL_TYPE_SUGGESTIONS, SIZE_OPTIONS} from './questions';
 import keysJson from '@/docs/transformation/estimator-i18n-keys.json';
 
 const C = ESTIMATOR_CONFIG;
@@ -174,8 +175,12 @@ describe('questions', () => {
     expect(ids(['ecommerce'])).toContain('products');
     expect(ids(['ecommerce'])).not.toContain('features.webapp');
     expect(ids(['webapp'])).toContain('roles');
-    expect(ids(['webapp'])).toContain('problem');
+    expect(ids(['webapp'])).not.toContain('problem');
     expect(ids(['business', 'webapp'])).toContain('pages');
+  });
+  it('starts with goals then size, and every question is option-based', () => {
+    expect(QUESTIONS.slice(0, 3).map((q) => q.id)).toEqual(['goals', 'size', 'types']);
+    for (const q of QUESTIONS) expect(q.options !== undefined || q.kind === 'toggle').toBe(true);
   });
   it('always shows type, design and integrations', () => {
     const v = ids(['unsure']);
@@ -208,5 +213,30 @@ describe('schema', () => {
     expect(estimatorAnswersSchema.safeParse({types: []}).success).toBe(false);
     expect(estimatorAnswersSchema.safeParse({types: ['nope']}).success).toBe(false);
     expect(estimatorAnswersSchema.safeParse({types: ['business'], features: Array(200).fill('blog')}).success).toBe(false);
+  });
+});
+
+describe('goals and size', () => {
+  it('maps size to a representative page count and prices pages beyond the included 5', () => {
+    const extra = (size: NonNullable<EstimatorAnswers['size']>) =>
+      total({types: ['business'], size}) - C.projectBase.business.amount;
+    expect(extra('small')).toBe(0);
+    expect(extra('medium')).toBe((C.sizePages.medium - C.pages.included) * C.pages.perPage);
+    expect(extra('xlarge')).toBe((50 - 5) * C.pages.perPage);
+    expect(extra('unsure')).toBe((8 - 5) * C.pages.perPage);
+  });
+  it('explicit pages win over size', () => {
+    expect(total({types: ['business'], size: 'xlarge', pages: 5})).toBe(C.projectBase.business.amount);
+  });
+  it('exports goal and size cards and suggestions', () => {
+    expect(GOAL_OPTIONS.map((g) => g.id)).toEqual(GOAL_IDS);
+    expect(SIZE_OPTIONS.map((s) => s.i18nKey)).toContain('estimator.size.unsure');
+    expect(GOAL_TYPE_SUGGESTIONS.sell).toEqual(['ecommerce']);
+    for (const g of GOAL_IDS) expect(GOAL_TYPE_SUGGESTIONS[g].length).toBeGreaterThan(0);
+  });
+  it('validates goals and size', () => {
+    expect(estimatorAnswersSchema.safeParse({types: ['business'], goals: ['leads', 'sell'], size: 'large'}).success).toBe(true);
+    expect(estimatorAnswersSchema.safeParse({types: ['business'], goals: ['x']}).success).toBe(false);
+    expect(estimatorAnswersSchema.safeParse({types: ['business'], size: 'huge'}).success).toBe(false);
   });
 });

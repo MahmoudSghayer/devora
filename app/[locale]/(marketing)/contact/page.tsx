@@ -49,10 +49,10 @@ function ContactContent() {
         title={p('paths_title')}
         sub={p('paths_sub')}
         headingId="contact-paths-title"
-        className="border-b border-border pb-block pt-section"
+        className="border-b border-border pb-[var(--space-block)] pt-[var(--space-section)]"
       />
       <section aria-labelledby="contact-plain-title" className="py-section">
-        <Container className="mb-block">
+        <Container className="mb-[var(--space-block)]">
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
             <span aria-hidden>{'// '}</span>
             {p('plain_label')}

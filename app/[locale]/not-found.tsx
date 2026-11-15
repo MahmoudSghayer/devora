@@ -25,7 +25,7 @@ export default function NotFound() {
       <Header />
       <main id="main" className="flex-1">
         <section className="aura overflow-x-clip">
-          <Container className="flex min-h-[70vh] flex-col items-start justify-center pb-section pt-[150px]">
+          <Container className="flex min-h-[70vh] flex-col items-start justify-center pb-[var(--space-section)] pt-[150px]">
             <p className="u-mono num font-mono text-xs uppercase tracking-[0.36em] text-amber" dir="ltr">
               404
             </p>

@@ -145,3 +145,117 @@ export function RangeField({
     </div>
   );
 }
+
+export interface Option {
+  value: string;
+  label: string;
+}
+
+/** Native radio group styled as option cards. The first radio carries the field id so errors can focus it. */
+export function OptionGroup({
+  name,
+  legend,
+  options,
+  value,
+  onSelect,
+  error,
+  firstId,
+  hint,
+  className = '',
+}: {
+  name: string;
+  legend: string;
+  options: readonly Option[];
+  value: string;
+  onSelect: (v: string) => void;
+  error?: string;
+  firstId?: string;
+  hint?: string;
+  className?: string;
+}) {
+  const errId = `${name}-err`;
+  const hintId = `${name}-hint`;
+  return (
+    <fieldset
+      className={`min-w-0 ${className}`}
+      aria-describedby={[hint ? hintId : '', error ? errId : ''].filter(Boolean).join(' ') || undefined}
+    >
+      <legend className="mb-3 text-sm font-medium leading-snug text-ink-2">{legend}</legend>
+      <div className="flex flex-wrap gap-2">
+        {options.map((o, i) => {
+          const checked = o.value === value;
+          return (
+            <label
+              key={o.value}
+              className={`flex min-h-11 cursor-pointer items-center rounded-pill border px-4 py-2 text-sm font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-amber ${
+                checked ? 'border-signal bg-signal-lo text-ink' : 'border-border-card text-ink-2 hover:border-border-ghost'
+              }`}
+            >
+              <input
+                type="radio"
+                name={name}
+                value={o.value}
+                id={i === 0 ? firstId : undefined}
+                checked={checked}
+                aria-invalid={error ? true : undefined}
+                onChange={() => onSelect(o.value)}
+                className="peer sr-only"
+              />
+              <span className="flex items-center gap-2">
+                <span aria-hidden className={`size-2 rounded-pill ${checked ? 'bg-signal' : 'bg-border-ghost'}`} />
+                {o.label}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+      {hint && (
+        <p id={hintId} className="mt-2 text-xs leading-snug text-muted-2">
+          {hint}
+        </p>
+      )}
+      {error && (
+        <div className="mt-2">
+          <ErrorText id={errId}>{error}</ErrorText>
+        </div>
+      )}
+    </fieldset>
+  );
+}
+
+/** "Enter exact numbers" switch (a native checkbox). */
+export function ExactToggle({
+  id,
+  checked,
+  onChange,
+  label,
+  hint,
+}: {
+  id: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  hint: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1 print:hidden">
+      <label
+        htmlFor={id}
+        className="flex min-h-11 w-fit cursor-pointer items-center gap-3 text-sm font-semibold text-ink has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-amber"
+      >
+        <input
+          id={id}
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+          aria-describedby={`${id}-hint`}
+          className="size-5 accent-signal"
+        />
+        {label}
+      </label>
+      <p id={`${id}-hint`} className="max-w-[68ch] text-xs leading-snug text-muted-2">
+        {hint}
+      </p>
+    </div>
+  );
+}

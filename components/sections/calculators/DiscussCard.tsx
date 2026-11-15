@@ -37,8 +37,8 @@ export default function DiscussCard() {
         </h3>
         <p className="mt-3 text-[15px] leading-relaxed text-muted">{t('disc_desc')}</p>
 
-        <div className="mt-6 rounded-card border border-border-card bg-bg/50 p-5">
-          <div dir="ltr">
+        <div className="mt-6 flex flex-1 items-center rounded-card border border-border-card bg-bg/50 p-5">
+          <div dir="ltr" className="w-full">
             <svg viewBox="0 0 340 150" role="img" aria-label={t('disc_map_alt')} className="block h-auto w-full">
               {EDGES.map(([a, b]) => (
                 <line

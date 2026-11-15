@@ -47,7 +47,7 @@ function ProcessContent() {
         <PageIntro label={p('pr_label')} title={p('pr_title')} sub={p('pr_sub')} />
       </div>
       <ProcessDetail />
-      <section aria-labelledby="process-pillars-title" className="border-t border-border pb-section pt-block">
+      <section aria-labelledby="process-pillars-title" className="border-t border-border pb-[var(--space-section)] pt-[var(--space-block)]">
         <Container>
           <h2
             id="process-pillars-title"

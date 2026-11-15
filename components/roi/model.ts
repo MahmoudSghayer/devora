@@ -3,6 +3,16 @@
 // Pure TypeScript (no React) so it stays easy to reason about and test.
 
 import {ROI_CONFIG, ROI_TASKS} from '@/lib/pricing/config';
+import {
+  HOURLY_COST_BANDS,
+  MINUTES_BUCKETS,
+  MONTHLY_SALARY_BANDS,
+  PEOPLE_BUCKETS,
+  TIMES_PER_DAY_BUCKETS,
+  defaultAutomationPct,
+  type Bucket,
+  type StandardisationLevel,
+} from '@/lib/roi/buckets';
 import type {RoiAnswers} from '@/lib/roi/schema';
 import type {RoiTaskId} from '@/lib/roi/types';
 
@@ -10,8 +20,8 @@ export const STEP_IDS = ['tasks', 'workload', 'labor', 'potential', 'results', '
 export type StepId = (typeof STEP_IDS)[number];
 export const TOTAL_STEPS = STEP_IDS.length;
 export const MAX_ROWS = 6;
-export const STORAGE_KEY = 'devora.roi.v1';
-const STORAGE_VERSION = 1;
+export const STORAGE_KEY = 'devora.roi.v2';
+const STORAGE_VERSION = 2;
 
 export type LaborMode = 'hourly' | 'salary' | 'unknown';
 
@@ -47,6 +57,11 @@ export interface CalcState {
   workingDays: string;
   /** percent 0-100 */
   directPct: number;
+  /** how standardised the tasks are: seeds each task's default automation % */
+  level: StandardisationLevel;
+  /** true: type exact numbers; false: quick option cards (representative values) */
+  exactWorkload: boolean;
+  exactLabor: boolean;
   hydrated: boolean;
   startedAt: number | null;
   key: string | null;
@@ -57,12 +72,15 @@ export interface CalcState {
 export const initialState: CalcState = {
   step: 1,
   tasks: [],
-  laborMode: 'hourly',
+  laborMode: 'unknown',
   hourly: String(ROI_CONFIG.defaultHourlyCost),
   salary: '',
   multiplier: String(ROI_CONFIG.defaultEmployerCostMultiplier),
   workingDays: String(ROI_CONFIG.defaultWorkingDays),
   directPct: Math.round(ROI_CONFIG.defaultDirectShare * 100),
+  level: 'mostly',
+  exactWorkload: false,
+  exactLabor: false,
   hydrated: false,
   startedAt: null,
   key: null,
@@ -85,21 +103,51 @@ export type Action =
   | {type: 'setLaborMode'; mode: LaborMode}
   | {type: 'setLabor'; field: LaborField; value: string}
   | {type: 'setDirect'; pct: number}
+  | {type: 'setLevel'; level: StandardisationLevel}
+  | {type: 'setExact'; scope: 'workload' | 'labor'; value: boolean}
   | {type: 'setStep'; step: number; tsMs: number}
   | {type: 'start'; startedAt: number}
   | {type: 'reset'; key: string; startedAt: number};
 
 const taskDef = (id: RoiTaskId) => ROI_TASKS.find((t) => t.id === id);
+
+/** Option cards available for each workload field. */
+export const FIELD_BUCKETS: Record<RowField, readonly Bucket[]> = {
+  times: TIMES_PER_DAY_BUCKETS,
+  minutes: MINUTES_BUCKETS,
+  employees: PEOPLE_BUCKETS,
+};
+
+/** The bucket whose representative value is closest to `n` (ties go to the lower one). */
+export function nearest(buckets: readonly Bucket[], n: number): Bucket {
+  let best = buckets[0];
+  for (const b of buckets) if (Math.abs(b.value - n) < Math.abs(best.value - n)) best = b;
+  return best;
+}
+const snapStr = (buckets: readonly Bucket[], s: string): string => {
+  const n = toNum(s);
+  return Number.isFinite(n) ? String(nearest(buckets, n).value) : '';
+};
+const isBucketValue = (buckets: readonly Bucket[], s: string): boolean => {
+  const n = toNum(s);
+  return buckets.some((b) => b.value === n);
+};
+const snapRow = (r: WorkRow): WorkRow => ({
+  ...r,
+  times: snapStr(TIMES_PER_DAY_BUCKETS, r.times),
+  minutes: snapStr(MINUTES_BUCKETS, r.minutes),
+  employees: snapStr(PEOPLE_BUCKETS, r.employees),
+});
 const catalogIndex = (id: RoiTaskId) => ROI_TASKS.findIndex((t) => t.id === id);
 
 export function defaultRow(taskId: RoiTaskId, rowId: string): WorkRow {
   const d = taskDef(taskId);
-  return {
+  return snapRow({
     id: rowId,
     times: String(d?.defaultTimesPerDay ?? 5),
     minutes: String(d?.defaultMinutes ?? 5),
     employees: '1',
-  };
+  });
 }
 
 function mapTask(state: CalcState, taskId: RoiTaskId, fn: (t: TaskEntry) => TaskEntry): CalcState {
@@ -124,7 +172,7 @@ export function reducer(state: CalcState, action: Action): CalcState {
       const entry: TaskEntry = {
         taskId: action.taskId,
         rows: [defaultRow(action.taskId, action.rowId)],
-        pct: taskDef(action.taskId)?.defaultAutomationPct ?? 50,
+        pct: defaultAutomationPct(action.taskId, state.level),
       };
       const tasks = [...state.tasks, entry].sort((a, b) => catalogIndex(a.taskId) - catalogIndex(b.taskId));
       return {...state, tasks};
@@ -154,13 +202,33 @@ export function reducer(state: CalcState, action: Action): CalcState {
     case 'setPct':
       return mapTask(state, action.taskId, (t) => ({...t, pct: action.pct}));
     case 'resetPct':
-      return mapTask(state, action.taskId, (t) => ({...t, pct: taskDef(t.taskId)?.defaultAutomationPct ?? t.pct}));
+      return mapTask(state, action.taskId, (t) => ({...t, pct: defaultAutomationPct(t.taskId, state.level)}));
     case 'setLaborMode':
       return {...state, laborMode: action.mode};
     case 'setLabor':
       return {...state, [action.field]: action.value};
     case 'setDirect':
       return {...state, directPct: action.pct};
+    case 'setLevel':
+      return {
+        ...state,
+        level: action.level,
+        tasks: state.tasks.map((t) => ({...t, pct: defaultAutomationPct(t.taskId, action.level)})),
+      };
+    case 'setExact':
+      if (action.scope === 'workload') {
+        return {
+          ...state,
+          exactWorkload: action.value,
+          tasks: action.value ? state.tasks : state.tasks.map((t) => ({...t, rows: t.rows.map(snapRow)})),
+        };
+      }
+      return {
+        ...state,
+        exactLabor: action.value,
+        hourly: action.value ? state.hourly : snapStr(HOURLY_COST_BANDS, state.hourly),
+        salary: action.value || state.salary.trim() === '' ? state.salary : snapStr(MONTHLY_SALARY_BANDS, state.salary),
+      };
     case 'setStep': {
       const last = state.timeline[state.timeline.length - 1];
       const id = STEP_IDS[action.step - 1];
@@ -233,7 +301,12 @@ export function validateStep(state: CalcState, step: number): FieldErrors {
         if (eT) errors[idT] = eT;
         if (eM) errors[idM] = eM;
         if (eE) errors[idE] = eE;
-        if (!eT && !eM && toNum(r.times) * toNum(r.minutes) > 1440) errors[idM] = {key: 'perDay'};
+        if (!state.exactWorkload) {
+          if (!eT && !isBucketValue(TIMES_PER_DAY_BUCKETS, r.times)) errors[idT] = {key: 'choose'};
+          if (!eM && !isBucketValue(MINUTES_BUCKETS, r.minutes)) errors[idM] = {key: 'choose'};
+          if (!eE && !isBucketValue(PEOPLE_BUCKETS, r.employees)) errors[idE] = {key: 'choose'};
+        }
+        if (!eT && !eM && !errors[idM] && toNum(r.times) * toNum(r.minutes) > 1440) errors[idM] = {key: 'perDay'};
         if (!eT && !eM && !eE) total += toNum(r.times) * toNum(r.minutes) * toNum(r.employees);
       }
     }
@@ -241,11 +314,19 @@ export function validateStep(state: CalcState, step: number): FieldErrors {
   }
   if (step === 3) {
     if (state.laborMode === 'hourly') {
-      const e = numberError(state.hourly, 0, 100000, {minExclusive: true});
+      const e = state.exactLabor
+        ? numberError(state.hourly, 0, 100000, {minExclusive: true})
+        : isBucketValue(HOURLY_COST_BANDS, state.hourly)
+          ? null
+          : {key: 'choose'};
       if (e) errors[LABOR_FIELD_ID.hourly] = e;
     }
     if (state.laborMode === 'salary') {
-      const e = numberError(state.salary, 0, 10_000_000, {minExclusive: true});
+      const e = state.exactLabor
+        ? numberError(state.salary, 0, 10_000_000, {minExclusive: true})
+        : isBucketValue(MONTHLY_SALARY_BANDS, state.salary)
+          ? null
+          : {key: 'choose'};
       if (e) errors[LABOR_FIELD_ID.salary] = e;
       const m = numberError(state.multiplier, 1, 3);
       if (m) errors[LABOR_FIELD_ID.multiplier] = m;
@@ -334,6 +415,9 @@ export function restore(raw: unknown): Partial<CalcState> | null {
   if (raw.laborMode === 'hourly' || raw.laborMode === 'salary' || raw.laborMode === 'unknown') out.laborMode = raw.laborMode;
   for (const k of ['hourly', 'salary', 'multiplier', 'workingDays'] as const) if (isStr(raw[k])) out[k] = raw[k];
   if (typeof raw.directPct === 'number' && raw.directPct >= 0 && raw.directPct <= 100) out.directPct = raw.directPct;
+  if (raw.level === 'very' || raw.level === 'mostly' || raw.level === 'varies') out.level = raw.level;
+  if (typeof raw.exactWorkload === 'boolean') out.exactWorkload = raw.exactWorkload;
+  if (typeof raw.exactLabor === 'boolean') out.exactLabor = raw.exactLabor;
   if (typeof raw.startedAt === 'number') out.startedAt = raw.startedAt;
   if (isStr(raw.key) && /^[0-9a-f-]{36}$/i.test(raw.key)) out.key = raw.key;
   if (Array.isArray(raw.timeline)) {
@@ -360,6 +444,9 @@ export function serialize(s: CalcState): string {
     multiplier: s.multiplier,
     workingDays: s.workingDays,
     directPct: s.directPct,
+    level: s.level,
+    exactWorkload: s.exactWorkload,
+    exactLabor: s.exactLabor,
     startedAt: s.startedAt,
     key: s.key,
     timeline: s.timeline,

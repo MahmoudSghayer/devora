@@ -2,11 +2,8 @@
 // Run the app first (npm run dev OR npm start), then: npm run test:e2e
 // Requires a Chromium browser: npx playwright install chromium
 import {chromium} from 'playwright';
-// Price strings come from the single pricing source (Node strips the TS types).
-import {TIERS, formatMoney} from '../lib/pricing/config.ts';
-
-const LAUNCH_PRICE = formatMoney(TIERS.launch.from, 'en').replace(/[$.*+?^${}()|[\]\\]/g, '\\$&');
-const PRICE_RE = new RegExp(`${LAUNCH_PRICE}|launch|studio|growth`, 'i');
+// The grounded answer points to the guided flows (or quotes a care-plan price).
+const PRICE_RE = /estimat|calculator|automation|discuss|₪/i;
 
 const BASE = process.env.BASE_URL || 'http://localhost:3000';
 let failures = 0;

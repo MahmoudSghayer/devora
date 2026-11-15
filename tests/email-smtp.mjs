@@ -1,6 +1,6 @@
 // SMTP integration test (not vitest): spins up a local plain-text SMTP server,
-// points lib/email/send.ts at it through env, sends the three team emails
-// (estimate, ROI, contact) and asserts delivery + well-formed MIME.
+// points lib/email/send.ts at it through env, sends the four team emails
+// (estimate, ROI, discuss, contact) and asserts delivery + well-formed MIME.
 //   node tests/email-smtp.mjs
 import {SMTPServer} from 'smtp-server';
 import {createJiti} from 'jiti';
@@ -70,6 +70,7 @@ try {
   const t = await jiti.import(path.join(root, 'lib/email/templates.ts'));
   const {estimateProject} = await jiti.import(path.join(root, 'lib/estimator/engine.ts'));
   const {computeRoi} = await jiti.import(path.join(root, 'lib/roi/engine.ts'));
+  const {estimateDiscuss} = await jiti.import(path.join(root, 'lib/discuss/engine.ts'));
 
   const base = {
     locale: 'en',
@@ -87,9 +88,16 @@ try {
   const roiAnswers = {
     tasks: [{taskId: 'invoices', timesPerDay: 5, minutesEach: 10, employees: 2, automationPct: 70}],
   };
+  const discussAnswers = {
+    purpose: ['replace-spreadsheets', 'ai-tool'],
+    users: 'team-2-10',
+    mustHaves: ['auth-roles', 'dashboards'],
+    budget: '15-30k',
+  };
   const mails = [
     ['estimate', 'DV-2611-EST1', t.websiteEstimateEmail({...base, leadRef: 'DV-2611-EST1', answers: estAnswers, result: estimateProject(estAnswers)})],
     ['roi', 'DV-2611-ROI1', t.automationRoiEmail({...base, leadRef: 'DV-2611-ROI1', answers: roiAnswers, result: computeRoi(roiAnswers)})],
+    ['discuss', 'DV-2611-DIS1', t.softwareDiscoveryEmail({...base, leadRef: 'DV-2611-DIS1', answers: discussAnswers, result: estimateDiscuss(discussAnswers)})],
     ['contact', 'DV-2611-CON1', t.contactEmail({...base, leadRef: 'DV-2611-CON1', message: 'Hello there', budget: '10k'})],
   ];
 
@@ -113,7 +121,7 @@ try {
       check(`${name}: raw <script>/<after> not injected into HTML`, !/<after>/.test(text.split(/text\/html/i)[1] ?? ''));
     }
   }
-  check('three messages received', received.length === 3, String(received.length));
+  check('four messages received', received.length === 4, String(received.length));
 } catch (err) {
   console.error(err);
   failures++;

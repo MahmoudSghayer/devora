@@ -15,7 +15,7 @@ export default function HowPricingWorks() {
   ];
 
   return (
-    <section aria-labelledby="how-pricing-title" className="aura overflow-x-clip pb-block pt-section">
+    <section aria-labelledby="how-pricing-title" className="aura overflow-x-clip pb-[var(--space-block)] pt-[var(--space-section)]">
       <Container>
         <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
           <span aria-hidden>{'// '}</span>

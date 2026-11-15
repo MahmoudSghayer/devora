@@ -2,19 +2,25 @@
 // appear: use visibleQuestions(answers). All prices are referenced (priceRef),
 // never repeated — they live in ESTIMATOR_CONFIG.
 
-import {ESTIMATOR_CONFIG} from '@/lib/pricing/config';
+import {ESTIMATOR_CONFIG, GOAL_OPTIONS, GOAL_TYPE_SUGGESTIONS, SIZE_OPTIONS} from '@/lib/pricing/config';
 import {
   FEATURE_IDS,
+  GOAL_IDS,
   INTEGRATION_IDS,
   PRODUCT_BUCKETS,
   PROJECT_TYPES,
   ROLE_BUCKETS,
+  SIZE_IDS,
   type FeatureDef,
   type ProjectType,
 } from './types';
 
-export type QuestionKind = 'single' | 'multi' | 'toggle' | 'bucket' | 'text';
-export type QuestionStep = 1 | 2 | 3 | 4 | 5;
+export {GOAL_OPTIONS, GOAL_TYPE_SUGGESTIONS, SIZE_OPTIONS};
+
+/** Every question is option-based (cards); there is no free-text question. */
+export type QuestionKind = 'single' | 'multi' | 'toggle' | 'bucket';
+/** 1 goals · 2 size · 3 project type · 4 scope · 5 features · 6 design · 7 integrations */
+export type QuestionStep = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export interface QuestionOption {
   id: string;
@@ -39,8 +45,6 @@ export interface Question {
   options?: QuestionOption[];
   /** path into ESTIMATOR_CONFIG for single-price questions (toggles) */
   priceRef?: string;
-  /** max length for text questions */
-  maxLength?: number;
 }
 
 const q = (id: string) => ({labelKey: `estimator.q.${id}.label`, hintKey: `estimator.q.${id}.hint`});
@@ -56,7 +60,7 @@ const featureQuestion = (home: FeatureDef['home']): Question => {
   const id = `features.${home}`;
   return {
     id,
-    step: 3,
+    step: 5,
     kind: 'multi',
     appliesTo,
     answerKey: 'features',
@@ -67,7 +71,7 @@ const featureQuestion = (home: FeatureDef['home']): Question => {
 
 const designToggle = (key: 'existing' | 'brandIdentity' | 'advancedMotion' | 'premium'): Question => ({
   id: `design.${key}`,
-  step: 4,
+  step: 6,
   kind: 'toggle',
   appliesTo: 'all',
   answerKey: `design.${key}`,
@@ -77,8 +81,26 @@ const designToggle = (key: 'existing' | 'brandIdentity' | 'advancedMotion' | 'pr
 
 export const QUESTIONS: readonly Question[] = [
   {
-    id: 'types',
+    id: 'goals',
     step: 1,
+    kind: 'multi',
+    appliesTo: 'all',
+    answerKey: 'goals',
+    ...q('goals'),
+    options: GOAL_OPTIONS.map((g) => ({id: g.id, labelKey: g.i18nKey})),
+  },
+  {
+    id: 'size',
+    step: 2,
+    kind: 'single',
+    appliesTo: 'all',
+    answerKey: 'size',
+    ...q('size'),
+    options: SIZE_OPTIONS.map((o) => ({id: o.id, labelKey: o.i18nKey, value: o.pages})),
+  },
+  {
+    id: 'types',
+    step: 3,
     kind: 'multi',
     appliesTo: 'all',
     answerKey: 'types',
@@ -87,7 +109,7 @@ export const QUESTIONS: readonly Question[] = [
   },
   {
     id: 'pages',
-    step: 2,
+    step: 4,
     kind: 'bucket',
     appliesTo: ['business'],
     answerKey: 'pages',
@@ -97,7 +119,7 @@ export const QUESTIONS: readonly Question[] = [
   },
   {
     id: 'products',
-    step: 2,
+    step: 4,
     kind: 'bucket',
     appliesTo: ['ecommerce'],
     answerKey: 'productBucket',
@@ -106,21 +128,12 @@ export const QUESTIONS: readonly Question[] = [
   },
   {
     id: 'roles',
-    step: 2,
+    step: 4,
     kind: 'bucket',
     appliesTo: ['webapp', 'portal'],
     answerKey: 'rolesBucket',
     ...q('roles'),
     options: ROLE_BUCKETS.map((b) => opt('roles', b, {priceRef: `roles.${b}`})),
-  },
-  {
-    id: 'problem',
-    step: 2,
-    kind: 'text',
-    appliesTo: ['webapp', 'portal', 'dashboard', 'unsure'],
-    answerKey: 'problem',
-    ...q('problem'),
-    maxLength: 1500,
   },
   featureQuestion('business'),
   featureQuestion('shared'),
@@ -132,7 +145,7 @@ export const QUESTIONS: readonly Question[] = [
   designToggle('premium'),
   {
     id: 'integrations',
-    step: 5,
+    step: 7,
     kind: 'multi',
     appliesTo: 'all',
     answerKey: 'integrations',
@@ -149,21 +162,22 @@ export function visibleQuestions(answers: {types?: readonly ProjectType[]}): Que
   );
 }
 
-export const STEPS: readonly QuestionStep[] = [1, 2, 3, 4, 5];
+export const STEPS: readonly QuestionStep[] = [1, 2, 3, 4, 5, 6, 7];
 
 /** Every i18n key the flow uses, with an English suggestion (for translators). */
 export function estimatorI18nKeys(): Record<string, string> {
   const cfg = ESTIMATOR_CONFIG;
   const out: Record<string, string> = {};
-  const stepTitles = ['Project type', 'Scope', 'Features', 'Design', 'Integrations'];
+  const stepTitles = ['Goals', 'Size', 'Project type', 'Scope', 'Features', 'Design', 'Integrations'];
   STEPS.forEach((s) => (out[`estimator.step.${s}.title`] = stepTitles[s - 1]));
 
   const text: Record<string, [string, string]> = {
+    goals: ['What do you want your website to do?', 'Pick everything that applies.'],
+    size: ['How big should it be?', 'A rough size is fine.'],
     types: ['What do you want to build?', 'Pick everything that applies.'],
     pages: ['How many pages?', 'The first five are included.'],
     products: ['How many products?', 'Approximate catalog size.'],
     roles: ['How many user roles?', 'For example admin, staff, customer.'],
-    problem: ['What problem should it solve?', 'A few sentences are enough. This is not priced.'],
     'features.business': ['Website features', 'Select what you need.'],
     'features.shared': ['Common features', 'Select what you need.'],
     'features.ecommerce': ['Store features', 'Select what you need.'],
@@ -180,6 +194,24 @@ export function estimatorI18nKeys(): Record<string, string> {
   }
 
   const optionText = (qid: string, id: string, label: string) => (out[`estimator.q.${qid}.opt.${id}`] = label);
+  const goalText: Record<string, string> = {
+    leads: 'Get more leads',
+    sell: 'Sell products online',
+    bookings: 'Take bookings',
+    brand: 'Build my brand',
+    content: 'Publish content',
+    portal: 'Give customers a portal',
+    other: 'Something else',
+  };
+  for (const g of GOAL_IDS) out[`estimator.goal.${g}`] = goalText[g];
+  const sizeText: Record<string, string> = {
+    small: 'Small (1–5 pages)',
+    medium: 'Medium (6–15 pages)',
+    large: 'Large (16–40 pages)',
+    xlarge: 'Very large (40+ pages)',
+    unsure: 'Not sure',
+  };
+  for (const z of SIZE_IDS) out[`estimator.size.${z}`] = sizeText[z];
   for (const t of PROJECT_TYPES) optionText('types', t, cfg.projectBase[t].label);
   [5, 8, 12, 20, 30].forEach((n) => optionText('pages', `n${n}`, `${n} pages`));
   for (const b of PRODUCT_BUCKETS) optionText('products', b, cfg.products[b].label);

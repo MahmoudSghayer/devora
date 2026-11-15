@@ -8,7 +8,8 @@ import {TaskIcon} from './icons';
 import type {Action, TaskEntry} from './model';
 import {percent} from './format';
 import {PotentialBadge} from './TaskPicker';
-import {RangeField, ghostBtn} from './ui';
+import {STANDARDISATION_LEVELS, defaultAutomationPct, type StandardisationLevel} from '@/lib/roi/buckets';
+import {OptionGroup, RangeField, ghostBtn} from './ui';
 
 /** The "directShare" assumption slider — used on step 4 and on the results page. */
 export function DirectShareSlider({
@@ -46,8 +47,10 @@ export function DirectShareSlider({
 export default function Potential({
   tasks,
   directPct,
+  level,
   dispatch,
 }: {
+  level: StandardisationLevel;
   tasks: TaskEntry[];
   directPct: number;
   dispatch: Dispatch<Action>;
@@ -56,12 +59,25 @@ export default function Potential({
   const locale = useLocale();
   return (
     <div className="flex flex-col gap-6">
+      <Spotlight tone="signal" className="glass rounded-panel">
+        <div className="rounded-panel p-5 nav:p-8">
+          <OptionGroup
+            name="level"
+            legend={t('level.title')}
+            hint={t('level.desc')}
+            options={STANDARDISATION_LEVELS.map((l) => ({value: l.id, label: t(l.i18nKey.replace(/^roi\./, ''))}))}
+            value={level}
+            onSelect={(value) => dispatch({type: 'setLevel', level: value as StandardisationLevel})}
+          />
+        </div>
+      </Spotlight>
       <p className="max-w-[68ch] text-base leading-relaxed text-muted">{t('potential.intro')}</p>
       <ul className="grid grid-cols-1 gap-5 nav:grid-cols-2">
         {tasks.map((task) => {
           const def = ROI_TASKS.find((d) => d.id === task.taskId);
           const name = t(`task.${task.taskId}`);
-          const changed = def !== undefined && def.defaultAutomationPct !== task.pct;
+          const typical = defaultAutomationPct(task.taskId, level);
+          const changed = typical !== task.pct;
           return (
             <li key={task.taskId} className="flex">
               <Spotlight tone="signal" className="glass flex w-full rounded-panel">
@@ -88,7 +104,7 @@ export default function Potential({
                     onChange={(v) => dispatch({type: 'setPct', taskId: task.taskId, pct: v})}
                   />
                   <div className="mt-auto flex flex-wrap items-center justify-between gap-3 text-xs text-muted-2">
-                    <span>{t('potential.typical', {pct: percent((def?.defaultAutomationPct ?? 0) / 100, locale)})}</span>
+                    <span>{t('potential.typical', {pct: percent(typical / 100, locale)})}</span>
                     {changed && (
                       <button
                         type="button"

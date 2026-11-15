@@ -1,9 +1,10 @@
 import {z} from 'zod';
 import {estimatorAnswersSchema} from '@/lib/estimator/schema';
 import {roiAnswersSchema} from '@/lib/roi/schema';
+import {discussAnswersSchema} from '@/lib/discuss/schema';
 
-// Request envelope for POST /api/estimate, /api/automation-roi and
-// /api/contact. Strict: unknown keys are rejected; every string/array/number is
+// Request envelope for POST /api/estimate, /api/automation-roi,
+// /api/discuss and /api/contact. Strict: unknown keys are rejected; every string/array/number is
 // bounded. NOTE: no real field may be called `website` — that name is the
 // honeypot bots fill in.
 
@@ -61,6 +62,11 @@ export const envelopeSchema = z.discriminatedUnion('source', [
     ...base,
     source: z.literal('automation_roi'),
     answers: roiAnswersSchema,
+  }),
+  z.strictObject({
+    ...base,
+    source: z.literal('software_discovery'),
+    answers: discussAnswersSchema,
   }),
   z.strictObject({
     ...base,

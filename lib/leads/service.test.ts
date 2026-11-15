@@ -4,12 +4,14 @@ import {submitLead} from './service';
 import {
   NOW,
   contactBody,
+  discussBody,
   estimateBody,
   goodMeta,
   makeKit,
   roiBody,
 } from './testkit';
 import {estimateProject} from '@/lib/estimator/engine';
+import {estimateDiscuss} from '@/lib/discuss/engine';
 
 const run = (kit: ReturnType<typeof makeKit>, body: unknown, meta = goodMeta()) =>
   submitLead({body, meta}, kit.deps);
@@ -261,5 +263,76 @@ describe('strict schema', () => {
 
   it('validates fresh keys do not collide', () => {
     expect(randomUUID()).not.toBe(randomUUID());
+  });
+});
+
+describe('software_discovery', () => {
+  it('recomputes server-side and ignores client totals', async () => {
+    const kit = makeKit();
+    const body = discussBody({result: {startingLow: 1, startingHigh: 2}});
+    const res = await run(kit, body);
+    expect(res).toMatchObject({ok: true, persisted: true});
+    const row = kit.repo.rows[0]!;
+    const truth = estimateDiscuss(
+      (body as {answers: Parameters<typeof estimateDiscuss>[0]}).answers
+    );
+    expect(row.source).toBe('software_discovery');
+    expect(row.estimate_low).toBe(truth.startingLow);
+    expect(row.estimate_high).toBe(truth.startingHigh);
+    expect(row.estimate_low).not.toBe(1);
+    expect(row.estimate_currency).toBe(truth.estimate.currency);
+    expect(row.details).toMatchObject({
+      result: {startingLow: truth.startingLow, startingHigh: truth.startingHigh},
+      notes: 'We run 3 clinics and need one system.',
+    });
+  });
+
+  it('emails the team with the free text and replies to the visitor', async () => {
+    const kit = makeKit();
+    await run(kit, discussBody());
+    await kit.flush();
+    expect(kit.sent).toHaveLength(1);
+    const mail = kit.sent[0]!;
+    expect(mail.subject).toMatch(/^\[Discuss DV-/);
+    expect(mail.replyTo).toBe('noa@example.com');
+    expect(mail.text).toContain('We run 3 clinics and need one system.');
+  });
+
+  it('is idempotent by key and by email within the window', async () => {
+    const kit = makeKit();
+    const body = discussBody();
+    const first = await run(kit, body);
+    const again = await run(kit, body);
+    expect(again).toMatchObject({ok: true, duplicate: true});
+    expect((again as {leadRef: string}).leadRef).toBe((first as {leadRef: string}).leadRef);
+    const fresh = await run(kit, discussBody());
+    expect(fresh).toMatchObject({ok: true, duplicate: true});
+    expect(kit.repo.rows).toHaveLength(1);
+  });
+
+  it('honeypot: silent ok, nothing persisted or sent', async () => {
+    const kit = makeKit();
+    const res = await run(kit, discussBody({website: 'http://spam.example'}));
+    expect(res).toMatchObject({ok: true, persisted: false});
+    await kit.flush();
+    expect(kit.repo.rows).toHaveLength(0);
+    expect(kit.sent).toHaveLength(0);
+  });
+
+  it('503 retryable when persistence AND email both fail', async () => {
+    const kit = makeKit();
+    kit.repo.failInserts = true;
+    kit.state.mailFails = true;
+    const res = await run(kit, discussBody());
+    expect(res).toMatchObject({ok: false, status: 503, retryable: true});
+  });
+
+  it('is strict: unknown answer keys, bad options, empty purpose and missing startedAtMs are rejected', async () => {
+    const good = discussBody().answers;
+    expect((await run(makeKit(), discussBody({answers: {...good, total: 5}}))).ok).toBe(false);
+    expect((await run(makeKit(), discussBody({answers: {...good, users: 'everyone'}}))).ok).toBe(false);
+    expect((await run(makeKit(), discussBody({answers: {...good, purpose: []}}))).ok).toBe(false);
+    expect((await run(makeKit(), discussBody({answers: {...good, note: 'free text'}}))).ok).toBe(false);
+    expect((await run(makeKit(), discussBody({startedAtMs: undefined}))).status).toBe(400);
   });
 });

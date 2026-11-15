@@ -12,8 +12,8 @@ import {
   type SubmitDeps,
 } from './types';
 
-// Shared HTTP wrapper used by /api/estimate, /api/automation-roi and
-// /api/contact: raw-size check (413) → JSON parse (400) → submitLead → status.
+// Shared HTTP wrapper used by /api/estimate, /api/automation-roi,
+// /api/discuss and /api/contact: raw-size check (413) → JSON parse (400) → submitLead → status.
 
 export function productionDeps(): SubmitDeps {
   return {
@@ -42,9 +42,12 @@ function metaFrom(request: Request): RequestMeta {
   };
 }
 
-const ANALYTICS: Partial<Record<CalculatorLeadSource, 'estimate_submitted' | 'roi_submitted'>> = {
+const ANALYTICS: Partial<
+  Record<CalculatorLeadSource, 'estimate_submitted' | 'roi_submitted' | 'discuss_submitted'>
+> = {
   website_estimate: 'estimate_submitted',
   automation_roi: 'roi_submitted',
+  software_discovery: 'discuss_submitted',
 };
 
 export async function handleLeadRequest(

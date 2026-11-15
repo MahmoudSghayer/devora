@@ -1,9 +1,11 @@
 import {estimateProject} from '@/lib/estimator/engine';
 import {computeRoi} from '@/lib/roi/engine';
+import {estimateDiscuss} from '@/lib/discuss/engine';
 import {PRICING_CONFIG_VERSION} from '@/lib/pricing/config';
 import {
   automationRoiEmail,
   contactEmail,
+  softwareDiscoveryEmail,
   websiteEstimateEmail,
   type BuiltEmail,
   type CalcEmailBase,
@@ -70,6 +72,12 @@ function summaryRequest(env: Envelope, computed: Computed): string {
       return `Website estimate: ${env.answers.types.join(', ')}${
         computed.kind === 'estimate' ? ` — ${computed.result.low}–${computed.result.high} ${computed.result.currency}` : ''
       }${env.answers.problem ? `\n${env.answers.problem}` : ''}`;
+    case 'software_discovery':
+      return `Software discovery: ${env.answers.purpose.join(', ')}${
+        computed.kind === 'discuss'
+          ? ` — from ${computed.result.startingLow}–${computed.result.startingHigh} ${computed.result.estimate.currency}`
+          : ''
+      }${env.contact.notes ? `\n${env.contact.notes}` : ''}`;
     case 'automation_roi':
       return `Automation ROI: ${env.answers.tasks.length} task type(s)${
         computed.kind === 'roi'
@@ -82,12 +90,15 @@ function summaryRequest(env: Envelope, computed: Computed): string {
 type Computed =
   | {kind: 'estimate'; result: ReturnType<typeof estimateProject>}
   | {kind: 'roi'; result: ReturnType<typeof computeRoi>}
+  | {kind: 'discuss'; result: ReturnType<typeof estimateDiscuss>}
   | {kind: 'contact'};
 
 function compute(env: Envelope): Computed {
   if (env.source === 'website_estimate')
     return {kind: 'estimate', result: estimateProject(env.answers)};
   if (env.source === 'automation_roi') return {kind: 'roi', result: computeRoi(env.answers)};
+  if (env.source === 'software_discovery')
+    return {kind: 'discuss', result: estimateDiscuss(env.answers)};
   return {kind: 'contact'};
 }
 
@@ -108,6 +119,13 @@ function buildEmail(env: Envelope, computed: Computed, leadRef: string, nowMs: n
     });
   if (env.source === 'automation_roi' && computed.kind === 'roi')
     return automationRoiEmail({
+      ...base,
+      answers: env.answers,
+      result: computed.result,
+      pricingConfigVersion: PRICING_CONFIG_VERSION,
+    });
+  if (env.source === 'software_discovery' && computed.kind === 'discuss')
+    return softwareDiscoveryEmail({
       ...base,
       answers: env.answers,
       result: computed.result,
@@ -137,6 +155,10 @@ function buildRow(
     // ROI has no range: store the one-time implementation cost in both.
     low = high = computed.result.implementationCost;
     currency = computed.result.currency;
+  } else if (computed.kind === 'discuss') {
+    low = computed.result.startingLow;
+    high = computed.result.startingHigh;
+    currency = computed.result.estimate.currency;
   }
   return {
     lead_ref: leadRef,

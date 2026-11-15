@@ -1,9 +1,23 @@
 // Shared types for the lead pipeline (calculators + contact form).
 
-export const LEAD_SOURCES = ['website_estimate', 'automation_roi', 'contact'] as const;
+export const LEAD_SOURCES = [
+  'website_estimate',
+  'automation_roi',
+  'software_discovery',
+  'contact',
+] as const;
 export type CalculatorLeadSource = (typeof LEAD_SOURCES)[number];
 /** Every value the DB `leads.source` column accepts. */
 export type LeadSource = CalculatorLeadSource | 'chat';
+
+/** Human-readable English label per source (admin UI, emails, logs). */
+export const LEAD_SOURCE_LABEL: Record<LeadSource, string> = {
+  chat: 'Chat',
+  contact: 'Contact form',
+  website_estimate: 'Website estimate',
+  automation_roi: 'Automation ROI',
+  software_discovery: 'Software discovery',
+};
 
 export type PreferredContact = 'email' | 'phone' | 'whatsapp';
 

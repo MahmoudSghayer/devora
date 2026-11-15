@@ -45,15 +45,17 @@ export default function SelectedWork() {
                         tabIndex={-1}
                         className="group block"
                       >
-                        <Parallax speed={0.05} className="aspect-[16/10] border-b border-border-card bg-surface">
+                        <div className="relative aspect-[16/10] overflow-hidden border-b border-border-card bg-surface">
                           {c.image ? (
-                            <Image
-                              src={c.image}
-                              alt={t('sw_image_alt', {domain: c.domain})}
-                              fill
-                              sizes="(max-width: 920px) 100vw, 640px"
-                              className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
-                            />
+                            <Parallax speed={0.05} className="size-full">
+                              <Image
+                                src={c.image}
+                                alt={t('sw_image_alt', {domain: c.domain})}
+                                fill
+                                sizes="(max-width: 920px) 100vw, 640px"
+                                className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
+                              />
+                            </Parallax>
                           ) : (
                             <div className="flex size-full flex-col justify-between bg-[radial-gradient(70%_80%_at_20%_10%,color-mix(in_oklab,var(--color-amber)_14%,transparent),transparent_70%)] p-8">
                               <span aria-hidden className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-faint">
@@ -67,7 +69,7 @@ export default function SelectedWork() {
                               </span>
                             </div>
                           )}
-                        </Parallax>
+                        </div>
                       </Link>
                       <div className="flex flex-1 flex-col p-6 nav:p-8">
                         <p className="u-mono font-mono text-xs uppercase tracking-[0.18em] text-amber">

@@ -36,3 +36,12 @@ Edit the amounts in `ESTIMATOR_CONFIG` (project bases, `features`, `integrations
 - 5-page business site + WhatsApp + hosting: low between ₪5,000 and Studio.from.
 - ~50-product store with cart, payments, shipping, admin: low between Studio.from and Growth.from.
 - Complex web app (roles, auth, subscriptions, payments, dashboards, API, real-time): low ≥ Growth.from.
+
+## Guided flow: goals and size (added)
+
+The estimator is a sequence of option cards (no free typing). Steps: 1 goals, 2 size, 3 project type, 4 scope, 5 features, 6 design, 7 integrations. The old free-text `problem` question was removed from the flow (free text travels in contact notes); the schema field remains optional for compatibility.
+
+- `goals?: Goal[]` (ids `leads, sell, bookings, brand, content, portal, other`, multi-select). Not priced; `GOAL_TYPE_SUGGESTIONS` tells the UI which types to pre-select (leads: business/landing, sell: ecommerce, bookings: booking, brand: business, content: business, portal: portal, other: unsure).
+- `size?: 'small'|'medium'|'large'|'xlarge'|'unsure'`. When `pages` is absent, `ESTIMATOR_CONFIG.sizePages` gives the representative page count: small 5, medium 10, large 28, xlarge 50, unsure 8. Pages beyond the included 5 are priced as before; an explicit `pages` wins.
+- Cards come from config: `GOAL_OPTIONS`, `SIZE_OPTIONS` (i18n `estimator.goal.<id>`, `estimator.size.<id>`), exported from `lib/pricing/config` and re-exported by `lib/estimator/questions`.
+- Care plans: `TIERS` remains the source of maintenance-plan amounts; it is no longer presented as packages.
