@@ -197,7 +197,6 @@ export function OptionGroup({
                 value={o.value}
                 id={i === 0 ? firstId : undefined}
                 checked={checked}
-                aria-invalid={error ? true : undefined}
                 onChange={() => onSelect(o.value)}
                 className="peer sr-only"
               />

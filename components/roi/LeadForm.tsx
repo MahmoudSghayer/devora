@@ -51,7 +51,7 @@ export default function LeadForm({
   const [channel, setChannel] = useState<Channel>('email');
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
-  const [fail, setFail] = useState<Fail | null>(null);
+  const [fail, setFail] = useState<(Fail & {mail: string}) | null>(null);
   const [attempted, setAttempted] = useState(false);
 
   const read = (k: string): string => {
@@ -143,10 +143,10 @@ export default function LeadForm({
       }
       const kind: Fail['kind'] =
         res.status === 400 ? 'e400' : res.status === 403 ? 'e403' : res.status === 413 ? 'e413' : res.status === 429 ? 'e429' : res.status === 503 ? 'e503' : 'unknown';
-      setFail({kind, seconds: (data.retryAfterSec ?? Number(res.headers.get('Retry-After'))) || 60});
+      setFail({kind, seconds: (data.retryAfterSec ?? Number(res.headers.get('Retry-After'))) || 60, mail: mailto()});
       setStatus('error');
     } catch {
-      setFail({kind: 'network'});
+      setFail({kind: 'network', mail: mailto()});
       setStatus('error');
     } finally {
       inFlight.current = false;
@@ -244,7 +244,7 @@ export default function LeadForm({
             <div className="text-ink-2">
               <p className="font-semibold">{t('form.fallbackTitle')}</p>
               <p className="mt-1 text-muted">{t('form.fallbackBody')}</p>
-              <a href={mailto()} className="mt-2 inline-flex min-h-11 items-center font-semibold text-signal underline underline-offset-4">
+              <a href={fail.mail} className="mt-2 inline-flex min-h-11 items-center font-semibold text-signal underline underline-offset-4">
                 {t('form.mailto')}
               </a>
             </div>

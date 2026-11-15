@@ -2015,8 +2015,8 @@
       "timeline": "مدة التنفيذ المعتادة",
       "maintenance": "باقة الرعاية تبدأ من",
       "per_month": "/ شهريًا",
-      "weeks": "من {low} إلى {high} أسبوعًا",
-      "weeks_one": "{n} أسابيع",
+      "weeks": "من {low} إلى {high, plural, few{# أسابيع} many{# أسبوعًا} other{# أسبوع}}",
+      "weeks_one": "{n, plural, one{أسبوع واحد} two{أسبوعان} few{# أسابيع} many{# أسبوعًا} other{# أسبوع}}",
       "announce": "تم تحديث النطاق التقريبي للبداية: من {low} إلى {high}، وبمدة تقارب {weeks}. تقديري فقط."
     },
     "fit": {

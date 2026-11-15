@@ -63,6 +63,8 @@ export interface CalcState {
   exactWorkload: boolean;
   exactLabor: boolean;
   hydrated: boolean;
+  /** answers were restored from a previous visit (not persisted) */
+  restored: boolean;
   startedAt: number | null;
   key: string | null;
   timeline: TimelineEntry[];
@@ -82,6 +84,7 @@ export const initialState: CalcState = {
   exactWorkload: false,
   exactLabor: false,
   hydrated: false,
+  restored: false,
   startedAt: null,
   key: null,
   timeline: [],
@@ -165,6 +168,7 @@ export function reducer(state: CalcState, action: Action): CalcState {
         key: action.restored?.key ?? action.key,
         utm: Object.keys(action.utm).length > 0 ? action.utm : (action.restored?.utm ?? {}),
         hydrated: true,
+        restored: Boolean(action.restored?.tasks && action.restored.tasks.length > 0),
       };
     case 'toggleTask': {
       const has = state.tasks.some((t) => t.taskId === action.taskId);

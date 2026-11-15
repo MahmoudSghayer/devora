@@ -53,7 +53,6 @@ export default function RoiApp() {
   const reduced = useReducedMotion();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [attempted, setAttempted] = useState(false);
-  const [restored, setRestored] = useState(false);
   const [submitted, setSubmitted] = useState<Submitted | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const focusPending = useRef(false);
@@ -72,7 +71,6 @@ export default function RoiApp() {
     const wanted = stepFromUrl();
     const step = Math.min(wanted, maxReachable(merged));
     dispatch({type: 'hydrate', restored: saved, step, startedAt: Date.now(), key: newKey(), utm: readUtm(window.location.search)});
-    setRestored(Boolean(saved && saved.tasks && saved.tasks.length > 0));
     if (new URLSearchParams(window.location.search).has('step')) writeStep(step, 'replace');
   }, []);
 
@@ -134,7 +132,6 @@ export default function RoiApp() {
     submittedRef.current = false;
     clearSaved();
     setSubmitted(null);
-    setRestored(false);
     dispatch({type: 'reset', key: newKey(), startedAt: Date.now()});
     goTo(1);
   }
@@ -183,7 +180,7 @@ export default function RoiApp() {
         </ol>
       </nav>
 
-      {restored && step === 1 && (
+      {state.restored && step === 1 && (
         <p className="flex flex-wrap items-center gap-3 rounded-card border border-border-card p-4 text-sm text-ink-2 print:hidden">
           {t('nav.restored')}
           <button type="button" className={ghostBtn} onClick={restart}>

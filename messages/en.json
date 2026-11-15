@@ -2016,7 +2016,7 @@
       "maintenance": "Care plan from",
       "per_month": "/ month",
       "weeks": "{low}–{high} weeks",
-      "weeks_one": "{n} weeks",
+      "weeks_one": "{n, plural, one{# week} other{# weeks}}",
       "announce": "Typical starting range updated: {low} to {high}, around {weeks}. Indicative only."
     },
     "fit": {
