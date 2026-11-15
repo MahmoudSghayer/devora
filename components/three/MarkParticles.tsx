@@ -1,16 +1,14 @@
 'use client';
 
 import {useEffect, useRef} from 'react';
-import {createAuraScene, type AuraHandle} from '@/lib/three/scene';
+import {createMarkScene, type MarkHandle} from '@/lib/three/mark-scene';
 
-export type AuraSceneProps = {
+export type MarkParticlesProps = {
   className?: string;
   /** Glow / particle strength, 1 = default. */
   intensity?: number;
-  /** Pointer parallax + lighting (fine pointers only). */
+  /** Pointer parallax, repulsion and click pulse (fine pointers only). */
   interactive?: boolean;
-  /** Optional accessible description; the canvas is decorative (aria-hidden) without it. */
-  description?: string;
   /** Fired after the first frame has been drawn. */
   onReady?: () => void;
   /** Fired when WebGL setup fails or the context is not restored; show the poster instead. */
@@ -19,21 +17,22 @@ export type AuraSceneProps = {
 
 const MAX_DPR = 1.5;
 const RESTORE_TIMEOUT_MS = 2000;
+const INTERACTIVE = 'a,button,input,textarea,select,summary,[role=button]';
 
-function dustCount(width: number, height: number) {
+function budget(width: number, height: number) {
   const nav = navigator as Navigator & {deviceMemory?: number};
-  const coarse = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 820;
-  const weak = (nav.hardwareConcurrency || 8) <= 4 || (nav.deviceMemory || 8) <= 4;
-  const base = coarse ? 1400 : weak ? 2400 : 4200;
-  const area = Math.min(1, Math.max(0.5, (width * height) / (1440 * 900)));
-  return Math.round(base * area);
+  const cores = nav.hardwareConcurrency || 8;
+  const weak = cores <= 4 || (nav.deviceMemory || 8) <= 4;
+  const area = Math.min(1, Math.max(0.65, (width * height) / (1440 * 900)));
+  const count = weak ? 3500 : Math.max(5500, Math.round((cores >= 8 ? 9000 : 7000) * area));
+  return {count, dustCount: weak ? 350 : Math.round(800 * area)};
 }
 
-export default function AuraScene({
-  className = '', intensity = 1, interactive = true, description, onReady, onError,
-}: AuraSceneProps) {
+export default function MarkParticles({
+  className = '', intensity = 1, interactive = true, onReady, onError,
+}: MarkParticlesProps) {
   const box = useRef<HTMLDivElement>(null);
-  const live = useRef({intensity, interactive, onReady, onError, handle: null as AuraHandle | null});
+  const live = useRef({intensity, interactive, onReady, onError, handle: null as MarkHandle | null});
 
   useEffect(() => {
     live.current.intensity = intensity;
@@ -46,24 +45,21 @@ export default function AuraScene({
   useEffect(() => {
     const el = box.current;
     if (!el) return;
-    // A fresh canvas per mount: a context that was force-lost on cleanup can't be reused (StrictMode).
+    // A fresh canvas per mount: a context force-lost on cleanup can't be reused (StrictMode).
     const cv = document.createElement('canvas');
     cv.className = 'absolute inset-0 size-full';
     el.appendChild(cv);
     const state = live.current;
 
-    let handle: AuraHandle;
+    let handle: MarkHandle;
     try {
       const style = getComputedStyle(document.documentElement);
       const token = (name: string) => style.getPropertyValue(name).trim();
-      handle = createAuraScene({
+      handle = createMarkScene({
         canvas: cv,
-        colors: {
-          amber: token('--color-amber'), amberHi: token('--color-amber-hi'),
-          bg: token('--color-bg'), signal: token('--color-signal'),
-        },
-        dustCount: dustCount(el.clientWidth, el.clientHeight),
-        antialias: window.devicePixelRatio < 2,
+        colors: {amber: token('--color-amber'), amberHi: token('--color-amber-hi'), signal: token('--color-signal')},
+        ...budget(el.clientWidth, el.clientHeight),
+        antialias: false,
         maxDpr: MAX_DPR,
         intensity: state.intensity,
       });
@@ -82,8 +78,11 @@ export default function AuraScene({
     let ready = false;
     let failed = false;
     let restoreTimer = 0;
-    const finePointer = window.matchMedia('(pointer: fine)').matches;
 
+    function stop() {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+    }
     const fail = () => {
       if (failed) return;
       failed = true;
@@ -111,17 +110,17 @@ export default function AuraScene({
       last = performance.now();
       raf = requestAnimationFrame(tick);
     };
-    function stop() {
-      if (raf) cancelAnimationFrame(raf);
-      raf = 0;
-    }
-
     const measure = () => {
       handle.resize(el.clientWidth, el.clientHeight);
       if (!raf && !lost && !failed) {
         try { handle.render(0); } catch { fail(); }
       }
     };
+    const ndc = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      return [((e.clientX - r.left) / r.width) * 2 - 1, 1 - ((e.clientY - r.top) / r.height) * 2] as const;
+    };
+
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     const io = new IntersectionObserver((entries) => {
@@ -133,10 +132,16 @@ export default function AuraScene({
       visible = !document.hidden;
       if (visible) start(); else stop();
     };
+    const fine = window.matchMedia('(pointer: fine)').matches;
     const onMove = (e: PointerEvent) => {
-      if (!state.interactive || !finePointer) return;
-      handle.setPointer((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1);
+      if (state.interactive && fine) handle.setPointer(...ndc(e));
     };
+    const onDown = (e: PointerEvent) => {
+      if (!state.interactive || !fine || (e.target as Element).closest?.(INTERACTIVE)) return;
+      const [x, y] = ndc(e);
+      if (Math.abs(x) <= 1 && Math.abs(y) <= 1) handle.pulse(x, y);
+    };
+    const onLeave = () => handle.clearPointer();
     const onLost = (e: Event) => {
       e.preventDefault();
       lost = true;
@@ -150,8 +155,11 @@ export default function AuraScene({
       start();
     };
 
+    const root = document.documentElement;
     document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('pointermove', onMove, {passive: true});
+    window.addEventListener('pointerdown', onDown, {passive: true});
+    root.addEventListener('pointerleave', onLeave);
     cv.addEventListener('webglcontextlost', onLost);
     cv.addEventListener('webglcontextrestored', onRestored);
     measure();
@@ -164,6 +172,8 @@ export default function AuraScene({
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerdown', onDown);
+      root.removeEventListener('pointerleave', onLeave);
       cv.removeEventListener('webglcontextlost', onLost);
       cv.removeEventListener('webglcontextrestored', onRestored);
       state.handle = null;
@@ -172,11 +182,5 @@ export default function AuraScene({
     };
   }, []);
 
-  return (
-    <div
-      ref={box}
-      className={`relative size-full overflow-hidden ${className}`}
-      {...(description ? {role: 'img', 'aria-label': description} : {'aria-hidden': true})}
-    />
-  );
+  return <div ref={box} aria-hidden className={`relative size-full overflow-hidden ${className}`} />;
 }

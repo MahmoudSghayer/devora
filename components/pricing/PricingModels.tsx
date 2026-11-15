@@ -47,7 +47,7 @@ export default function PricingModels() {
   const params = pricingParams(useLocale());
 
   return (
-    <section aria-labelledby="pricing-models-title" className="aura overflow-x-clip py-section">
+    <section aria-labelledby="pricing-models-title" className="aura overflow-x-clip pb-block pt-section">
       <Container>
         <Reveal>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
@@ -66,7 +66,7 @@ export default function PricingModels() {
           </div>
         </Reveal>
 
-        <div className="mt-16 grid items-stretch gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
+        <div className="mt-14 grid items-stretch gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
           {MODELS.map((pk, i) => (
             <Reveal key={pk.n} index={i} className="h-full">
               <TiltCard

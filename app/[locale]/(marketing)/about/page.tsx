@@ -8,7 +8,6 @@ import Difference from '@/components/about/Difference';
 import Values from '@/components/about/Values';
 import Crew from '@/components/about/Crew';
 import AmberBand from '@/components/ui/AmberBand';
-import Marquee from '@/components/chrome/Marquee';
 
 export async function generateMetadata({
   params,
@@ -43,7 +42,9 @@ function AboutContent() {
   const c = useTranslations('common');
   return (
     <>
-      <PageIntro label={a('a_label')} title={a('a_title')} sub={a('a_sub')} />
+      <div className="aura overflow-x-clip">
+        <PageIntro label={a('a_label')} title={a('a_title')} sub={a('a_sub')} />
+      </div>
       <Story />
       <Difference />
       <Values />
@@ -53,7 +54,6 @@ function AboutContent() {
         sub={c('cta_sub')}
         buttonLabel={c('cta_btn')}
       />
-      <Marquee />
     </>
   );
 }

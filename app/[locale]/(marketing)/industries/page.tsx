@@ -5,7 +5,6 @@ import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
 import IndustryGrid from '@/components/industries/IndustryGrid';
 import AmberBand from '@/components/ui/AmberBand';
-import Marquee from '@/components/chrome/Marquee';
 
 export async function generateMetadata({
   params,
@@ -40,14 +39,15 @@ function IndustriesContent() {
   const c = useTranslations('common');
   return (
     <>
-      <PageIntro label={i('i_label')} title={i('i_title')} sub={i('i_sub')} />
+      <div className="aura overflow-x-clip">
+        <PageIntro label={i('i_label')} title={i('i_title')} sub={i('i_sub')} />
+      </div>
       <IndustryGrid />
       <AmberBand
         title={c('cta_title')}
         sub={c('cta_sub')}
         buttonLabel={c('cta_btn')}
       />
-      <Marquee />
     </>
   );
 }

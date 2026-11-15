@@ -1,19 +1,15 @@
 'use client';
 
 /**
- * Poster-first loader for the WebGL aura.
+ * Poster-first loader for the WebGL particle mark.
  *
  * Server HTML (and reduced-motion / no-WebGL / coarse-pointer users) only ever gets the static
- * CSS poster. After first paint + idle, capable fine-pointer devices lazy-load `AuraScene`
- * and cross-fade the canvas over the poster.
- *
- * Mobile decision: coarse pointer => poster only. The scene has not been profiled on real
- * phones, and the brief only allows a lighter mobile scene if measured, so we do not guess.
+ * CSS poster. After first paint + idle, capable fine-pointer devices lazy-load `MarkParticles`
+ * and cross-fade the canvas over the poster. Coarse pointers (phones) never load WebGL.
  */
 import {useEffect, useState, type ComponentType} from 'react';
-import type {AuraSceneProps} from './AuraScene';
-
-type Props = AuraSceneProps;
+import type {MarkParticlesProps} from './MarkParticles';
+import Poster from './Poster';
 
 const IDLE_TIMEOUT_MS = 1500;
 
@@ -28,34 +24,8 @@ function webglAvailable() {
   }
 }
 
-const DOTS = [
-  ['14%', '28%', 3], ['82%', '22%', 2], ['70%', '78%', 3], ['24%', '72%', 2],
-  ['90%', '56%', 2], ['8%', '52%', 2], ['52%', '10%', 2], ['40%', '90%', 3],
-] as const;
-
-function Poster() {
-  return (
-    <div aria-hidden className="absolute inset-0 [container-type:size]">
-      <div
-        className="absolute inset-0 m-auto size-[min(62cqw,62cqh)] rounded-full"
-        style={{
-          background:
-            'radial-gradient(circle at 50% 50%, var(--color-amber-hi) 0%, color-mix(in oklab, var(--color-amber) 55%, transparent) 22%, color-mix(in oklab, var(--color-amber) 14%, transparent) 48%, transparent 70%)',
-        }}
-      />
-      {DOTS.map(([x, y, s]) => (
-        <span
-          key={`${x}${y}`}
-          className="absolute rounded-full bg-amber-hi opacity-60"
-          style={{insetInlineStart: x, top: y, width: s, height: s}}
-        />
-      ))}
-    </div>
-  );
-}
-
-export default function AuraSceneLazy({className = '', onReady, onError, ...rest}: Props) {
-  const [Scene, setScene] = useState<ComponentType<AuraSceneProps> | null>(null);
+export default function AuraSceneLazy({className = '', onReady, onError, ...rest}: MarkParticlesProps) {
+  const [Scene, setScene] = useState<ComponentType<MarkParticlesProps> | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -65,7 +35,7 @@ export default function AuraSceneLazy({className = '', onReady, onError, ...rest
     let cancelled = false;
     const load = () => {
       if (cancelled || !webglAvailable()) return;
-      import('./AuraScene').then((m) => { if (!cancelled) setScene(() => m.default); }, () => {});
+      import('./MarkParticles').then((m) => { if (!cancelled) setScene(() => m.default); }, () => {});
     };
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void, o?: {timeout: number}) => number;

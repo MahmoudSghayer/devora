@@ -56,13 +56,10 @@ export async function renderOgImage(rawLocale: string) {
   const isAr = locale === 'ar';
   const line = await tagline(locale);
 
-  const [latin, arabic] = await Promise.all([
-    loadOgFont('Space Grotesk', {text: `${SITE.name}${SITE.domain}${isAr ? '' : line}`}),
-    isAr ? loadOgFont('Cairo', {}) : Promise.resolve(null),
-  ]);
-  const fonts: OgFont[] = [latin, arabic].filter((f): f is OgFont => f !== null);
-  const bodyFamily = isAr && arabic ? 'Cairo' : latin ? 'Space Grotesk' : 'sans-serif';
-  const brandFamily = latin ? 'Space Grotesk' : 'sans-serif';
+  // One font request: Cairo covers both Arabic and Latin.
+  const cairo = await loadOgFont('Cairo', {});
+  const fonts: OgFont[] = cairo ? [cairo] : [];
+  const family = cairo ? 'Cairo' : 'sans-serif';
 
   return new ImageResponse(
     (
@@ -82,12 +79,12 @@ export async function renderOgImage(rawLocale: string) {
         <div
           style={{
             position: 'absolute',
-            top: -180,
-            left: 100,
-            width: 1000,
-            height: 760,
+            top: 0,
+            left: 0,
+            width: 1200,
+            height: 630,
             display: 'flex',
-            background: `radial-gradient(ellipse at center, ${C.amberGlow} 0%, ${C.amberGlowFaint} 45%, transparent 70%)`,
+            background: `radial-gradient(circle at 600px 250px, ${C.amberGlow} 0%, ${C.amberGlowFaint} 320px, transparent 600px)`,
           }}
         />
         {/* hairline frame */}
@@ -104,16 +101,17 @@ export async function renderOgImage(rawLocale: string) {
           }}
         />
 
-        <Mark size={132} />
+        <Mark size={230} />
 
         <div
           style={{
             display: 'flex',
-            marginTop: 28,
-            fontSize: 104,
+            marginTop: -34,
+            fontSize: 96,
+            lineHeight: 1.1,
             fontWeight: 700,
             color: C.ink,
-            fontFamily: brandFamily,
+            fontFamily: family,
             direction: 'ltr',
           }}
         >
@@ -121,31 +119,40 @@ export async function renderOgImage(rawLocale: string) {
           <span style={{color: C.amber}}>.</span>
         </div>
 
+        {/* Satori lays text out left-to-right word by word, so Arabic is set as
+            a row-reverse flex row of whole words (Satori ignores `direction`) (each word still shapes
+            correctly; letters are never split). */}
         <div
           style={{
-            display: 'block',
-            marginTop: 22,
-            width: 980,
-            textAlign: 'center',
-            fontSize: isAr ? 38 : 40,
+            display: 'flex',
+            flexDirection: isAr ? 'row-reverse' : 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            marginTop: 14,
+            width: 1060,
+            fontSize: isAr ? 36 : 32,
             lineHeight: 1.4,
             fontWeight: 700,
             color: C.muted,
-            fontFamily: bodyFamily,
+            fontFamily: family,
             direction: isAr ? 'rtl' : 'ltr',
           }}
         >
-          {line}
+          {line.split(' ').map((word, i) => (
+            <span key={i} style={{display: 'flex', margin: '0 7px'}}>
+              {word}
+            </span>
+          ))}
         </div>
 
         <div
           style={{
             position: 'absolute',
-            bottom: 50,
+            bottom: 56,
             display: 'flex',
             fontSize: 26,
             color: C.amber,
-            fontFamily: brandFamily,
+            fontFamily: family,
             direction: 'ltr',
           }}
         >

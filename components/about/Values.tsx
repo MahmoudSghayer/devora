@@ -13,31 +13,35 @@ export default function Values() {
   const a = useTranslations('about');
 
   return (
-    <section className="border-b border-border">
-      <Container className="py-24">
+    <section aria-labelledby="about-values-title" className="border-b border-border py-section">
+      <Container>
         <Reveal>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
+            <span aria-hidden>{'// '}</span>
             {a('val_label')}
           </p>
-          <h2 className="u-track mt-4 font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">
+          <h2
+            id="about-values-title"
+            className="u-track mt-4 font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]"
+          >
             {a('val_title')}
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid gap-px bg-border [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]">
+        <ul className="mt-12 grid gap-px overflow-hidden rounded-card border border-border-card bg-border-card [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))]">
           {VALUES.map((v, i) => (
-            <Reveal key={v.t} index={i} className="h-full">
-              <div className="h-full bg-bg px-8 pb-11 pt-9 transition-colors duration-300 hover:bg-surface-2">
-                <h3 className="font-display text-[20px] font-semibold">
-                  {a(v.t)}
-                </h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                  {a(v.d)}
-                </p>
-              </div>
-            </Reveal>
+            <li key={v.t}>
+              <Reveal index={i} className="h-full">
+                <div className="h-full bg-bg px-6 pb-9 pt-8 transition-colors duration-300 hover:bg-surface-2 nav:px-8">
+                  <h3 className="font-display text-xl font-semibold">{a(v.t)}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-muted">
+                    {a(v.d)}
+                  </p>
+                </div>
+              </Reveal>
+            </li>
           ))}
-        </div>
+        </ul>
       </Container>
     </section>
   );

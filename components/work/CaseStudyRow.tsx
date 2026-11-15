@@ -23,7 +23,7 @@ export default function CaseStudyRow({
   const descKey = `c${index + 1}_d`;
 
   const image = (
-    <Parallax speed={0.08} className="aspect-[4/3] rounded-[16px]">
+    <Parallax speed={0.08} className="glass aspect-[4/3] rounded-card p-2">
       <SiteImage
         src={data.image}
         alt={`${data.domain} — website`}
@@ -34,14 +34,14 @@ export default function CaseStudyRow({
 
   const meta = (
     <div>
-      <span className="font-mono text-sm text-amber">{num}</span>
+      <span className="num font-mono text-sm text-amber">{num}</span>
       <h2
         dir="ltr"
         className="mt-4 font-display text-case font-semibold tracking-[-0.02em]"
       >
         {data.domain}
       </h2>
-      <p className="mt-3 font-mono text-xs text-faint">{w(tagsKey)}</p>
+      <p className="u-mono mt-3 font-mono text-xs text-faint">{w(tagsKey)}</p>
       <p className="mt-5 max-w-[520px] text-base leading-[1.7] text-muted">
         {w(descKey)}
       </p>
@@ -65,7 +65,7 @@ export default function CaseStudyRow({
   );
 
   return (
-    <Container className="border-b border-border py-24">
+    <Container className="border-b border-border py-section">
       <div
         className={`grid items-center gap-14 ${
           reverse ? 'nav:grid-cols-[5fr_7fr]' : 'nav:grid-cols-[7fr_5fr]'

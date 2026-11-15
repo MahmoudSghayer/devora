@@ -850,18 +850,15 @@
       "cost_t": "Lower running cost",
       "cost_d": "One system that fits how you work replaces a pile of overlapping tools, manual workarounds and avoidable errors.",
       "edge_t": "A real edge",
-      "edge_d": "Faster replies, smoother service and software built around your process are hard for competitors to copy.",
-      "facts_aria": "Devora at a glance",
-      "fact_pillars": "service pillars",
-      "fact_products": "live client products",
-      "fact_tools": "free calculators",
-      "fact_steps": "step process"
+      "edge_d": "Faster replies, smoother service and software built around your process are hard for competitors to copy."
     },
     "cta": {
       "title": "Ready to build what's next?",
       "sub": "Tell us about your idea, or get an indicative estimate first. Whichever suits you.",
       "primary": "Start a project",
-      "secondary": "Estimate your project"
+      "secondary": "Estimate your project",
+      "process_link": "See how we work",
+      "faq_link": "Common questions"
     }
   },
   "homeB": {
@@ -933,7 +930,7 @@
     "b2_d": "Mainstream, open tooling that any capable developer can pick up. You are never locked into a proprietary platform.",
     "b3_t": "Security",
     "b3_d": "Inputs validated on the server, rate limits on public endpoints and secrets kept out of the browser, by default.",
-    "hint": "Hover or focus a node to see what we use it for.",
+    "hint": "Hover, focus or tap a node to see what we use it for.",
     "map_aria": "Technology map, grouped by area",
     "list_aria": "Technologies we use, grouped by area",
     "hub": "devora",
@@ -979,8 +976,7 @@
     "u_vercel": "Hosting and deployment: pushes to the main branch go live automatically.",
     "u_actions": "Typecheck, lint and build run on every push and pull request before anything ships.",
     "u_playwright": "Browser-driven smoke tests for the AI assistant and the admin gate.",
-    "u_vitest": "Unit tests for the pricing, estimator and lead-handling logic.",
-    "pt_link": "See the full process"
+    "u_vitest": "Unit tests for the pricing, estimator and lead-handling logic."
   },
   "why": {
     "label": "Why Devora",
@@ -1005,23 +1001,10 @@
     "sw_all": "All work",
     "sw_case": "Read the case",
     "sw_live": "Visit live site",
-    "sw_image_alt": "{domain} website screenshot"
-  },
-  "homeFaq": {
-    "label": "FAQ",
-    "title": "The questions people ask before they start.",
-    "link": "All questions",
-    "q1": "How accurate is the estimate?",
-    "a1": "It is indicative, not a quotation. The calculators give you a realistic range from the scope you describe, and a detailed assessment follows before any price is agreed in writing.",
-    "q2": "Will automation replace my staff?",
-    "a2": "The aim is to take repetitive work off people, such as copying data, chasing replies and sorting requests, so your team has time for work that needs judgement and a human touch. We will tell you plainly when a task is better left to a person.",
-    "q3": "Who owns the code and the site?",
-    "a3": "You do. We hand over clean, documented, editable code and the accounts it runs on, with no lock-in.",
-    "q4": "How long does a project take?",
-    "a4": "A focused landing page can ship in about two weeks. A full brand-and-site build is typically 4–8 weeks, depending on scope and how quickly feedback comes back. Automation and custom software are scoped after discovery.",
-    "q5": "What does it cost, and are there hidden fees?",
-    "a5": "A landing page starts around {launch_from} to build, a full business site from {studio_from} and a larger custom or e-commerce build from {growth_from}. The Care Plan ({care_min}–{care_max} a month) covers hosting, updates and support. These are indicative starting points, and the quote you receive states exactly what is included.",
-    "q6": "What if I need changes after launch?",
-    "a6": "Every build includes a support window, and the Care Plan covers ongoing updates, fixes and improvements. You can also edit content yourself, because we set up a CMS and train your team."
+    "sw_image_alt": "{domain} website screenshot",
+    "process_link": "See how we work",
+    "faq_link": "Common questions",
+    "list_aria": "What sets Devora apart",
+    "sw_new_tab": "(opens in a new tab)"
   }
 }

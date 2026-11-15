@@ -42,7 +42,7 @@ export default function Hero() {
         <KineticHeadline
           text={t('title')}
           emphasis={emphasis}
-          className="mt-7 max-w-[15ch] font-display font-bold leading-[1.02] tracking-[-0.03em] text-ink nav:max-w-[17ch]"
+          className="mt-7 max-w-[15ch] font-display text-display font-bold leading-[1.02] tracking-[-0.03em] text-ink max-nav:max-w-[11ch] max-nav:text-[clamp(56px,11vw,96px)] nav:max-w-[16ch]"
         />
 
         <p className="mt-7 max-w-[560px] text-lead leading-[1.6] text-muted">{t('sub')}</p>

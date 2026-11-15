@@ -1,6 +1,8 @@
 import {useTranslations} from 'next-intl';
 import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
+import TiltCard from '@/components/motion/TiltCard';
+import ArrowLink from '@/components/ui/ArrowLink';
 
 const INDUSTRIES = [
   {n: '01', t: 'i1_t', d: 'i1_d'},
@@ -11,27 +13,38 @@ const INDUSTRIES = [
   {n: '06', t: 'i6_t', d: 'i6_d'},
 ] as const;
 
+// Six kinds of business we are commonly asked to help, as glass tilt cards,
+// then a closing note for everyone else. Descriptive only: no client claims.
 export default function IndustryGrid() {
   const i = useTranslations('industries');
 
   return (
-    <section>
-      <Container className="py-24">
-        <div className="grid gap-px bg-border [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
+    <section aria-label={i('i_title')} className="py-section">
+      <Container>
+        <ul className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
           {INDUSTRIES.map((row, idx) => (
-            <Reveal key={row.n} index={idx} className="h-full">
-              <div className="group h-full bg-bg px-8 pb-11 pt-9 transition-[background-color,transform] duration-300 hover:-translate-y-1.5 hover:bg-surface-2">
-                <span className="font-mono text-sm text-amber">{row.n}</span>
-                <h2 className="mt-6 font-display text-[22px] font-semibold">
-                  {i(row.t)}
-                </h2>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                  {i(row.d)}
-                </p>
-              </div>
-            </Reveal>
+            <li key={row.n}>
+              <Reveal index={idx} className="h-full">
+                <TiltCard className="glass h-full rounded-card p-6 nav:p-8">
+                  <span className="num font-mono text-sm text-amber">{row.n}</span>
+                  <h2 className="mt-6 font-display text-[22px] font-semibold">
+                    {i(row.t)}
+                  </h2>
+                  <p className="mt-3 text-[15px] leading-relaxed text-muted">
+                    {i(row.d)}
+                  </p>
+                </TiltCard>
+              </Reveal>
+            </li>
           ))}
-        </div>
+        </ul>
+
+        <Reveal>
+          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-border pt-8">
+            <p className="max-w-[560px] text-lead text-ink-2">{i('i_note')}</p>
+            <ArrowLink href="/contact" label={i('i_note_link')} />
+          </div>
+        </Reveal>
       </Container>
     </section>
   );

@@ -1,6 +1,7 @@
 import {useTranslations} from 'next-intl';
 import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
+import Spotlight from '@/components/motion/Spotlight';
 
 const POINTS = [
   {n: '01', t: 'diff_1_t', d: 'diff_1_d'},
@@ -13,30 +14,39 @@ export default function Difference() {
   const a = useTranslations('about');
 
   return (
-    <section className="border-b border-border bg-bg-alt">
-      <Container className="py-24">
+    <section
+      aria-labelledby="about-diff-title"
+      className="aura aura-signal overflow-x-clip border-b border-border py-section"
+    >
+      <Container>
         <Reveal>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
+            <span aria-hidden>{'// '}</span>
             {a('diff_label')}
           </p>
-          <h2 className="u-track mt-4 max-w-[760px] font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">
+          <h2
+            id="about-diff-title"
+            className="u-track mt-4 max-w-[760px] font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]"
+          >
             {a('diff_title')}
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid gap-x-10 gap-y-10 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]">
+        <ul className="mt-12 grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))]">
           {POINTS.map((pt, i) => (
-            <Reveal key={pt.n} index={i}>
-              <div className="border-t-2 border-border-chip pt-6 transition-colors duration-300 hover:border-amber">
-                <span className="font-mono text-sm text-amber">{pt.n}</span>
-                <h3 className="mt-4 text-xl font-semibold">{a(pt.t)}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                  {a(pt.d)}
-                </p>
-              </div>
-            </Reveal>
+            <li key={pt.n}>
+              <Reveal index={i} className="h-full">
+                <Spotlight className="glass h-full rounded-card p-6 nav:p-8">
+                  <span className="num font-mono text-sm text-amber">{pt.n}</span>
+                  <h3 className="mt-4 font-display text-xl font-semibold">{a(pt.t)}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-muted">
+                    {a(pt.d)}
+                  </p>
+                </Spotlight>
+              </Reveal>
+            </li>
           ))}
-        </div>
+        </ul>
       </Container>
     </section>
   );

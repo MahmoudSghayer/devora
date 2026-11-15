@@ -12,6 +12,8 @@ const ROUTES = [
   '/process',
   '/industries',
   '/faq',
+  '/estimate',
+  '/automation-roi',
   '/contact',
   ...CASES.map((c) => `/work/${c.slug}`),
 ]

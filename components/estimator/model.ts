@@ -1,7 +1,8 @@
 // State model for the estimator island: pure types, reducer and helpers.
 // No React, no I/O — everything here is unit-testable.
 
-import {visibleQuestions} from '@/lib/estimator/questions';
+import {ESTIMATOR_CONFIG} from '@/lib/pricing/config';
+import {visibleQuestions, type Question, type QuestionOption} from '@/lib/estimator/questions';
 import type {EstimatorAnswers} from '@/lib/estimator/schema';
 import {
   FEATURE_IDS,
@@ -100,13 +101,26 @@ export const parseStepParam = (raw: string | null): StepNo | null => {
 
 // ── answers → engine input ───────────────────────────────────────────────
 
+/**
+ * Options of a question that are relevant to the selected types. Feature
+ * options the engine would ignore for these types are dropped, so the UI never
+ * shows a selectable item that has no effect.
+ */
+export function optionsFor(question: Question, types: readonly ProjectType[]): QuestionOption[] {
+  const options = question.options ?? [];
+  if (question.answerKey !== 'features') return options;
+  return options.filter((o) =>
+    ESTIMATOR_CONFIG.features[o.id as FeatureId].appliesTo.some((t) => types.includes(t)),
+  );
+}
+
 /** Engine-ready answers: only what the visible questions can have produced. */
 export function toSchemaAnswers(a: Answers): EstimatorAnswers {
   const types = a.types.length > 0 ? a.types : (['unsure'] as ProjectType[]);
   const visible = visibleQuestions({types});
   const has = (id: string) => visible.some((q) => q.id === id);
   const allowedFeatures = new Set(
-    visible.filter((q) => q.answerKey === 'features').flatMap((q) => q.options?.map((o) => o.id) ?? []),
+    visible.filter((q) => q.answerKey === 'features').flatMap((q) => optionsFor(q, types).map((o) => o.id)),
   );
 
   const out: EstimatorAnswers = {types};
@@ -182,8 +196,8 @@ export function reducer(s: EstimatorState, action: Action): EstimatorState {
             ...s,
             answers: action.stored.answers,
             context: action.stored.context,
-            startedAtMs: action.stored.startedAtMs,
-            idempotencyKey: action.stored.idempotencyKey,
+            startedAtMs: action.stored.startedAtMs || action.now,
+            idempotencyKey: action.stored.idempotencyKey || action.key,
             timeline: action.stored.timeline,
             restored: action.stored.answers.types.length > 0,
           }

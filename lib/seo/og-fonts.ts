@@ -36,7 +36,7 @@ async function fetchFont(family: string, source: Source): Promise<OgFont | null>
   }
 }
 
-export function loadOgFont(family: 'Cairo' | 'Space Grotesk', source: Source): Promise<OgFont | null> {
+export function loadOgFont(family: 'Cairo', source: Source): Promise<OgFont | null> {
   const key = `${family}:${Array.from(new Set(source.text ?? '')).join('')}`;
   let hit = cache.get(key);
   if (!hit) {

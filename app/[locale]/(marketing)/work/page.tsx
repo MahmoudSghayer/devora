@@ -6,7 +6,6 @@ import {CASES} from '@/lib/site';
 import PageIntro from '@/components/ui/PageIntro';
 import CaseStudyRow from '@/components/work/CaseStudyRow';
 import AmberBand from '@/components/ui/AmberBand';
-import Marquee from '@/components/chrome/Marquee';
 
 export async function generateMetadata({
   params,
@@ -41,12 +40,18 @@ function WorkContent() {
   const c = useTranslations('common');
   return (
     <>
-      <PageIntro label={w('wk_label')} title={w('wk_title')} sub={w('wk_sub')} />
-      {CASES.map((c, i) => (
-        <CaseStudyRow key={c.slug} index={i} reverse={i % 2 === 1} />
+      <div className="aura overflow-x-clip">
+        <PageIntro label={w('wk_label')} title={w('wk_title')} sub={w('wk_sub')} />
+      </div>
+      {CASES.map((cs, i) => (
+        <CaseStudyRow key={cs.slug} index={i} reverse={i % 2 === 1} />
       ))}
-      <AmberBand title={w('next_t')} buttonLabel={c('nav_cta')} centered />
-      <Marquee />
+      <AmberBand
+        title={w('next_t')}
+        sub={w('next_sub')}
+        buttonLabel={c('nav_cta')}
+        centered
+      />
     </>
   );
 }
