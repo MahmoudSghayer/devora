@@ -10,7 +10,8 @@ import EstimatePanel from './EstimatePanel';
 import MobileSheet from './MobileSheet';
 import ProgressNav from './ProgressNav';
 import SuccessView, {type Social} from './SuccessView';
-import BusinessStep from './steps/BusinessStep';
+import GoalStep from './steps/GoalStep';
+import SizeStep from './steps/SizeStep';
 import DesignStep from './steps/DesignStep';
 import IntegrationsStep from './steps/IntegrationsStep';
 import RequirementsStep from './steps/RequirementsStep';
@@ -22,6 +23,7 @@ import {useTx} from './i18n';
 import {ArrowIcon} from './icons';
 import {
   STEP_COUNT,
+  TYPE_STEP,
   initialState,
   parseStepParam,
   reachableStep,
@@ -30,7 +32,6 @@ import {
   EMPTY_ANSWERS,
   type StepNo,
 } from './model';
-import {buildNotes} from './notes';
 import {clearStored, loadStored, newIdempotencyKey, saveStored} from './storage';
 import {EMPTY_FORM, submitEstimate, type ContactForm} from './submit';
 import {buildSummary} from './summary';
@@ -68,7 +69,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
   const hasTypes = answers.types.length > 0;
   const schema = useMemo(() => toSchemaAnswers(answers), [answers]);
   const est = useMemo(() => estimateProject(schema), [schema]);
-  const sections = useMemo(() => buildSummary(schema, state.context, t), [schema, state.context, t]);
+  const sections = useMemo(() => buildSummary(schema, t), [schema, t]);
 
   // ── hydrate from storage + URL ───────────────────────────────────────
   useEffect(() => {
@@ -168,7 +169,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
       startedAtMs: state.startedAtMs,
       answers: schema,
       form,
-      notes: buildNotes(state.context, form.details),
+      notes: form.details.trim() || undefined,
       timeline: state.timeline,
       honeypot,
     });
@@ -208,8 +209,8 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
     );
   }
 
-  const showPanel = step !== 6;
-  const needsType = step === 1 && !hasTypes;
+  const showPanel = step !== 7;
+  const needsType = step === TYPE_STEP && !hasTypes;
   const next = (
     <button
       type="button"
@@ -220,7 +221,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
       }}
       className={BTN_PRIMARY}
     >
-      {step === 6 ? t('review.continue') : t('btn_next')}
+      {step === 7 ? t('review.continue') : t('btn_next')}
       <ArrowIcon />
     </button>
   );
@@ -228,9 +229,9 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
   return (
     <div className="grid gap-8 nav:grid-cols-[minmax(0,1fr)_400px] nav:items-start nav:gap-10">
       <div className="min-w-0 space-y-8 max-nav:pb-28">
-        <ProgressNav step={step} canLeaveFirst={hasTypes} onGo={go} />
+        <ProgressNav step={step} canLeaveType={hasTypes} typeStep={TYPE_STEP} onGo={go} />
 
-        {state.restored && !state.interacted && step === 1 ? (
+        {state.restored && !state.interacted ? (
           <p className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-card border border-border-card p-3 text-sm text-ink-2">
             {t('restored.note')}
             <button type="button" onClick={restart} className="min-h-11 font-semibold text-amber underline underline-offset-4">
@@ -248,13 +249,14 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
           >
             {t(`flow.s${step}.title`)}
           </h2>
-          {step === 1 && <TypeStep answers={answers} dispatch={dispatch} />}
-          {step === 2 && <BusinessStep context={state.context} dispatch={dispatch} />}
-          {step === 3 && <RequirementsStep answers={answers} dispatch={dispatch} />}
-          {step === 4 && <DesignStep answers={answers} dispatch={dispatch} />}
-          {step === 5 && <IntegrationsStep answers={answers} dispatch={dispatch} />}
-          {step === 6 && <ReviewStep est={est} onGo={go} />}
-          {step === 7 && (
+          {step === 1 && <GoalStep answers={answers} dispatch={dispatch} />}
+          {step === 2 && <SizeStep answers={answers} dispatch={dispatch} />}
+          {step === 3 && <TypeStep answers={answers} dispatch={dispatch} />}
+          {step === 4 && <RequirementsStep answers={answers} dispatch={dispatch} />}
+          {step === 5 && <DesignStep answers={answers} dispatch={dispatch} />}
+          {step === 6 && <IntegrationsStep answers={answers} dispatch={dispatch} />}
+          {step === 7 && <ReviewStep est={est} onGo={go} />}
+          {step === 8 && (
             <SummaryStep
               sections={sections}
               est={est}
@@ -264,6 +266,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
               failure={failure}
               mailto={mailto}
               onSubmit={onSubmit}
+              onEdit={go}
             />
           )}
         </section>

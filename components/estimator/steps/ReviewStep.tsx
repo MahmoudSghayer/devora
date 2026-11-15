@@ -6,7 +6,7 @@ import EstimatePanel from '../EstimatePanel';
 import {useTx} from '../i18n';
 import {BTN_GHOST} from '../ui';
 
-const EDITABLE: readonly StepNo[] = [1, 3, 4, 5];
+const EDITABLE: readonly StepNo[] = [1, 2, 3, 4, 5, 6];
 
 /** Step 6: the full live estimate in the main column, with shortcuts back to each input step. */
 export default function ReviewStep({est, onGo}: {est: EstimateResult; onGo: (s: StepNo) => void}) {

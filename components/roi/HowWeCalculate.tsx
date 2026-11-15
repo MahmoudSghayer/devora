@@ -55,7 +55,7 @@ export default function HowWeCalculate({state, result: r}: {state: CalcState; re
     `(12 × ${money(value, locale)} − 12 × ${run} − ${cost}) ÷ (${cost} + 12 × ${run}) = ${roi === null ? t('results.na') : pct(roi)}`;
 
   return (
-    <details className="glass group rounded-panel p-5 nav:p-8 print:open">
+    <details className="glass group rounded-panel p-5 nav:p-8">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-display text-xl font-semibold text-ink [&::-webkit-details-marker]:hidden">
         {t('calc.title')}
         <ChevronIcon className="size-5 shrink-0 -rotate-90 transition-transform group-open:rotate-90" />

@@ -170,7 +170,8 @@ export function placeNodes(group: StackGroupDef): PlacedNode[] {
 
 /** Where the group's name sits inside the stage (stage %). */
 export function labelPos(group: StackGroupDef): {x: number; y: number} {
-  const dy = group.items.length >= 3 ? 0 : 36;
+  // ring groups: name sits just outside the ring; small groups: under their nodes
+  const dy = group.items.length >= 3 ? group.r + 50 : 36;
   return {x: pct(group.cx, STAGE.w), y: pct(group.cy + dy, STAGE.h)};
 }
 

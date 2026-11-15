@@ -1058,7 +1058,12 @@
       "summary": "{count, plural, one {Please fix 1 field before continuing.} other {Please fix # fields before continuing.}}"
     },
     "workload": {
-      "intro": "For each task, tell us how often one employee does it and how long it takes. Add another group if different people work differently.",
+      "intro": "For each task, tell us how often one person does it, how long it takes and how many people do it. We pre-selected typical options: change any that do not fit. Add another group if different people work differently.",
+      "q": {
+        "times": "How many times a day, per person?",
+        "minutes": "How long does each one take?",
+        "employees": "How many people do this?"
+      },
       "group": "Group {n}",
       "times": "Times per day",
       "timesHint": "Per employee, each working day",
@@ -1104,6 +1109,9 @@
       "unknownNote": "We will use typical values: {hourly} per hour and {days} working days a month. You can come back and refine them at any time.",
       "days": "Working days per month",
       "daysHint": "How many days a month this work happens. Typical: {days}.",
+      "bandsHourly": "Typical fully-loaded cost of one employee hour",
+      "bandsSalary": "Monthly gross salary of a typical employee",
+      "multiplierFixed": "We add typical employer costs: gross salary × {multiplier}, then divide by {hours} hours a month. Switch to exact numbers to change it.",
       "perMonthDays": "days/month"
     },
     "potential": {
@@ -1422,6 +1430,674 @@
       "orderProcessing": "Confirming, routing and updating orders is largely rules, though unusual orders need a human check.",
       "customerSupport": "Automation handles the common requests; complex or sensitive cases still need your team, so expect a lower share.",
       "other": "Anything rule-based that you repeat daily can be a candidate, but we would need to look closer, so we assume a cautious share."
+    }
+  },
+  "estimator": {
+    "step": {
+      "1": {
+        "title": "Goals"
+      },
+      "2": {
+        "title": "Size"
+      },
+      "3": {
+        "title": "Project type"
+      },
+      "4": {
+        "title": "Scope"
+      },
+      "5": {
+        "title": "Features"
+      },
+      "6": {
+        "title": "Design"
+      },
+      "7": {
+        "title": "Integrations"
+      }
+    },
+    "q": {
+      "goals": {
+        "label": "What do you want your website to do?",
+        "hint": "Pick everything that applies."
+      },
+      "size": {
+        "label": "How big should it be?",
+        "hint": "A rough size is fine."
+      },
+      "types": {
+        "label": "What do you want to build?",
+        "hint": "Pick everything that applies.",
+        "opt": {
+          "landing": "Landing page",
+          "business": "Business website (up to 5 pages)",
+          "ecommerce": "E-commerce store",
+          "booking": "Booking / scheduling system",
+          "dashboard": "Dashboard / internal tool",
+          "portal": "Customer portal",
+          "webapp": "Custom web app",
+          "unsure": "Project to be defined (discovery)"
+        }
+      },
+      "pages": {
+        "label": "How many pages?",
+        "hint": "The first five are included.",
+        "opt": {
+          "n5": "5 pages",
+          "n8": "8 pages",
+          "n12": "12 pages",
+          "n20": "20 pages",
+          "n30": "30 pages"
+        }
+      },
+      "products": {
+        "label": "How many products?",
+        "hint": "Approximate catalog size.",
+        "opt": {
+          "p1_20": "Catalog: 1–20 products",
+          "p21_100": "Catalog: 21–100 products",
+          "p101_500": "Catalog: 101–500 products",
+          "p501_1000": "Catalog: 501–1,000 products",
+          "p1000_plus": "Catalog: 1,000+ products"
+        }
+      },
+      "roles": {
+        "label": "How many user roles?",
+        "hint": "For example admin, staff, customer.",
+        "opt": {
+          "one": "User roles: single role",
+          "few": "User roles: 2–3 roles",
+          "many": "User roles: 4+ roles"
+        }
+      },
+      "features": {
+        "business": {
+          "label": "Website features",
+          "hint": "Select what you need.",
+          "opt": {
+            "blog": "Blog / articles",
+            "leadForm": "Contact / lead collection",
+            "booking": "Online booking"
+          }
+        },
+        "shared": {
+          "label": "Common features",
+          "hint": "Select what you need.",
+          "opt": {
+            "crm": "CRM integration",
+            "multilingual": "Multilingual (Hebrew / Arabic / English)",
+            "advancedSeo": "Advanced SEO",
+            "adminDashboard": "Admin dashboard",
+            "payments": "Online payments"
+          }
+        },
+        "ecommerce": {
+          "label": "Store features",
+          "hint": "Select what you need.",
+          "opt": {
+            "categories": "Product categories",
+            "filtering": "Advanced filtering & search",
+            "accounts": "Customer accounts",
+            "cart": "Shopping cart & checkout",
+            "shipping": "Shipping options",
+            "inventory": "Inventory management",
+            "coupons": "Coupons & discounts",
+            "orderTracking": "Order tracking",
+            "notifications": "Customer notifications"
+          }
+        },
+        "webapp": {
+          "label": "App features",
+          "hint": "Select what you need.",
+          "opt": {
+            "auth": "Authentication & accounts",
+            "subscriptions": "Subscriptions & billing plans",
+            "dashboards": "Dashboards & charts",
+            "database": "Database management screens",
+            "apiIntegrations": "API integrations",
+            "realtime": "Real-time updates",
+            "aiFeatures": "AI features"
+          }
+        }
+      },
+      "design": {
+        "existing": {
+          "label": "I already have a design",
+          "hint": "We build from your design."
+        },
+        "brandIdentity": {
+          "label": "I need a brand identity",
+          "hint": "Logo, colors and typography."
+        },
+        "advancedMotion": {
+          "label": "Advanced 3D / animation",
+          "hint": "Rich motion and interactive visuals."
+        },
+        "premium": {
+          "label": "Premium visual design",
+          "hint": "Extra polish and custom visuals."
+        }
+      },
+      "integrations": {
+        "label": "Integrations & services",
+        "hint": "Connect the tools you already use.",
+        "opt": {
+          "whatsapp": "WhatsApp integration",
+          "emailAutomation": "Email automation",
+          "aiChatbot": "AI chatbot",
+          "aiAgents": "AI agents / workflows",
+          "thirdPartyApi": "Third-party API integration",
+          "analytics": "Analytics & reporting",
+          "hosting": "Hosting & domain setup",
+          "maintenance": "Ongoing care plan (billed monthly, shown separately)",
+          "crm": "CRM integration",
+          "multilingual": "Multilingual (Hebrew / Arabic / English)",
+          "advancedSeo": "Advanced SEO",
+          "payments": "Online payments"
+        }
+      }
+    },
+    "goal": {
+      "leads": "Get more leads",
+      "sell": "Sell products online",
+      "bookings": "Take bookings",
+      "brand": "Build my brand",
+      "content": "Publish content",
+      "portal": "Give customers a portal",
+      "other": "Something else"
+    },
+    "size": {
+      "small": "Small (1–5 pages)",
+      "medium": "Medium (6–15 pages)",
+      "large": "Large (16–40 pages)",
+      "xlarge": "Very large (40+ pages)",
+      "unsure": "Not sure"
+    },
+    "item": {
+      "feature": {
+        "blog": "Blog / articles",
+        "leadForm": "Contact / lead collection",
+        "booking": "Online booking",
+        "crm": "CRM integration",
+        "multilingual": "Multilingual (Hebrew / Arabic / English)",
+        "advancedSeo": "Advanced SEO",
+        "adminDashboard": "Admin dashboard",
+        "payments": "Online payments",
+        "categories": "Product categories",
+        "filtering": "Advanced filtering & search",
+        "accounts": "Customer accounts",
+        "cart": "Shopping cart & checkout",
+        "shipping": "Shipping options",
+        "inventory": "Inventory management",
+        "coupons": "Coupons & discounts",
+        "orderTracking": "Order tracking",
+        "notifications": "Customer notifications",
+        "auth": "Authentication & accounts",
+        "subscriptions": "Subscriptions & billing plans",
+        "dashboards": "Dashboards & charts",
+        "database": "Database management screens",
+        "apiIntegrations": "API integrations",
+        "realtime": "Real-time updates",
+        "aiFeatures": "AI features"
+      },
+      "integration": {
+        "whatsapp": "WhatsApp integration",
+        "emailAutomation": "Email automation",
+        "aiChatbot": "AI chatbot",
+        "aiAgents": "AI agents / workflows",
+        "thirdPartyApi": "Third-party API integration",
+        "analytics": "Analytics & reporting",
+        "hosting": "Hosting & domain setup",
+        "maintenance": "Ongoing care plan (billed monthly, shown separately)"
+      },
+      "base": {
+        "landing": "Landing page",
+        "business": "Business website (up to 5 pages)",
+        "ecommerce": "E-commerce store",
+        "booking": "Booking / scheduling system",
+        "dashboard": "Dashboard / internal tool",
+        "portal": "Customer portal",
+        "webapp": "Custom web app",
+        "unsure": "Project to be defined (discovery)"
+      },
+      "type": {
+        "landing": "Additional: Landing page",
+        "business": "Additional: Business website (up to 5 pages)",
+        "ecommerce": "Additional: E-commerce store",
+        "booking": "Additional: Booking / scheduling system",
+        "dashboard": "Additional: Dashboard / internal tool",
+        "portal": "Additional: Customer portal",
+        "webapp": "Additional: Custom web app",
+        "unsure": "Additional: Project to be defined (discovery)"
+      },
+      "pages": "Extra pages",
+      "products": "Product catalog size",
+      "roles": "User roles",
+      "design": {
+        "existing": "Existing design provided",
+        "premium": "Premium visual design",
+        "brandIdentity": "Brand identity",
+        "advancedMotion": "Advanced 3D / animation"
+      }
+    },
+    "meta": {
+      "title": "Website cost estimator",
+      "description": "Answer a few option-based questions and see an indicative price range and timeline for your website or app. Not a quotation."
+    },
+    "intro": {
+      "label": "Cost estimator",
+      "title": "Estimate your project in a few minutes",
+      "sub": "Pick from simple options and watch an indicative range update live — no typing until the very end."
+    },
+    "trust": "Indicative estimate — not a quotation; final pricing follows a detailed assessment.",
+    "disclaimer": "Indicative estimate, not a quotation — final pricing follows a detailed assessment.",
+    "nojs": "The estimator needs JavaScript. You can still tell us about your project on the contact page.",
+    "nojs_link": "Go to the contact page",
+    "nav": {
+      "label": "Estimator progress"
+    },
+    "step_of": "Step {n} of {total}",
+    "flow": {
+      "s1": {
+        "title": "What should your project achieve?",
+        "short": "Goals"
+      },
+      "s2": {
+        "title": "How big will it be?",
+        "short": "Size"
+      },
+      "s3": {
+        "title": "What are we building?",
+        "short": "Project type"
+      },
+      "s4": {
+        "title": "What do you need inside?",
+        "short": "Requirements"
+      },
+      "s5": {
+        "title": "How should it look and feel?",
+        "short": "Design"
+      },
+      "s6": {
+        "title": "What should it connect to?",
+        "short": "Integrations"
+      },
+      "s7": {
+        "title": "Review your estimate",
+        "short": "Estimate"
+      },
+      "s8": {
+        "title": "Summary and your details",
+        "short": "Summary"
+      }
+    },
+    "btn_back": "Back",
+    "btn_next": "Continue",
+    "btn_print": "Print or save as PDF",
+    "start_over": "Start over",
+    "optional": "(optional)",
+    "on": "On",
+    "off": "Off",
+    "step3": {
+      "need": "Choose at least one project type to continue.",
+      "suggested": "Suggested for your goals"
+    },
+    "design": {
+      "legend": "Design options",
+      "hint": "Switch on what applies. Design choices adjust the estimate."
+    },
+    "restored": {
+      "note": "We restored your previous answers."
+    },
+    "panel": {
+      "title": "Your estimate",
+      "range_label": "Estimated one-time cost",
+      "empty": "Choose a project type to see your live estimate.",
+      "discovery": "You are not sure yet, so this range is a placeholder for a discovery phase. We define the scope together before pricing.",
+      "timeline": "Estimated timeline",
+      "weeks": "{low}–{high} weeks",
+      "weeks_one": "{n} weeks",
+      "breakdown": "Breakdown",
+      "maintenance": "Monthly care plan",
+      "per_month": "per month",
+      "maintenance_note": "{plan} level. Billed monthly, separately from the one-time project cost."
+    },
+    "plan": {
+      "launch": "Launch",
+      "studio": "Studio",
+      "growth": "Growth"
+    },
+    "group": {
+      "build": "Build",
+      "features": "Features",
+      "integrations": "Integrations",
+      "design": "Design"
+    },
+    "live": {
+      "announce": "Estimated cost {low} to {high}, {weeks}."
+    },
+    "sheet": {
+      "bar_label": "Estimated",
+      "bar_empty": "Pick a type",
+      "open": "Details",
+      "close": "Close",
+      "title": "Estimate details"
+    },
+    "review": {
+      "intro": "This is your live indicative estimate. Change anything and it updates instantly.",
+      "edit": "Change your answers",
+      "continue": "Continue to summary"
+    },
+    "sum": {
+      "title": "Your project summary",
+      "goals": "Goals",
+      "size": "Size",
+      "types": "Project type",
+      "scope": "Scope",
+      "features": "Features",
+      "design": "Design",
+      "integrations": "Integrations",
+      "edit": "Edit",
+      "edit_section": "Edit {section}"
+    },
+    "f": {
+      "title": "Your details",
+      "name": "Full name",
+      "business": "Business name",
+      "email": "Email",
+      "phone": "Phone / WhatsApp",
+      "details": "Anything else we should know?",
+      "details_hint": "Deadlines, examples you like, your budget, or anything that helps us prepare.",
+      "preferred": "How should we contact you?",
+      "consent": "I agree that Devora may contact me about this project and store these details for that purpose."
+    },
+    "pref": {
+      "email": "Email",
+      "phone": "Phone call",
+      "whatsapp": "WhatsApp"
+    },
+    "cta": "Let's Build Your Project",
+    "submitting": "Sending…",
+    "retry": "Try again",
+    "err": {
+      "summary": "Please fix the following:",
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "phone": "Please enter a phone number so we can reach you.",
+      "consent": "Please agree to be contacted to continue.",
+      "validation": "Some details were not accepted. Please check the form and try again.",
+      "origin": "We could not confirm the request came from our site. Please reload the page and try again.",
+      "too_large": "Your request is too large. Please shorten your notes and try again.",
+      "rate": "Too many requests. Please try again in {sec} seconds.",
+      "rate_generic": "Too many requests. Please wait a little and try again.",
+      "unavailable": "We could not send your request right now. Your answers are kept: try again, or email us instead.",
+      "network": "Network problem. Check your connection and try again, or email us instead.",
+      "mailto": "Email us this summary instead"
+    },
+    "mailto": {
+      "subject": "Project estimate request",
+      "intro": "Hello Devora, I would like to discuss this project:"
+    },
+    "success": {
+      "title": "Request received",
+      "sub": "Thank you, {name}. We have your project details and will be in touch.",
+      "duplicate": "We already had this request, so this is the same reference as before.",
+      "ref": "Your reference number"
+    },
+    "copy": "Copy",
+    "copied": "Copied",
+    "copy_failed": "Could not copy. Please select and copy it manually.",
+    "next": {
+      "1": "We review your answers and prepare a detailed assessment.",
+      "2": "We contact you the way you prefer, usually within two working days.",
+      "3": "You receive a clear proposal. Until then, the figures here stay indicative.",
+      "title": "What happens next"
+    },
+    "alt": {
+      "title": "Prefer another way to reach us?"
+    },
+    "new_tab": "(opens in a new tab)",
+    "print_heading": "Devora — indicative project estimate",
+    "new": "Start a new estimate"
+  },
+  "discuss": {
+    "meta": {
+      "title": "Discuss your system | Devora",
+      "description": "Tell us what custom software you need in a few quick choices. We reply with next steps and a typical starting range. No obligation."
+    },
+    "intro": {
+      "label": "Custom software",
+      "title": "Discuss your system",
+      "sub": "Tell us what you need in a few quick choices. We will reply with next steps. No obligation."
+    },
+    "trust": "This is a conversation starter, not a quotation. The range you see is a typical starting point, confirmed together once we understand your system.",
+    "nojs": "This guided flow needs JavaScript. You can still reach us directly:",
+    "nojs_link": "Contact us",
+    "step_of": "Step {n} of {total}",
+    "nav": {
+      "label": "Progress"
+    },
+    "optional": "(optional)",
+    "optional_step": "You can skip this step.",
+    "btn_next": "Next",
+    "btn_back": "Back",
+    "btn_review": "Review",
+    "btn_back_summary": "Back to summary",
+    "btn_print": "Print or save as PDF",
+    "start_over": "Start over",
+    "restored": {
+      "note": "We restored your earlier choices on this device."
+    },
+    "flow": {
+      "s1": {
+        "short": "Goal"
+      },
+      "s2": {
+        "short": "Users"
+      },
+      "s3": {
+        "short": "Today"
+      },
+      "s4": {
+        "short": "Connections"
+      },
+      "s5": {
+        "short": "Must-haves"
+      },
+      "s6": {
+        "short": "Timeline"
+      },
+      "s7": {
+        "short": "Budget"
+      },
+      "s8": {
+        "short": "Review",
+        "title": "Review and send"
+      }
+    },
+    "q": {
+      "purpose": {
+        "title": "What do you want the software to do?",
+        "hint": "Pick everything that applies."
+      },
+      "users": {
+        "title": "Who will use it?",
+        "hint": "Pick one."
+      },
+      "today": {
+        "title": "How do you handle this today?",
+        "hint": "Pick the closest."
+      },
+      "integrations": {
+        "title": "Does it need to connect to other tools?",
+        "hint": "For example accounting, CRM, WhatsApp or payment systems."
+      },
+      "mustHaves": {
+        "title": "What must it have?",
+        "hint": "Pick everything that is a must."
+      },
+      "timeline": {
+        "title": "When do you need it?",
+        "hint": "A rough timeframe is fine."
+      },
+      "budget": {
+        "title": "What budget do you have in mind?",
+        "hint": "This only helps us suggest the right scope."
+      }
+    },
+    "purpose": {
+      "replace-spreadsheets": "Replace spreadsheets",
+      "run-operations": "Run daily operations",
+      "customer-portal": "A portal for my customers",
+      "internal-dashboard": "An internal dashboard",
+      "ai-tool": "An AI-powered tool",
+      "connect-tools": "Connect the tools I already use",
+      "other": "Something else"
+    },
+    "users": {
+      "me": "Just me",
+      "team-2-10": "A team of 2–10",
+      "team-10-50": "A team of 10–50",
+      "customers": "My customers",
+      "team-and-customers": "My team and my customers"
+    },
+    "today": {
+      "spreadsheets": "Spreadsheets or paper",
+      "off-the-shelf": "Off-the-shelf software that does not fit",
+      "disconnected-tools": "Several disconnected tools",
+      "nothing": "Nothing yet"
+    },
+    "integrations": {
+      "none": "No",
+      "one-two": "One or two",
+      "many": "Many",
+      "unsure": "Not sure"
+    },
+    "mustHaves": {
+      "auth-roles": "Logins and user roles",
+      "payments": "Online payments",
+      "dashboards": "Dashboards and reports",
+      "notifications": "WhatsApp or email notifications",
+      "mobile": "Works well on mobile",
+      "ai-assistant": "AI assistant",
+      "bilingual": "Arabic and English"
+    },
+    "timeline": {
+      "lt-1m": "Under a month",
+      "1-3m": "1–3 months",
+      "3-6m": "3–6 months",
+      "flexible": "Flexible"
+    },
+    "budget": {
+      "lt15k": "Under {b15}",
+      "15-30k": "{b15} – {b30}",
+      "30-60k": "{b30} – {b60}",
+      "60k+": "{b60} or more",
+      "unsure": "Not sure yet"
+    },
+    "sum": {
+      "title": "Your choices",
+      "purpose": "What it should do",
+      "users": "Who uses it",
+      "today": "Today",
+      "integrations": "Connections",
+      "mustHaves": "Must-haves",
+      "timeline": "Timeline",
+      "budget": "Budget",
+      "edit": "Edit",
+      "edit_section": "Edit {section}",
+      "skipped": "Skipped"
+    },
+    "range": {
+      "title": "Typical starting range",
+      "indicative": "Indicative only, not a quotation.",
+      "indicative_short": "indicative",
+      "timeline": "Typical delivery",
+      "maintenance": "Care plan from",
+      "per_month": "/ month",
+      "weeks": "{low}–{high} weeks",
+      "weeks_one": "{n} weeks",
+      "announce": "Typical starting range updated: {low} to {high}, around {weeks}. Indicative only."
+    },
+    "fit": {
+      "below": "Your budget band is below the typical starting range for what you described. We can talk about a smaller first release and grow from there.",
+      "within": "Your budget band overlaps the typical starting range for what you described.",
+      "above": "Your budget band is above the typical starting range, which leaves room for extras or a phased roadmap."
+    },
+    "assume": {
+      "title": "What this assumes",
+      "spreadsheets": "Your existing spreadsheets are imported once into the new system.",
+      "disconnected": "Your current tools stay in place and are connected where they offer an API.",
+      "offtheshelf": "Your data is migrated from your current tool where an export exists.",
+      "mobile": "A mobile-friendly interface is included. Native mobile apps are quoted separately.",
+      "notifications": "Notifications are priced as email automation. WhatsApp and SMS are extra.",
+      "int_unsure": "Connections are not defined yet, so one third-party integration is assumed.",
+      "int_many": "Several connections are assumed. Each additional system may add cost.",
+      "time_short": "Your requested timeline is shorter than the typical delivery time, so the scope may need to be phased.",
+      "time_long": "The typical delivery time is longer than three months, so the scope may need to be phased."
+    },
+    "disclaimer": "Indicative typical starting range, not a quotation. The final scope and price are agreed with you after a discovery conversation.",
+    "f": {
+      "title": "How can we reach you?",
+      "name": "Your name",
+      "business": "Business name",
+      "email": "Email",
+      "phone": "Phone or WhatsApp",
+      "notes": "Anything else we should know?",
+      "notes_hint": "Optional. Describe your system in your own words, in English or Arabic.",
+      "preferred": "Preferred way to reach you",
+      "consent": "I agree that Devora may use these details to reply to my request."
+    },
+    "pref": {
+      "email": "Email",
+      "phone": "Phone call",
+      "whatsapp": "WhatsApp"
+    },
+    "err": {
+      "summary": "Please fix the following:",
+      "name": "Enter your name.",
+      "email": "Enter a valid email address.",
+      "phone": "Enter a phone number so we can reach you the way you prefer.",
+      "consent": "Please agree so we can reply to you.",
+      "validation": "Some details were not accepted. Please check the form and try again.",
+      "origin": "We could not verify this request. Please reload the page and try again.",
+      "too_large": "Your request is too large. Please shorten your notes and try again.",
+      "rate": "Too many requests. Please try again in {sec} seconds.",
+      "rate_generic": "Too many requests. Please try again in a little while.",
+      "unavailable": "We could not send your request right now. Your answers are saved, so you can try again.",
+      "network": "We could not reach the server. Check your connection and try again.",
+      "mailto": "Or email us your request instead"
+    },
+    "mailto": {
+      "subject": "Discuss my system",
+      "intro": "Hello Devora, I would like to discuss a custom software project:"
+    },
+    "cta": "Discuss my system",
+    "retry": "Try again",
+    "submitting": "Sending...",
+    "success": {
+      "title": "Thank you, we have your request",
+      "sub": "Thanks, {name}. We will reply with next steps by your preferred contact method.",
+      "ref": "Your reference",
+      "duplicate": "We had already received this request, so nothing was sent twice."
+    },
+    "copy": "Copy reference",
+    "copied": "Copied",
+    "copy_failed": "Could not copy. Select the reference and copy it manually.",
+    "next": {
+      "1": "We read your answers and notes and prepare a few questions.",
+      "2": "We reply to you, usually within one or two working days, to arrange a short discovery conversation.",
+      "3": "After that you get a clear scope and a fixed proposal. No obligation.",
+      "title": "What happens next"
+    },
+    "alt": {
+      "title": "Prefer another way to reach us?"
+    },
+    "new": "Start a new request",
+    "new_tab": "(opens in a new tab)",
+    "print_heading": "Devora: software discovery summary",
+    "step1": {
+      "need": "Choose at least one option to continue."
     }
   }
 }

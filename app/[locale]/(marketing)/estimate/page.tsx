@@ -3,7 +3,6 @@ import {getTranslations, setRequestLocale} from 'next-intl/server';
 import Container from '@/components/ui/Container';
 import EstimatorApp from '@/components/estimator/EstimatorApp';
 import {Link} from '@/i18n/navigation';
-import {pricingParams} from '@/lib/pricing/config';
 import {alternates} from '@/lib/seo';
 import {SITE, SOCIALS} from '@/lib/site';
 
@@ -41,7 +40,7 @@ export default async function EstimatePage({params}: {params: Promise<{locale: s
           </h1>
           <p className="mt-5 max-w-[620px] text-[18px] leading-[1.65] text-muted">{t('intro.sub')}</p>
           <p className="glass mt-7 max-w-[760px] rounded-card px-5 py-4 text-sm leading-relaxed text-ink-2">
-            {t('trust', pricingParams(locale))}
+            {t('trust')}
           </p>
         </Container>
       </div>

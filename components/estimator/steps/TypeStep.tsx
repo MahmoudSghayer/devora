@@ -30,7 +30,7 @@ export default function TypeStep({answers, dispatch}: {answers: Answers; dispatc
       </div>
       {needs ? (
         <p id="est-need-type" className="mt-4 text-sm font-medium text-ink-2">
-          {t('step1.need')}
+          {t('step3.need')}
         </p>
       ) : null}
     </Group>

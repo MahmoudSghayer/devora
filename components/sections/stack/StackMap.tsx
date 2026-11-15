@@ -141,7 +141,7 @@ export default function StackMap({groups, stage, hubLabel, hint, listAria}: MapP
                   </svg>
 
                   <h3
-                    className={`u-mono font-mono text-xs uppercase tracking-[0.2em] ${g.tone} nav:absolute nav:-translate-x-1/2 nav:-translate-y-1/2 nav:whitespace-nowrap nav:text-center nav:text-[11px] nav:opacity-70`}
+                    className={`u-mono font-mono text-xs uppercase tracking-[0.2em] ${g.tone} nav:absolute nav:-translate-x-1/2 nav:-translate-y-1/2 nav:whitespace-nowrap nav:text-center nav:text-xs nav:opacity-80`}
                     style={{left: `${g.labelX}%`, top: `${g.labelY}%`}}
                   >
                     {g.label}

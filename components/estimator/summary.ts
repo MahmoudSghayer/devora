@@ -1,10 +1,9 @@
 // Read-only summary of what the visitor chose, as plain translated strings.
 // Shared by step 7, the success view, print and the mailto fallback.
 
-import {visibleQuestions} from '@/lib/estimator/questions';
+import {GOAL_OPTIONS, SIZE_OPTIONS, visibleQuestions} from '@/lib/estimator/questions';
 import type {EstimatorAnswers} from '@/lib/estimator/schema';
 import type {ProjectType} from '@/lib/estimator/types';
-import {GOAL_OPTIONS, SIZE_OPTIONS} from '@/lib/estimator/questions';
 import {optionsFor, type StepNo} from './model';
 import {local, type Tx} from './i18n';
 
