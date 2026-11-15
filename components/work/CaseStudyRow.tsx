@@ -23,7 +23,7 @@ export default function CaseStudyRow({
   const descKey = `c${index + 1}_d`;
 
   const image = (
-    <Parallax speed={0.08} className="glass aspect-[4/3] rounded-card p-2">
+    <Parallax speed={0.08} className="glass aspect-[4/3] rounded-card">
       <SiteImage
         src={data.image}
         alt={`${data.domain} — website`}

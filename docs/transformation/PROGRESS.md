@@ -20,6 +20,8 @@ Branch: `claude/zen-wright-dca3b6` · Executor: Sonnet session · Started 2026-1
 - Messages are edited via `scripts/merge-ns.mjs` (atomic per-namespace, enforces ar/en key parity) so parallel agents don't clobber each other.
 - Agents do not commit; the executor stages explicit paths and commits per phase.
 
+- **OWNER AMENDMENT (relayed by orchestrator):** (1) Packages (Launch/Studio/Growth) are DROPPED from all UI/copy/emails/prompts/e2e; `lib/pricing/config.ts` stays the single source for estimator prices + maintenance options (tiers no longer surfaced; `recommended_package` column unused). `/pricing` = "How pricing works"; Pricing removed from header nav (footer + sitemap keep it). (2) THREE guided option-based flows: `/estimate` (goal → size → type → requirements → design → integrations), `/automation-roi` (task → bucketed workload → labour bands → standardisation → exact-numbers toggle), NEW `/discuss` (custom-software discovery; engine `lib/discuss`). (3) All three end with summary + Edit links, then form with free-text notes + consent. (4) Backend: migration 0002 edited to add `software_discovery`; `/api/discuss`; `softwareDiscoveryEmail`; admin badge/filter; `discuss_submitted`; SKIP_NS. (5) Homepage: three calculator cards; pillar CTAs → /estimate, /automation-roi, /discuss; /contact opens with the three guided paths.
+
 ## Open issues / blockers
 (none yet)
 

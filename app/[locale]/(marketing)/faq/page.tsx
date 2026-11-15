@@ -5,17 +5,38 @@ import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
 import Container from '@/components/ui/Container';
 import {pricingParams} from '@/lib/pricing/config';
-import FAQAccordion from '@/components/ui/FAQAccordion';
 import AmberBand from '@/components/ui/AmberBand';
-import Marquee from '@/components/chrome/Marquee';
+import FaqList, {type FaqItem} from './FaqList';
 
-// Question keys grouped by theme. Answers pair as a{n}.
-const GROUPS = [
-  {label: 'g_general', pairs: [['q1', 'a1'], ['q2', 'a2'], ['q3', 'a3'], ['q4', 'a4'], ['q11', 'a11']]},
-  {label: 'g_pricing', pairs: [['q5', 'a5'], ['q6', 'a6']]},
-  {label: 'g_process', pairs: [['q7', 'a7'], ['q8', 'a8'], ['q12', 'a12']]},
-  {label: 'g_tech', pairs: [['q9', 'a9'], ['q10', 'a10']]},
-] as const;
+type Pair = readonly [q: string, a: string, link?: readonly [href: string, label: string]];
+
+// Question keys grouped by theme; answers pair as a{n}. The first group carries
+// the objections people raise before they start (accuracy, staff, ownership,
+// timelines); optional links send them to the matching tool or page.
+const GROUPS: readonly {label: string; pairs: readonly Pair[]}[] = [
+  {
+    label: 'g_start',
+    pairs: [
+      ['q13', 'a13', ['/estimate', 'l_estimate']],
+      ['q14', 'a14', ['/automation-roi', 'l_roi']],
+      ['q9', 'a9'],
+      ['q7', 'a7', ['/process', 'l_process']],
+      ['q15', 'a15'],
+    ],
+  },
+  {
+    label: 'g_general',
+    pairs: [['q1', 'a1'], ['q2', 'a2'], ['q3', 'a3'], ['q4', 'a4'], ['q11', 'a11']],
+  },
+  {
+    label: 'g_pricing',
+    pairs: [['q5', 'a5', ['/pricing', 'l_pricing']], ['q6', 'a6']],
+  },
+  {
+    label: 'g_process',
+    pairs: [['q8', 'a8'], ['q12', 'a12'], ['q10', 'a10']],
+  },
+];
 
 export async function generateMetadata({
   params,
@@ -52,21 +73,27 @@ function FaqContent() {
   const c = useTranslations('common');
   return (
     <>
-      <PageIntro label={f('f_label')} title={f('f_title')} sub={f('f_sub')} />
-      <section>
-        <Container className="flex flex-col gap-16 py-24">
-          {GROUPS.map((g) => (
-            <div key={g.label}>
-              <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-muted-2">
-                {f(g.label)}
-              </p>
-              <div className="mt-6">
-                <FAQAccordion
-                  items={g.pairs.map(([q, a]) => ({q: f(q), a: f(a, params)}))}
-                />
+      <div className="aura overflow-x-clip">
+        <PageIntro label={f('f_label')} title={f('f_title')} sub={f('f_sub')} />
+      </div>
+      <section aria-label={f('f_title')} className="py-section">
+        <Container className="flex flex-col gap-block">
+          {GROUPS.map((g) => {
+            const items: FaqItem[] = g.pairs.map(([q, a, link]) => ({
+              q: f(q),
+              a: f(a, params),
+              link: link ? {href: link[0], label: f(link[1])} : undefined,
+            }));
+            return (
+              <div key={g.label} className="grid gap-6 nav:grid-cols-[4fr_8fr] nav:gap-16">
+                <h2 className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber nav:pt-5">
+                  <span aria-hidden>{'// '}</span>
+                  {f(g.label)}
+                </h2>
+                <FaqList items={items} idPrefix={g.label} />
               </div>
-            </div>
-          ))}
+            );
+          })}
         </Container>
       </section>
       <AmberBand
@@ -74,7 +101,6 @@ function FaqContent() {
         sub={c('cta_sub')}
         buttonLabel={c('cta_btn')}
       />
-      <Marquee />
     </>
   );
 }

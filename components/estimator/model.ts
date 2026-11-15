@@ -18,13 +18,16 @@ import {
   type RoleBucket,
 } from '@/lib/estimator/types';
 
-export const STEP_COUNT = 7;
+export const STEP_COUNT = 8;
 export const PAGE_CHOICES = [5, 8, 12, 20, 30] as const;
 export const PROBLEM_MAX = 1500;
-export const NOTES_MAX = 1700; // leaves room for the context prefix (server cap is 2000)
+export const NOTES_MAX = 2000; // contact.notes server cap
 
-export type StepNo = 1 | 2 | 3 | 4 | 5 | 6 | 7;
-export const STEP_LIST: readonly StepNo[] = [1, 2, 3, 4, 5, 6, 7];
+export type StepNo = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export const STEP_LIST: readonly StepNo[] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+/** Steps in flow order. Goal and size are optional; the type gates the rest. */
+export const TYPE_STEP: StepNo = 3;
 
 export type DesignKey = 'existing' | 'brandIdentity' | 'advancedMotion' | 'premium';
 export const DESIGN_KEYS: readonly DesignKey[] = ['existing', 'brandIdentity', 'advancedMotion', 'premium'];
@@ -40,12 +43,6 @@ export interface Answers {
   design: Partial<Record<DesignKey, boolean>>;
 }
 
-export interface BusinessContext {
-  industry?: string;
-  size?: string;
-  goal?: string;
-}
-
 export interface TimelineEntry {
   step: string;
   tsMs: number;
@@ -54,7 +51,6 @@ export interface TimelineEntry {
 export interface EstimatorState {
   step: StepNo;
   answers: Answers;
-  context: BusinessContext;
   /** bumps on every user-driven step change; drives focus + announcement */
   focusTick: number;
   /** true once the visitor changed something (silences first-load announcements) */
@@ -76,7 +72,6 @@ export const EMPTY_ANSWERS: Answers = {
 export const initialState: EstimatorState = {
   step: 1,
   answers: EMPTY_ANSWERS,
-  context: {},
   focusTick: 0,
   interacted: false,
   restored: false,
@@ -90,9 +85,9 @@ export const initialState: EstimatorState = {
 export const clampStep = (n: number): StepNo =>
   (Number.isInteger(n) ? Math.min(STEP_COUNT, Math.max(1, n)) : 1) as StepNo;
 
-/** Nothing past step 1 until at least one project type is chosen. */
+/** Nothing past the type step until at least one project type is chosen. */
 export const reachableStep = (n: number, answers: Answers): StepNo =>
-  answers.types.length === 0 ? 1 : clampStep(n);
+  answers.types.length === 0 ? (Math.min(clampStep(n), TYPE_STEP) as StepNo) : clampStep(n);
 
 export const parseStepParam = (raw: string | null): StepNo | null => {
   if (raw === null || !/^\d{1,2}$/.test(raw)) return null;
@@ -152,7 +147,6 @@ export function isSelected(a: Answers, key: 'features' | 'integrations', id: str
 
 export interface Stored {
   answers: Answers;
-  context: BusinessContext;
   step: StepNo;
   startedAtMs: number;
   idempotencyKey: string;
@@ -168,7 +162,6 @@ export type Action =
   | {type: 'setBucket'; key: 'pages' | 'productBucket' | 'rolesBucket'; value: number | string}
   | {type: 'setProblem'; value: string}
   | {type: 'setDesign'; key: DesignKey; value: boolean}
-  | {type: 'setContext'; key: keyof BusinessContext; value: string}
   | {type: 'reset'; now: number; key: string};
 
 const MAX_TIMELINE = 60;
@@ -195,7 +188,6 @@ export function reducer(s: EstimatorState, action: Action): EstimatorState {
         ? {
             ...s,
             answers: action.stored.answers,
-            context: action.stored.context,
             startedAtMs: action.stored.startedAtMs || action.now,
             idempotencyKey: action.stored.idempotencyKey || action.key,
             timeline: action.stored.timeline,
@@ -247,8 +239,6 @@ export function reducer(s: EstimatorState, action: Action): EstimatorState {
       return touch(s, {answers: {...s.answers, problem: action.value.slice(0, PROBLEM_MAX)}});
     case 'setDesign':
       return touch(s, {answers: {...s.answers, design: {...s.answers.design, [action.key]: action.value}}});
-    case 'setContext':
-      return touch(s, {context: {...s.context, [action.key]: action.value}});
     case 'reset':
       return {
         ...initialState,
@@ -268,16 +258,12 @@ const pick = <T extends string>(v: unknown, allowed: readonly T[]): T | undefine
 const pickList = <T extends string>(v: unknown, allowed: readonly T[]): T[] =>
   Array.isArray(v) ? allowed.filter((id) => v.includes(id)) : [];
 
-const short = (v: unknown, max: number): string | undefined =>
-  typeof v === 'string' && v.length > 0 ? v.slice(0, max) : undefined;
-
 /** Defensive parse of whatever localStorage returned. Never throws. */
 export function parseStored(raw: unknown): Stored | null {
   if (typeof raw !== 'object' || raw === null) return null;
   const r = raw as Record<string, unknown>;
   const a = (typeof r.answers === 'object' && r.answers !== null ? r.answers : {}) as Record<string, unknown>;
   const d = (typeof a.design === 'object' && a.design !== null ? a.design : {}) as Record<string, unknown>;
-  const c = (typeof r.context === 'object' && r.context !== null ? r.context : {}) as Record<string, unknown>;
   const pages = typeof a.pages === 'number' && PAGE_CHOICES.includes(a.pages as 5) ? a.pages : undefined;
   const design: Answers['design'] = {};
   for (const k of DESIGN_KEYS) if (d[k] === true) design[k] = true;
@@ -303,7 +289,6 @@ export function parseStored(raw: unknown): Stored | null {
     : [];
   return {
     answers,
-    context: {industry: short(c.industry, 40), size: short(c.size, 40), goal: short(c.goal, 40)},
     step: clampStep(Number(r.step)),
     startedAtMs: started,
     idempotencyKey: key,

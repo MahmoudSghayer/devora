@@ -6,32 +6,43 @@ import ArrowButton from '@/components/ui/ArrowButton';
 import {PILLARS} from '@/lib/pillars';
 import {PILLAR_TINT} from '@/components/services/pillarTint';
 
-// "Custom needs? Run the estimator" band: the three pillars each point at the
-// tool that fits (website estimator, automation ROI calculator, or a
-// conversation for custom software). Prices live only in lib/pricing/config.
-export default function CustomNeeds() {
+// Three guided entry points, one per pillar: website estimator, automation
+// ROI calculator, or a conversation for custom software (PILLARS[].calculator). Prices live only in lib/pricing/config.
+export default function CustomNeeds({
+  label,
+  title,
+  sub,
+  headingId = 'custom-needs-title',
+  className = 'border-b border-border py-section',
+}: {
+  label: string;
+  title: string;
+  sub: string;
+  headingId?: string;
+  className?: string;
+}) {
   const p = useTranslations('pricing');
   const pl = useTranslations('pillars');
 
   return (
     <section
-      aria-labelledby="custom-needs-title"
-      className="aura aura-signal overflow-x-clip border-b border-border py-section"
+      aria-labelledby={headingId}
+      className={`aura aura-signal overflow-x-clip ${className}`}
     >
       <Container>
         <Reveal>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
             <span aria-hidden>{'// '}</span>
-            {p('custom_label')}
+            {label}
           </p>
           <h2
-            id="custom-needs-title"
+            id={headingId}
             className="u-track mt-4 max-w-[760px] font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]"
           >
-            {p('custom_title')}
+            {title}
           </h2>
           <p className="mt-5 max-w-[640px] text-lead text-muted">
-            {p('custom_sub')}
+            {sub}
           </p>
         </Reveal>
 

@@ -76,7 +76,7 @@ function buildItems(types: ProjectType[], answers: EstimatorAnswers, c: Estimato
       );
     }
   });
-  const pages = answers.pages ?? c.pages.included;
+  const pages = answers.pages ?? (answers.size ? c.sizePages[answers.size] : c.pages.included);
   if (types.includes('business') && pages > c.pages.included) {
     const extra = pages - c.pages.included;
     out.push(

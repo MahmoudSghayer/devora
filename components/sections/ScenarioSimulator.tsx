@@ -8,7 +8,7 @@ import SimulatorPanel from './simulator/SimulatorPanel';
 export default function ScenarioSimulator() {
   const t = useTranslations('homeB.sim');
   return (
-    <section className="border-b border-border py-section">
+    <section className="relative overflow-x-clip border-b border-border py-section">
       <Container>
         <Reveal>
           <SectionHeader label={t('label')} title={t('title')} />

@@ -13,7 +13,7 @@ export default function IntegrationsStep({answers, dispatch}: {answers: Answers;
   if (!q) return null;
   return (
     <Group legend={t(local(q.labelKey))} hint={t(local(q.hintKey ?? ''))}>
-      <div className="grid grid-cols-1 gap-3 min-[560px]:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 nav:grid-cols-2">
         {(q.options ?? []).map((o) => (
           <Choice
             key={o.id}

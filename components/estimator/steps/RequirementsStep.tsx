@@ -7,7 +7,7 @@ import {PROBLEM_MAX, isSelected, optionsFor, type Action, type Answers} from '..
 import {local, useTx} from '../i18n';
 import {Choice, FIELD, Field, Group} from '../ui';
 
-const GRID = 'grid grid-cols-1 gap-3 min-[560px]:grid-cols-2';
+const GRID = 'grid grid-cols-1 gap-3 nav:grid-cols-2';
 
 /** Step 3: scope buckets + features, driven entirely by visibleQuestions(). */
 export default function RequirementsStep({answers, dispatch}: {answers: Answers; dispatch: Dispatch<Action>}) {

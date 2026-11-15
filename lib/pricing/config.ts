@@ -8,7 +8,7 @@
 // ($1,650 / $2,650 / $5,000 and $200 / $250 / $300 per month) anchored at
 // ≈3.7 ₪/$ and rounded to friendly numbers.
 
-import type {EstimatorConfig, FeatureDef, FeatureId} from '@/lib/estimator/types';
+import type {EstimatorConfig, FeatureDef, FeatureId, Goal, ProjectType, SizeId} from '@/lib/estimator/types';
 import type {RoiConfig, RoiTaskDef, RoiTaskId} from '@/lib/roi/types';
 
 export const CURRENCY = 'ILS' as const;
@@ -153,6 +153,10 @@ export const ESTIMATOR_CONFIG: EstimatorConfig = {
   },
   additionalTypeRate: 0.7,
   pages: {included: 5, perPage: 400, daysPerPage: 0.5},
+  // Representative page count per size card (used when `pages` is not answered).
+  // small = 1–5 pages → 5; medium = 6–15 → 10; large = 16–40 → 28; xlarge = 40+ → 50;
+  // unsure → 8 (a modest mid-small site; the team confirms scope in discovery).
+  sizePages: {small: 5, medium: 10, large: 28, xlarge: 50, unsure: 8},
   products: {
     p1_20: {label: 'Catalog: 1–20 products', amount: 0, days: 0},
     p21_100: {label: 'Catalog: 21–100 products', amount: 1500, days: 2},
@@ -237,3 +241,35 @@ export const ROI_TASKS: readonly RoiTaskDef[] = [
   roiTask('customerSupport', 'Customer support', 45, 12, 6, 'medium'),
   roiTask('other', 'Other repetitive work', 40, 5, 10, 'low'),
 ];
+
+// ── Guided-flow option cards (rendered from config by the UIs) ──
+
+/** Goal cards for the website estimator. i18n: `estimator.goal.<id>`. */
+export const GOAL_OPTIONS: readonly {id: Goal; i18nKey: string}[] = (
+  ['leads', 'sell', 'bookings', 'brand', 'content', 'portal', 'other'] as const
+).map((id) => ({id, i18nKey: `estimator.goal.${id}`}));
+
+/** Size cards. i18n: `estimator.size.<id>`; `pages` is the representative page count. */
+export const SIZE_OPTIONS: readonly {id: SizeId; i18nKey: string; pages: number; range: string}[] = [
+  {id: 'small', range: '1–5'},
+  {id: 'medium', range: '6–15'},
+  {id: 'large', range: '16–40'},
+  {id: 'xlarge', range: '40+'},
+  {id: 'unsure', range: ''},
+].map((o) => ({
+  id: o.id as SizeId,
+  i18nKey: `estimator.size.${o.id}`,
+  pages: ESTIMATOR_CONFIG.sizePages[o.id as SizeId],
+  range: o.range,
+}));
+
+/** Project types a goal suggests (the UI pre-selects them in the next step). */
+export const GOAL_TYPE_SUGGESTIONS: Record<Goal, ProjectType[]> = {
+  leads: ['business', 'landing'],
+  sell: ['ecommerce'],
+  bookings: ['booking'],
+  brand: ['business'],
+  content: ['business'],
+  portal: ['portal'],
+  other: ['unsure'],
+};

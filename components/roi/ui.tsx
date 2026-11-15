@@ -79,7 +79,7 @@ export function NumField({
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
-          className={`${inputCls} num ${suffix ? 'pe-14' : ''}`}
+          className={`${inputCls} num ${suffix ? 'pe-20' : ''}`}
         />
         {suffix && (
           <span aria-hidden className="pointer-events-none absolute inset-y-0 end-4 flex items-center text-sm text-muted-2">

@@ -72,10 +72,10 @@ export const STACK_GROUPS: StackGroupDef[] = [
   },
   {
     id: 'backend',
-    tone: 'text-signal',
-    stroke: 'stroke-signal',
+    tone: 'text-pillar-soft',
+    stroke: 'stroke-pillar-soft',
     cx: 775,
-    cy: 122,
+    cy: 144,
     r: 96,
     depth: 60,
     items: [
@@ -98,8 +98,8 @@ export const STACK_GROUPS: StackGroupDef[] = [
   },
   {
     id: 'infra',
-    tone: 'text-pillar-soft',
-    stroke: 'stroke-pillar-soft',
+    tone: 'text-ink-2',
+    stroke: 'stroke-ink-2',
     cx: 640,
     cy: 430,
     r: 62,
@@ -137,21 +137,26 @@ export interface PlacedNode {
 const pct = (v: number, of: number) => Math.round((v / of) * 10000) / 100;
 
 /** Deterministic ring layout (computed once, same on server + client). */
-export function placeNodes(group: StackGroupDef): PlacedNode[] {
+function rawPos(group: StackGroupDef, i: number): {x: number; y: number} {
   const n = group.items.length;
+  let x = group.cx;
+  let y = group.cy;
+  if (n === 1) {
+    y -= 30;
+  } else if (n === 2) {
+    x += i === 0 ? -group.r : group.r;
+    y -= 14;
+  } else {
+    const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+    x += Math.cos(a) * group.r;
+    y += Math.sin(a) * group.r;
+  }
+  return {x, y};
+}
+
+export function placeNodes(group: StackGroupDef): PlacedNode[] {
   return group.items.map((it, i) => {
-    let x = group.cx;
-    let y = group.cy;
-    if (n === 1) {
-      y -= 30;
-    } else if (n === 2) {
-      x += i === 0 ? -group.r : group.r;
-      y -= 14;
-    } else {
-      const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
-      x += Math.cos(a) * group.r;
-      y += Math.sin(a) * group.r;
-    }
+    const {x, y} = rawPos(group, i);
     return {
       id: it.id,
       groupId: group.id,
@@ -161,4 +166,34 @@ export function placeNodes(group: StackGroupDef): PlacedNode[] {
       y: pct(y, STAGE.h),
     };
   });
+}
+
+/** Where the group's name sits inside the stage (stage %). */
+export function labelPos(group: StackGroupDef): {x: number; y: number} {
+  const dy = group.items.length >= 3 ? 0 : 36;
+  return {x: pct(group.cx, STAGE.w), y: pct(group.cy + dy, STAGE.h)};
+}
+
+export interface StackLine {
+  /** SVG path in stage units (1000x520) */
+  d: string;
+  /** the node this line leads to; null for the hub spoke */
+  nodeId: string | null;
+}
+
+const at = (x: number, y: number) => `${Math.round(x * 10) / 10} ${Math.round(y * 10) / 10}`;
+
+/** Hub -> group centre spoke, then centre -> each node (or hub -> node for small groups). */
+export function groupLines(group: StackGroupDef): StackLine[] {
+  const {hub} = STAGE;
+  const nodes = group.items.map((it, i) => ({id: it.id, ...rawPos(group, i)}));
+  if (group.items.length < 3) {
+    return nodes.map((n) => ({d: `M${at(hub.x, hub.y)} L${at(n.x, n.y)}`, nodeId: n.id}));
+  }
+  const mx = (hub.x + group.cx) / 2;
+  const my = (hub.y + group.cy) / 2 - 24;
+  return [
+    {d: `M${at(hub.x, hub.y)} Q${at(mx, my)} ${at(group.cx, group.cy)}`, nodeId: null},
+    ...nodes.map((n) => ({d: `M${at(group.cx, group.cy)} L${at(n.x, n.y)}`, nodeId: n.id})),
+  ];
 }

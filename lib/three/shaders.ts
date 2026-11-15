@@ -34,7 +34,7 @@ void main() {
     float front = exp(-x * x / 0.12);
     float wake = x < 0.0 ? sin(x * 9.0) * exp(x * 2.5) * 0.35 : 0.0;
     float k = (front + wake) * exp(-age * 1.2);
-    p.xy += o / (od + 0.001) * k * 0.6;
+    p.xy += o / (od + 0.001) * k * 0.4;
     p.z += k * 0.3;
     boost = max(front * exp(-age * 1.2), 0.0);
   }

@@ -79,6 +79,14 @@ export type ProductBucket = (typeof PRODUCT_BUCKETS)[number];
 export const ROLE_BUCKETS = ['one', 'few', 'many'] as const;
 export type RoleBucket = (typeof ROLE_BUCKETS)[number];
 
+/** Goal cards (first guided step, multi-select). */
+export const GOAL_IDS = ['leads', 'sell', 'bookings', 'brand', 'content', 'portal', 'other'] as const;
+export type Goal = (typeof GOAL_IDS)[number];
+
+/** Site-size cards (second guided step, single-select). */
+export const SIZE_IDS = ['small', 'medium', 'large', 'xlarge', 'unsure'] as const;
+export type SizeId = (typeof SIZE_IDS)[number];
+
 export type LineGroup = 'build' | 'features' | 'integrations' | 'design';
 export const LINE_GROUPS: readonly LineGroup[] = ['build', 'features', 'integrations', 'design'];
 
@@ -162,6 +170,8 @@ export interface EstimatorConfig {
   /** each extra selected type costs this share of its base (cheapest-first) */
   additionalTypeRate: number;
   pages: {included: number; perPage: number; daysPerPage: number};
+  /** representative page count used when `size` is answered but `pages` is not */
+  sizePages: Record<SizeId, number>;
   products: Record<ProductBucket, BucketDef>;
   roles: Record<RoleBucket, BucketDef>;
   features: Record<FeatureId, FeatureDef>;

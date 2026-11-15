@@ -111,8 +111,8 @@ export default function PillarTabs({pillars, labels}: {pillars: PillarView[]; la
   };
 
   return (
-    <div className="mt-10 grid gap-6 nav:mt-14 nav:grid-cols-[minmax(280px,360px)_minmax(0,1fr)] nav:gap-10">
-      <div className="nav:sticky nav:top-28 nav:self-start">
+    <div className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-6 nav:mt-14 nav:grid-cols-[minmax(280px,360px)_minmax(0,1fr)] nav:gap-10">
+      <div className="min-w-0 nav:sticky nav:top-28 nav:self-start">
         <div
           role="tablist"
           aria-label={labels.tabs}
@@ -165,7 +165,7 @@ export default function PillarTabs({pillars, labels}: {pillars: PillarView[]; la
         </div>
       </div>
 
-      <div>
+      <div className="min-w-0">
         {pillars.map((p, i) => {
           const on = i === active;
           const tint = TINT[p.tint];
@@ -177,13 +177,12 @@ export default function PillarTabs({pillars, labels}: {pillars: PillarView[]; la
               aria-labelledby={`pillar-tab-${p.id}`}
               hidden={!on}
               tabIndex={0}
-             
             >
               <motion.div
                 initial={false}
                 animate={on ? {opacity: 1, y: 0} : {opacity: 0, y: reduced ? 0 : 14}}
                 transition={reduced ? {duration: 0} : {duration: 0.5, ease: EASE}}
-                className="aura glass relative overflow-hidden rounded-panel p-6 nav:p-10"
+                className="aura glass relative overflow-clip rounded-panel p-6 nav:p-10"
                 style={{['--aura-color' as string]: tint.glow}}
               >
                 <div

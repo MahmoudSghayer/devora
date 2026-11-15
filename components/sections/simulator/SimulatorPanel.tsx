@@ -80,7 +80,7 @@ export default function SimulatorPanel() {
   const whole = {maximumFractionDigits: 0} as const;
 
   return (
-    <div className="aura aura-signal grid gap-6 nav:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] nav:gap-8">
+    <div className="aura aura-signal grid grid-cols-[minmax(0,1fr)] gap-6 nav:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] nav:gap-8">
       <div className="glass rounded-panel p-6 nav:p-8">
         <h3 className="u-mono font-mono text-xs uppercase tracking-[0.2em] text-faint">{t('controls_label')}</h3>
         <div className="mt-4 space-y-3">

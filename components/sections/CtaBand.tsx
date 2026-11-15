@@ -1,6 +1,7 @@
 import {useTranslations} from 'next-intl';
 import Container from '@/components/ui/Container';
 import ArrowButton from '@/components/ui/ArrowButton';
+import ArrowLink from '@/components/ui/ArrowLink';
 import Reveal from '@/components/motion/Reveal';
 import {Link} from '@/i18n/navigation';
 
@@ -8,7 +9,7 @@ import {Link} from '@/i18n/navigation';
 export default function CtaBand() {
   const t = useTranslations('hero.cta');
   return (
-    <section className="py-section">
+    <section className="relative overflow-x-clip py-section">
       <Container>
         <Reveal>
           <div className="glass-hi aura relative overflow-hidden rounded-panel px-6 py-16 text-center nav:px-16 nav:py-24">
@@ -31,6 +32,10 @@ export default function CtaBand() {
               >
                 {t('secondary')}
               </Link>
+            </div>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+              <ArrowLink href="/process" label={t('process_link')} />
+              <ArrowLink href="/faq" label={t('faq_link')} />
             </div>
           </div>
         </Reveal>

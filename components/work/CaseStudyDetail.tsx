@@ -27,7 +27,7 @@ export default function CaseStudyDetail({
   return (
     <>
       <section className="border-b border-border">
-        <Container className="pb-16 pt-[110px]">
+        <Container className="pb-16 pt-[132px]">
           <Reveal>
             <ArrowLink href="/work" label={w('detail_back')} />
           </Reveal>
@@ -62,7 +62,7 @@ export default function CaseStudyDetail({
       <section className="border-b border-border">
         <Container className="py-16">
           <Reveal>
-            <Parallax speed={0.06} className="aspect-[16/9] rounded-[16px]">
+            <Parallax speed={0.06} className="aspect-[16/9] rounded-card">
               <SiteImage
                 src={data.image}
                 alt={`${data.domain} — website`}
@@ -74,7 +74,7 @@ export default function CaseStudyDetail({
       </section>
 
       <section className="border-b border-border">
-        <Container className="grid gap-10 py-24 nav:grid-cols-3 nav:gap-14">
+        <Container className="grid gap-10 py-section nav:grid-cols-3 nav:gap-14">
           {blocks.map((b, i) => (
             <Reveal key={b.label} index={i}>
               <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">

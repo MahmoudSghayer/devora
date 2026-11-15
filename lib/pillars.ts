@@ -25,7 +25,7 @@ export const PILLARS = [
     anchor: 'software',
     navKey: 'nav_pillar_soft',
     tint: 'soft',
-    calculator: '/contact',
+    calculator: '/discuss',
     itemCount: 8,
   },
 ] as const;

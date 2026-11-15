@@ -9,7 +9,8 @@ export type FunnelEvent =
   | 'calculator_started'
   | 'calculator_step'
   | 'estimate_submitted'
-  | 'roi_submitted';
+  | 'roi_submitted'
+  | 'discuss_submitted';
 
 export function trackFunnel(
   event: FunnelEvent,

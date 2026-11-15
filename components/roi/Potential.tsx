@@ -3,7 +3,7 @@
 import type {Dispatch} from 'react';
 import {useLocale, useTranslations} from 'next-intl';
 import Spotlight from '@/components/motion/Spotlight';
-import {ROI_TASKS} from '@/lib/pricing/config';
+import {ROI_CONFIG, ROI_TASKS} from '@/lib/pricing/config';
 import {TaskIcon} from './icons';
 import type {Action, TaskEntry} from './model';
 import {percent} from './format';
@@ -37,7 +37,7 @@ export function DirectShareSlider({
         onChange={(v) => dispatch({type: 'setDirect', pct: v})}
       />
       <p id={`${id}-desc`} className="max-w-[68ch] text-sm leading-relaxed text-muted">
-        {t('direct.desc')}
+        {t('direct.desc', {pct: percent(ROI_CONFIG.defaultDirectShare, locale)})}
       </p>
     </div>
   );

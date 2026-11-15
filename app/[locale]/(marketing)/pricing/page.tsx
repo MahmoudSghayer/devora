@@ -4,7 +4,7 @@ import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {alternates} from '@/lib/seo';
 import PageIntro from '@/components/ui/PageIntro';
 import Container from '@/components/ui/Container';
-import PricingModels from '@/components/pricing/PricingModels';
+import HowPricingWorks from '@/components/pricing/HowPricingWorks';
 import Included from '@/components/pricing/Included';
 import CustomNeeds from '@/components/pricing/CustomNeeds';
 import {pricingParams} from '@/lib/pricing/config';
@@ -56,9 +56,13 @@ function PricingContent() {
       <div className="aura overflow-x-clip">
         <PageIntro label={p('p_label')} title={p('p_title')} sub={p('p_sub')} />
       </div>
-      <PricingModels />
+      <HowPricingWorks />
       <Included />
-      <CustomNeeds />
+      <CustomNeeds
+        label={p('custom_label')}
+        title={p('custom_title')}
+        sub={p('custom_sub')}
+      />
       <section aria-labelledby="pricing-faq-title" className="py-section">
         <Container>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">

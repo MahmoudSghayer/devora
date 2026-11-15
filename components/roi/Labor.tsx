@@ -134,7 +134,7 @@ export default function Labor({
             id={LABOR_FIELD_ID.workingDays}
             label={t('labor.days')}
             hint={t('labor.daysHint', params)}
-            suffix={t('labor.perMonth')}
+            suffix={t('labor.perMonthDays')}
             step="1"
             inputMode="numeric"
             value={state.workingDays}

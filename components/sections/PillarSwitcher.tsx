@@ -30,7 +30,7 @@ export default function PillarSwitcher() {
   }));
 
   return (
-    <section className="border-b border-border py-section">
+    <section className="relative overflow-x-clip border-b border-border py-section">
       <Container>
         <SectionHeader label={t('label')} title={t('title')} />
         <p className="mt-5 max-w-[640px] text-lead text-muted">{t('sub')}</p>

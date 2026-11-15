@@ -18,7 +18,6 @@ export function saveStored(s: EstimatorState): void {
   try {
     const payload: Stored = {
       answers: s.answers,
-      context: s.context,
       step: s.step,
       startedAtMs: s.startedAtMs,
       idempotencyKey: s.idempotencyKey,

@@ -13,7 +13,7 @@ export default function TypeStep({answers, dispatch}: {answers: Answers; dispatc
   return (
     <Group legend={t('q.types.label')} hint={t('q.types.hint')} hideLegend>
       <p className="mb-4 text-sm text-muted">{t('q.types.hint')}</p>
-      <div className="grid gap-3 grid-cols-1 min-[560px]:grid-cols-2">
+      <div className="grid gap-3 grid-cols-1 nav:grid-cols-2">
         {PROJECT_TYPES.map((id: ProjectType) => (
           <Choice
             key={id}

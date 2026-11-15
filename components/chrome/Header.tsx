@@ -19,7 +19,6 @@ const NAV = [
   {href: '/work', key: 'nav_work'},
   {href: '/estimate', key: 'nav_estimate', tool: true},
   {href: '/automation-roi', key: 'nav_roi', tool: true},
-  {href: '/pricing', key: 'nav_pricing'},
   {href: '/about', key: 'nav_about'},
 ] as const;
 

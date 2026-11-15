@@ -1,5 +1,5 @@
 import type {ReactNode} from 'react';
-import {useLocale, useTranslations} from 'next-intl';
+import {useTranslations} from 'next-intl';
 import Container from '@/components/ui/Container';
 import SectionHeader from '@/components/ui/SectionHeader';
 import ArrowLink from '@/components/ui/ArrowLink';
@@ -7,7 +7,6 @@ import Reveal from '@/components/motion/Reveal';
 import TiltCard from '@/components/motion/TiltCard';
 import Spotlight from '@/components/motion/Spotlight';
 import {PILLARS} from '@/lib/pillars';
-import {pricingParams} from '@/lib/pricing/config';
 import ProofStrip from './ProofStrip';
 
 const svg = {
@@ -107,7 +106,6 @@ export default function ValueWhy() {
   const t = useTranslations('hero.value');
   const w = useTranslations('why');
   const p = useTranslations('pillars');
-  const locale = useLocale();
 
   return (
     <>
@@ -190,7 +188,7 @@ export default function ValueWhy() {
               </Tile>
 
               <Tile index={3} span="nav:col-span-2" title={w('d_t')}>
-                <p className={body}>{w('d_d', pricingParams(locale))}</p>
+                <p className={body}>{w('d_d')}</p>
                 <div className="mt-auto pt-6">
                   <ArrowLink href="/estimate" label={w('d_link')} />
                 </div>

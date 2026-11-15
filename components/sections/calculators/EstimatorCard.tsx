@@ -26,7 +26,7 @@ export default function EstimatorCard() {
 
   return (
     <TiltCard className="h-full" max={4}>
-      <Spotlight className="glass aura flex h-full flex-col rounded-panel p-6 nav:p-8">
+      <Spotlight className="glass aura flex h-full flex-col overflow-clip rounded-panel p-6 nav:p-8">
         <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
           <span aria-hidden>{'// '}</span>
           {t('web_kicker')}

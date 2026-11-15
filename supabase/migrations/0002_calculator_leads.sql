@@ -26,10 +26,12 @@ alter table public.leads add column if not exists referrer           text;
 alter table public.leads add column if not exists utm                jsonb;
 alter table public.leads add column if not exists updated_at         timestamptz not null default now();
 
+-- Named CHECK, dropped and re-added so re-running (or extending the list) is safe.
 do $$ begin
+  alter table public.leads drop constraint if exists leads_source_check;
   alter table public.leads add constraint leads_source_check
-    check (source in ('chat','contact','website_estimate','automation_roi'));
-exception when duplicate_object then null; end $$;
+    check (source in ('chat','contact','website_estimate','automation_roi','software_discovery'));
+end $$;
 
 do $$ begin
   alter table public.leads add constraint leads_preferred_contact_check

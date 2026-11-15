@@ -53,7 +53,7 @@ export default function RoiCard() {
 
   return (
     <TiltCard className="h-full" max={4}>
-      <Spotlight tone="signal" className="glass aura aura-signal flex h-full flex-col rounded-panel p-6 nav:p-8">
+      <Spotlight tone="signal" className="glass aura aura-signal flex h-full flex-col overflow-clip rounded-panel p-6 nav:p-8">
         <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-signal">
           <span aria-hidden>{'// '}</span>
           {t('roi_kicker')}

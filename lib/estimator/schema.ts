@@ -1,6 +1,8 @@
 import {z} from 'zod';
 import {
   FEATURE_IDS,
+  GOAL_IDS,
+  SIZE_IDS,
   INTEGRATION_IDS,
   PRODUCT_BUCKETS,
   PROJECT_TYPES,
@@ -13,6 +15,10 @@ import {
  */
 export const estimatorAnswersSchema = z.strictObject({
   types: z.array(z.enum(PROJECT_TYPES)).min(1).max(PROJECT_TYPES.length),
+  /** what the visitor wants the project to achieve (multi-select cards) */
+  goals: z.array(z.enum(GOAL_IDS)).max(GOAL_IDS.length).optional(),
+  /** site-size card; mapped to a page count when `pages` is absent */
+  size: z.enum(SIZE_IDS).optional(),
   /** total pages (business sites) */
   pages: z.number().int().min(1).max(200).optional(),
   productBucket: z.enum(PRODUCT_BUCKETS).optional(),
