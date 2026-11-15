@@ -147,7 +147,7 @@ export default function StackMap({groups, stage, hubLabel, hint, listAria}: MapP
                     {g.label}
                   </h3>
 
-                  <ul className="mt-4 grid grid-cols-2 gap-2 nav:mt-0 nav:block nav:[transform-style:preserve-3d]">
+                  <ul className="mt-4 grid grid-cols-2 gap-2 nav:absolute nav:inset-0 nav:mt-0 nav:block nav:[transform-style:preserve-3d]">
                     {g.nodes.map((n) => {
                       const open = n.id === active;
                       return (

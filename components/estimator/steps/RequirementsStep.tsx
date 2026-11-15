@@ -3,9 +3,9 @@
 import type {Dispatch} from 'react';
 import {visibleQuestions, type Question} from '@/lib/estimator/questions';
 import type {FeatureId, ProjectType} from '@/lib/estimator/types';
-import {PROBLEM_MAX, isSelected, optionsFor, type Action, type Answers} from '../model';
+import {isSelected, optionsFor, type Action, type Answers} from '../model';
 import {local, useTx} from '../i18n';
-import {Choice, FIELD, Field, Group} from '../ui';
+import {Choice, Group} from '../ui';
 
 const GRID = 'grid grid-cols-1 gap-3 nav:grid-cols-2';
 
@@ -13,30 +13,15 @@ const GRID = 'grid grid-cols-1 gap-3 nav:grid-cols-2';
 export default function RequirementsStep({answers, dispatch}: {answers: Answers; dispatch: Dispatch<Action>}) {
   const t = useTx();
   const types = answers.types as ProjectType[];
-  const questions = visibleQuestions({types}).filter((q) => q.step === 2 || q.step === 3);
-  const scope = questions.filter((q) => q.step === 2);
-  const features = questions.filter((q) => q.step === 3);
+  // the size card already fixes the page count; ask only when it is unset or "not sure"
+  const askPages = !answers.size || answers.size === 'unsure';
+  const questions = visibleQuestions({types}).filter(
+    (q) => (q.step === 4 || q.step === 5) && (q.id !== 'pages' || askPages),
+  );
+  const scope = questions.filter((q) => q.step === 4);
+  const features = questions.filter((q) => q.step === 5);
 
   const render = (q: Question) => {
-    if (q.kind === 'text') {
-      return (
-        <Field key={q.id} label={t(local(q.labelKey))} optionalText={t('optional')} hint={t(local(q.hintKey ?? ''))}>
-          {({id, describedBy}) => (
-            <>
-              <textarea
-                id={id}
-                aria-describedby={describedBy}
-                rows={4}
-                maxLength={q.maxLength ?? PROBLEM_MAX}
-                className={`${FIELD} resize-y`}
-                value={answers.problem}
-                onChange={(e) => dispatch({type: 'setProblem', value: e.target.value})}
-              />
-            </>
-          )}
-        </Field>
-      );
-    }
     const options = optionsFor(q, types);
     if (q.kind === 'bucket') {
       const key = q.answerKey as 'pages' | 'productBucket' | 'rolesBucket';
@@ -45,7 +30,7 @@ export default function RequirementsStep({answers, dispatch}: {answers: Answers;
           <div className={GRID}>
             {options.map((o) => {
               const selected =
-                key === 'pages' ? (answers.pages ?? 5) === o.value : answers[key] === o.id;
+                key === 'pages' ? answers.pages === o.value : answers[key] === o.id;
               return (
                 <Choice
                   key={o.id}
@@ -84,7 +69,7 @@ export default function RequirementsStep({answers, dispatch}: {answers: Answers;
       {scope.length > 0 ? (
         <section aria-labelledby="est-scope" className="space-y-6">
           <h3 id="est-scope" className="u-mono font-mono text-xs uppercase tracking-[0.2em] text-amber">
-            {t('step.2.title')}
+            {t('step.4.title')}
           </h3>
           {scope.map(render)}
         </section>
@@ -92,7 +77,7 @@ export default function RequirementsStep({answers, dispatch}: {answers: Answers;
       {features.length > 0 ? (
         <section aria-labelledby="est-features" className="space-y-6">
           <h3 id="est-features" className="u-mono font-mono text-xs uppercase tracking-[0.2em] text-amber">
-            {t('step.3.title')}
+            {t('step.5.title')}
           </h3>
           {features.map(render)}
         </section>

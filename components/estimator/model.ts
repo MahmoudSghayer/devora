@@ -2,25 +2,28 @@
 // No React, no I/O — everything here is unit-testable.
 
 import {ESTIMATOR_CONFIG} from '@/lib/pricing/config';
-import {visibleQuestions, type Question, type QuestionOption} from '@/lib/estimator/questions';
+import {GOAL_TYPE_SUGGESTIONS, visibleQuestions, type Question, type QuestionOption} from '@/lib/estimator/questions';
 import type {EstimatorAnswers} from '@/lib/estimator/schema';
 import {
   FEATURE_IDS,
+  GOAL_IDS,
   INTEGRATION_IDS,
   PRODUCT_BUCKETS,
   PROJECT_TYPES,
   ROLE_BUCKETS,
   SHARED_IDS,
+  SIZE_IDS,
   type FeatureId,
+  type Goal,
   type IntegrationId,
   type ProductBucket,
   type ProjectType,
   type RoleBucket,
+  type SizeId,
 } from '@/lib/estimator/types';
 
 export const STEP_COUNT = 8;
 export const PAGE_CHOICES = [5, 8, 12, 20, 30] as const;
-export const PROBLEM_MAX = 1500;
 export const NOTES_MAX = 2000; // contact.notes server cap
 
 export type StepNo = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -33,11 +36,12 @@ export type DesignKey = 'existing' | 'brandIdentity' | 'advancedMotion' | 'premi
 export const DESIGN_KEYS: readonly DesignKey[] = ['existing', 'brandIdentity', 'advancedMotion', 'premium'];
 
 export interface Answers {
+  goals: Goal[];
+  size?: SizeId;
   types: ProjectType[];
   pages?: number;
   productBucket?: ProductBucket;
   rolesBucket?: RoleBucket;
-  problem: string;
   features: FeatureId[];
   integrations: IntegrationId[];
   design: Partial<Record<DesignKey, boolean>>;
@@ -51,6 +55,8 @@ export interface TimelineEntry {
 export interface EstimatorState {
   step: StepNo;
   answers: Answers;
+  /** types were pre-selected from the goals (re-derived while true) */
+  typesAuto: boolean;
   /** bumps on every user-driven step change; drives focus + announcement */
   focusTick: number;
   /** true once the visitor changed something (silences first-load announcements) */
@@ -62,8 +68,8 @@ export interface EstimatorState {
 }
 
 export const EMPTY_ANSWERS: Answers = {
+  goals: [],
   types: [],
-  problem: '',
   features: [],
   integrations: [],
   design: {},
@@ -72,6 +78,7 @@ export const EMPTY_ANSWERS: Answers = {
 export const initialState: EstimatorState = {
   step: 1,
   answers: EMPTY_ANSWERS,
+  typesAuto: false,
   focusTick: 0,
   interacted: false,
   restored: false,
@@ -119,11 +126,11 @@ export function toSchemaAnswers(a: Answers): EstimatorAnswers {
   );
 
   const out: EstimatorAnswers = {types};
+  if (a.goals.length > 0) out.goals = a.goals;
+  if (a.size) out.size = a.size;
   if (has('pages') && a.pages !== undefined) out.pages = a.pages;
   if (has('products') && a.productBucket) out.productBucket = a.productBucket;
   if (has('roles') && a.rolesBucket) out.rolesBucket = a.rolesBucket;
-  const problem = a.problem.trim();
-  if (has('problem') && problem) out.problem = problem.slice(0, PROBLEM_MAX);
   const features = a.features.filter((f) => allowedFeatures.has(f));
   if (features.length > 0) out.features = features;
   if (a.integrations.length > 0) out.integrations = a.integrations;
@@ -157,16 +164,28 @@ export type Action =
   | {type: 'hydrate'; stored: Stored | null; urlStep: StepNo | null; now: number; key: string}
   | {type: 'goto'; step: StepNo; now: number}
   | {type: 'popstate'; step: StepNo; now: number}
+  | {type: 'toggleGoal'; id: Goal}
+  | {type: 'setSize'; id: SizeId}
   | {type: 'toggleType'; id: ProjectType}
   | {type: 'toggleList'; key: 'features' | 'integrations'; id: FeatureId | IntegrationId}
   | {type: 'setBucket'; key: 'pages' | 'productBucket' | 'rolesBucket'; value: number | string}
-  | {type: 'setProblem'; value: string}
   | {type: 'setDesign'; key: DesignKey; value: boolean}
   | {type: 'reset'; now: number; key: string};
 
 const MAX_TIMELINE = 60;
 
+/** Union of the types the chosen goals suggest ('unsure' only when nothing else). */
+export function suggestedTypes(goals: readonly Goal[]): ProjectType[] {
+  const set = new Set<ProjectType>(goals.flatMap((g) => GOAL_TYPE_SUGGESTIONS[g]));
+  const real = PROJECT_TYPES.filter((t) => t !== 'unsure' && set.has(t));
+  return real.length > 0 ? real : set.has('unsure') ? ['unsure'] : [];
+}
+
 function withStep(s: EstimatorState, step: StepNo, now: number, focus: boolean): EstimatorState {
+  if (step === TYPE_STEP && (s.answers.types.length === 0 || s.typesAuto) && s.answers.goals.length > 0) {
+    const types = suggestedTypes(s.answers.goals);
+    s = {...s, typesAuto: types.length > 0, answers: {...s.answers, types}};
+  }
   const target = reachableStep(step, s.answers);
   const label = `step_${target}`;
   const last = s.timeline[s.timeline.length - 1];
@@ -201,6 +220,12 @@ export function reducer(s: EstimatorState, action: Action): EstimatorState {
       return withStep(s, action.step, action.now, true);
     case 'popstate':
       return withStep(s, action.step, action.now, true);
+    case 'toggleGoal': {
+      const goals = GOAL_IDS.filter((g) => (g === action.id ? !s.answers.goals.includes(g) : s.answers.goals.includes(g)));
+      return touch(s, {answers: {...s.answers, goals}});
+    }
+    case 'setSize':
+      return touch(s, {answers: {...s.answers, size: action.id, pages: undefined}});
     case 'toggleType': {
       const set = new Set(s.answers.types);
       let types: ProjectType[];
@@ -212,7 +237,7 @@ export function reducer(s: EstimatorState, action: Action): EstimatorState {
         else set.add(action.id);
         types = PROJECT_TYPES.filter((t) => set.has(t));
       }
-      return touch(s, {answers: {...s.answers, types}});
+      return touch(s, {typesAuto: false, answers: {...s.answers, types}});
     }
     case 'toggleList': {
       const a = s.answers;
@@ -235,8 +260,6 @@ export function reducer(s: EstimatorState, action: Action): EstimatorState {
     }
     case 'setBucket':
       return touch(s, {answers: {...s.answers, [action.key]: action.value}});
-    case 'setProblem':
-      return touch(s, {answers: {...s.answers, problem: action.value.slice(0, PROBLEM_MAX)}});
     case 'setDesign':
       return touch(s, {answers: {...s.answers, design: {...s.answers.design, [action.key]: action.value}}});
     case 'reset':
@@ -268,11 +291,12 @@ export function parseStored(raw: unknown): Stored | null {
   const design: Answers['design'] = {};
   for (const k of DESIGN_KEYS) if (d[k] === true) design[k] = true;
   const answers: Answers = {
+    goals: pickList(a.goals, GOAL_IDS),
+    size: pick(a.size, SIZE_IDS),
     types: pickList(a.types, PROJECT_TYPES),
     pages,
     productBucket: pick(a.productBucket, PRODUCT_BUCKETS),
     rolesBucket: pick(a.rolesBucket, ROLE_BUCKETS),
-    problem: typeof a.problem === 'string' ? a.problem.slice(0, PROBLEM_MAX) : '',
     features: pickList(a.features, FEATURE_IDS),
     integrations: pickList(a.integrations, INTEGRATION_IDS),
     design,

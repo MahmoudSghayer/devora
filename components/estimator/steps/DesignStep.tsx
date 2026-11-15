@@ -8,7 +8,7 @@ import {Group, SwitchRow} from '../ui';
 
 export default function DesignStep({answers, dispatch}: {answers: Answers; dispatch: Dispatch<Action>}) {
   const t = useTx();
-  const questions = visibleQuestions({types: answers.types}).filter((q) => q.step === 4);
+  const questions = visibleQuestions({types: answers.types}).filter((q) => q.step === 6);
   return (
     <Group legend={t('design.legend')} hint={t('design.hint')}>
       <div className="space-y-3">

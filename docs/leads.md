@@ -1,11 +1,12 @@
 # Lead pipeline (calculators + contact)
 
-Three public endpoints feed one service, `submitLead` (`lib/leads/service.ts`):
+Four public endpoints feed one service, `submitLead` (`lib/leads/service.ts`):
 
 | Endpoint | `source` | Answers schema |
 |---|---|---|
 | `POST /api/estimate` | `website_estimate` | `estimatorAnswersSchema` (lib/estimator/schema) |
 | `POST /api/automation-roi` | `automation_roi` | `roiAnswersSchema` (lib/roi/schema) |
+| `POST /api/discuss` | `software_discovery` | `discussAnswersSchema` (lib/discuss/schema); free text "Anything else we should know?" travels as `contact.notes` |
 | `POST /api/contact` | `contact` | `{message, budget?}` |
 
 The chat widget keeps using `POST /api/lead` (source `chat`, unchanged contract except real failure statuses).
@@ -22,7 +23,7 @@ The chat widget keeps using `POST /api/lead` (source `chat`, unchanged contract 
 4. same-origin (Origin, else Referer, host must equal request Host; localhost any-port in dev) -> 403
 5. rate limit: `calculator` 5/h per IP, then `calculator_email` 3/h per email (fail-open when Upstash is unset) -> 429 + `Retry-After`
 6. idempotency (client UUID) and same email+source dedupe within 10 min -> existing `leadRef`, `duplicate:true`
-7. **server recompute** with `estimateProject` / `computeRoi`; client totals are never read (a `result` key is accepted and discarded)
+7. **server recompute** with `estimateProject` / `computeRoi` / `estimateDiscuss` (discovery stores `startingLow/High` in `estimate_low/high`, full result in `details.result`); client totals are never read (a `result` key is accepted and discarded)
 8. generate `lead_ref` (`DV-YYMM-XXXX`, retried on collision), insert
 9. email: if the insert succeeded, sent in `after()` and `email_delivered` / `email_error` updated; if Supabase is unconfigured or the insert failed, sent **synchronously**
 10. both persistence and email failed (or neither configured) -> **503 retryable**, never a fake success
@@ -104,3 +105,9 @@ See `.env.example`: `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (per
 | Upstash unset or erroring | limiter fails open |
 | Duplicate lookup errors | logged, insert still protected by unique indexes |
 | Missing Origin/Referer | 403 in production (allowed in dev) |
+
+## Software discovery email and admin
+
+`softwareDiscoveryEmail` (`lib/email/templates.ts`): subject `[Discuss DV-…] Name — ₪X–₪Y`, Reply-To the visitor, visitor free text shown first and escaped, then the indicative starting range, budget fit, weeks, maintenance, assumptions, chosen options (English labels in `lib/leads/discussLabels.ts`) and the raw answers. All calculator and contact emails render `contact.notes` as "Visitor notes". Admin lists a `Software discovery` source badge/filter and renders the answers structurally; the overview counts leads by source. Analytics event: `discuss_submitted`.
+
+Packages (Launch/Studio/Growth) were retired: the chat assistant points to `/estimate`, `/automation-roi` and `/discuss` and only quotes the care-plan monthly range. The `recommended_package` column is kept but unused.
