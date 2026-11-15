@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
+import ScopedMessages from '@/components/i18n/ScopedMessages';
 import Container from '@/components/ui/Container';
 import EstimatorApp from '@/components/estimator/EstimatorApp';
 import {Link} from '@/i18n/navigation';
@@ -55,7 +56,9 @@ export default async function EstimatePage({params}: {params: Promise<{locale: s
             </Link>
           </p>
         </noscript>
-        <EstimatorApp email={SITE.email} socials={SOCIALS} />
+        <ScopedMessages namespaces={['estimator']}>
+          <EstimatorApp email={SITE.email} socials={SOCIALS} />
+        </ScopedMessages>
       </Container>
     </>
   );

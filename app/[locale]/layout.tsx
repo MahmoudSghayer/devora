@@ -6,6 +6,7 @@ import {routing, type Locale} from '@/i18n/routing';
 import {spaceGrotesk, spaceMono, arabic} from '@/lib/fonts';
 import ChatWidget from '@/components/chat/ChatWidgetLazy';
 import StructuredData from '@/components/seo/StructuredData';
+import {pickMessages} from '@/lib/i18n/pickMessages';
 import {Analytics} from '@vercel/analytics/next';
 
 export function generateStaticParams() {
@@ -24,7 +25,9 @@ export default async function LocaleLayout({
 
   // Enable static rendering for this locale.
   setRequestLocale(locale);
-  const messages = await getMessages();
+  // Only the namespaces read by always-mounted client islands: chrome (common)
+  // and the chat widget (chat). Pages scope the rest via <ScopedMessages>.
+  const messages = pickMessages(await getMessages(), ['common', 'chat']);
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (

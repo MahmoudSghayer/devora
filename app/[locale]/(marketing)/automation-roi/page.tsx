@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {Link} from '@/i18n/navigation';
 import RoiApp from '@/components/roi/RoiApp';
+import ScopedMessages from '@/components/i18n/ScopedMessages';
 import Container from '@/components/ui/Container';
 import {pageMetadata} from '@/lib/seo';
 import {BreadcrumbJsonLd, WebApplicationJsonLd} from '@/components/seo/schemas';
@@ -48,7 +49,9 @@ export default async function AutomationRoiPage({params}: {params: Promise<{loca
               </Link>
             </p>
           </noscript>
-          <RoiApp />
+          <ScopedMessages namespaces={['roi']}>
+            <RoiApp />
+          </ScopedMessages>
         </Container>
       </section>
     </>

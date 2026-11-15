@@ -3,6 +3,7 @@ import {useTranslations} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {pageMetadata} from '@/lib/seo';
 import {BreadcrumbJsonLd} from '@/components/seo/schemas';
+import ScopedMessages from '@/components/i18n/ScopedMessages';
 import Container from '@/components/ui/Container';
 import PageIntro from '@/components/ui/PageIntro';
 import ContactForm from '@/components/contact/ContactForm';
@@ -70,7 +71,9 @@ function ContactContent() {
           </h2>
         </Container>
         <Container className="grid gap-14 nav:grid-cols-[7fr_4fr] nav:gap-20">
-          <ContactForm />
+          <ScopedMessages namespaces={['contact']}>
+            <ContactForm />
+          </ScopedMessages>
           <ContactAside />
         </Container>
       </section>

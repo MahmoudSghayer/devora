@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {pageMetadata} from '@/lib/seo';
 import {ProfessionalServiceJsonLd, ServicesJsonLd} from '@/components/seo/schemas';
+import ScopedMessages from '@/components/i18n/ScopedMessages';
 import Hero from '@/components/sections/Hero';
 import ValueWhy from '@/components/sections/ValueWhy';
 import PillarSwitcher from '@/components/sections/PillarSwitcher';
@@ -40,9 +41,13 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
       <Hero />
       <ValueWhy />
       <PillarSwitcher />
-      <ScenarioSimulator />
+      <ScopedMessages namespaces={['homeB']}>
+        <ScenarioSimulator />
+      </ScopedMessages>
       <SelectedWork />
-      <CalculatorCards />
+      <ScopedMessages namespaces={['homeB']}>
+        <CalculatorCards />
+      </ScopedMessages>
       <StackConstellation />
       <CtaBand />
     </>

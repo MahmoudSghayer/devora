@@ -26,7 +26,9 @@ export function useRealtimeConversation(token: string | null, handlers: Handlers
   });
 
   useEffect(() => {
-    if (!isRealtimeConfigured()) return;
+    // Nothing is shown until the visitor opens the panel (which creates/restores
+    // the conversation and its token), so don't hold sockets open before then.
+    if (!token || !isRealtimeConfigured()) return;
     const supabase = createSupabaseBrowserClient();
 
     const presence = supabase
