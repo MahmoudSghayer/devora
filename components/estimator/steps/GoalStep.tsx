@@ -10,7 +10,6 @@ export default function GoalStep({answers, dispatch}: {answers: Answers; dispatc
   const t = useTx();
   return (
     <Group legend={t('q.goals.label')} hint={t('q.goals.hint')} hideLegend>
-      <p className="mb-4 text-sm text-muted">{t('q.goals.hint')}</p>
       <div className="grid grid-cols-1 gap-3 nav:grid-cols-2">
         {GOAL_OPTIONS.map((g) => (
           <Choice

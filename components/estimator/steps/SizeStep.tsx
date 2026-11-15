@@ -10,7 +10,6 @@ export default function SizeStep({answers, dispatch}: {answers: Answers; dispatc
   const t = useTx();
   return (
     <Group legend={t('q.size.label')} hint={t('q.size.hint')} hideLegend>
-      <p className="mb-4 text-sm text-muted">{t('q.size.hint')}</p>
       <div className="grid grid-cols-1 gap-3 nav:grid-cols-2">
         {SIZE_OPTIONS.map((o) => (
           <Choice

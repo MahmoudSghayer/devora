@@ -109,10 +109,10 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
   useEffect(() => {
     if (state.focusTick === 0 || state.focusTick === lastTick.current) return;
     lastTick.current = state.focusTick;
-    const h = headingRef.current;
-    if (h) {
-      h.focus({preventScroll: true});
-      const top = h.getBoundingClientRect().top + window.scrollY - 112;
+    headingRef.current?.focus({preventScroll: true});
+    const anchor = document.getElementById('est-top');
+    if (anchor) {
+      const top = anchor.getBoundingClientRect().top + window.scrollY - 96;
       window.scrollTo({top: Math.max(0, top), behavior: reduced ? 'auto' : 'smooth'});
     }
     setStepNote(`${t('step_of', {n: step, total: STEP_COUNT})}: ${t(`flow.s${step}.title`)}`);
@@ -229,6 +229,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
   return (
     <div className="grid gap-8 nav:grid-cols-[minmax(0,1fr)_400px] nav:items-start nav:gap-10">
       <div className="min-w-0 space-y-8 max-nav:pb-28">
+        <div id="est-top" aria-hidden className="-mb-8 h-0" />
         <ProgressNav step={step} canLeaveType={hasTypes} typeStep={TYPE_STEP} onGo={go} />
 
         {state.restored && !state.interacted ? (
