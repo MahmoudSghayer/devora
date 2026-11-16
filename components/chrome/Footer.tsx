@@ -22,7 +22,7 @@ export default function Footer() {
     <>
       <footer className="border-t border-border bg-bg-foot">
       <Container className="pt-20 pb-10">
-        <div className="grid gap-12 nav:grid-cols-[1.5fr_1fr] nav:gap-16">
+        <div className="grid gap-12 nav:grid-cols-[1fr_1.4fr] nav:gap-16">
           {/* Wordmark + tagline */}
           <div>
             <div
@@ -39,31 +39,44 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Link columns */}
-          <div className="grid grid-cols-2 gap-8 nav:grid-cols-4">
+          {/* Link columns: every page is reachable from the footer. */}
+          <nav aria-label={t('footer_nav_aria')} className="grid grid-cols-2 gap-8 nav:grid-cols-4">
             <div className="flex flex-col">
-              <ColTitle>{t('footer_pages')}</ColTitle>
+              <ColTitle>{t('footer_services')}</ColTitle>
               <div className="flex flex-col gap-2.5">
-                <Link href="/" className={linkCls}>{t('nav_home')}</Link>
-                <Link href="/work" className={linkCls}>{t('nav_work')}</Link>
-                <Link href="/services" className={linkCls}>{t('nav_services')}</Link>
+                <Link href="/services#websites" className={linkCls}>{t('nav_pillar_web')}</Link>
+                <Link href="/services#automation" className={linkCls}>{t('nav_pillar_auto')}</Link>
+                <Link href="/services#software" className={linkCls}>{t('nav_pillar_soft')}</Link>
+                <Link href="/industries" className={linkCls}>{t('nav_industries')}</Link>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <ColTitle>{t('footer_tools')}</ColTitle>
+              <div className="flex flex-col gap-2.5">
+                <Link href="/estimate" className={linkCls}>{t('nav_estimate')}</Link>
+                <Link href="/automation-roi" className={linkCls}>{t('nav_roi')}</Link>
                 <Link href="/pricing" className={linkCls}>{t('nav_pricing')}</Link>
+                <Link href="/faq" className={linkCls}>{t('nav_faq')}</Link>
               </div>
             </div>
 
             <div className="flex flex-col">
               <ColTitle>{t('footer_more')}</ColTitle>
               <div className="flex flex-col gap-2.5">
+                <Link href="/" className={linkCls}>{t('nav_home')}</Link>
+                <Link href="/work" className={linkCls}>{t('nav_work')}</Link>
                 <Link href="/about" className={linkCls}>{t('nav_about')}</Link>
                 <Link href="/process" className={linkCls}>{t('nav_process')}</Link>
-                <Link href="/industries" className={linkCls}>{t('nav_industries')}</Link>
-                <Link href="/faq" className={linkCls}>{t('nav_faq')}</Link>
               </div>
             </div>
 
             <div className="flex flex-col">
-              <ColTitle>{t('footer_social')}</ColTitle>
+              <ColTitle>{t('footer_contact')}</ColTitle>
               <div className="flex flex-col gap-2.5">
+                <a href={`mailto:${SITE.email}`} className={linkCls} dir="ltr">
+                  {SITE.email}
+                </a>
                 {SOCIALS.map((s) => (
                   <a
                     key={s.label}
@@ -75,15 +88,6 @@ export default function Footer() {
                     {s.label} <span dir="ltr">↗</span>
                   </a>
                 ))}
-              </div>
-            </div>
-
-            <div className="flex flex-col">
-              <ColTitle>{t('footer_contact')}</ColTitle>
-              <div className="flex flex-col gap-2.5">
-                <a href={`mailto:${SITE.email}`} className={linkCls} dir="ltr">
-                  {SITE.email}
-                </a>
                 <Link
                   href="/contact"
                   className="w-fit text-sm font-medium text-amber transition-colors hover:text-amber-hi"
@@ -92,7 +96,7 @@ export default function Footer() {
                 </Link>
               </div>
             </div>
-          </div>
+          </nav>
         </div>
 
         {/* Bottom bar */}

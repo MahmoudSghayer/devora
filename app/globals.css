@@ -4,7 +4,10 @@
    Values are verbatim from the design handoff. Custom color names generate
    bg, text and border color utilities; --breakpoint-nav generates the nav
    and max-nav variants (the only responsive breakpoint used, never md/lg).
-   No shadows: depth comes from borders, surface shifts, hover lifts, motion. */
+   No shadows: depth comes from borders, translucent glass layers, radial light
+   (the .spot / .aura / .glass utilities below), hover lifts and motion.
+   v2 additions: cool "signal" accent (automation / AI / data visuals only),
+   pillar tints, glass surfaces, z-index + spacing tokens. See docs/design-system.md. */
 @theme {
   /* the single responsive breakpoint */
   --breakpoint-nav: 920px;
@@ -30,8 +33,8 @@
   --color-ink-2: #cdd0d6;
   --color-muted: #9aa0ab;
   --color-muted-2: #8b909b;
-  --color-faint: #6a6f7a;
-  --color-faint-2: #565b66;
+  --color-faint: #838995;
+  --color-faint-2: #7a808c;
 
   /* accent — DEVORA gold */
   --color-amber: #f2a84b;
@@ -39,15 +42,35 @@
   --color-on-amber: #0a0805;
   --color-dark-btn-hi: #241a0e;
 
-  /* fonts (next/font vars set on <html>; Arabic (Cairo) fallback in the stack) */
+  /* signal — cool accent, reserved for automation / AI / data visuals so amber
+     stays the single brand + CTA colour */
+  --color-signal: #5cc8ff;
+  --color-signal-hi: #8ddcff;
+  --color-signal-lo: #0e2431;
+  /* pillar hues: subtle tints only (never full-bleed fills) */
+  --color-pillar-web: #f2a84b;
+  --color-pillar-auto: #5cc8ff;
+  --color-pillar-soft: #a99bff;
+  --color-positive: #6fd9a0;
+  --color-danger: #ff8f78;
+
+  /* glass surfaces (pair with backdrop-blur via .glass) */
+  --color-glass: rgb(18 20 28 / 0.55);
+  --color-glass-hi: rgb(28 31 42 / 0.62);
+  --color-glass-border: rgb(255 255 255 / 0.09);
+  --color-hairline: rgb(255 255 255 / 0.06);
+
+  /* fonts (Latin: next/font vars set on <html>; Arabic: self-hosted Cairo below) */
   --font-display: var(--font-space-grotesk), var(--font-arabic), sans-serif;
   --font-mono: var(--font-space-mono), var(--font-arabic), monospace;
 
   /* radii */
   --radius-pill: 999px;
   --radius-card: 18px;
+  --radius-panel: 28px;
   --radius-img: 16px;
   --radius-input: 10px;
+  --radius-chip: 8px;
 
   /* fluid heading sizes */
   --text-h1: clamp(40px, 8vw, 128px);
@@ -55,6 +78,52 @@
   --text-h2: clamp(28px, 4vw, 56px);
   --text-cta: clamp(38px, 6.5vw, 96px);
   --text-case: clamp(32px, 3.4vw, 48px);
+  --text-display: clamp(44px, 9.5vw, 148px);
+  --text-hero: clamp(44px, 6.4vw, 100px);
+  --text-h3: clamp(22px, 2.3vw, 32px);
+  --text-lead: clamp(17px, 1.5vw, 21px);
+  --text-stat: clamp(40px, 6vw, 88px);
+
+  /* easing (mirrors lib/motion.ts EASE) */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Cairo (Arabic subset only), self-hosted so the default-locale layout can
+   preload it for AR pages without EN downloading it (unicode-range keeps it
+   idle unless Arabic glyphs render). The fallback matches next/font's metrics. */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('/fonts/cairo-arabic.9ff27b8a.woff2') format('woff2');
+  unicode-range: U+600-6FF, U+750-77F, U+870-891, U+897-8E1, U+8E3-8FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: 'Cairo Fallback';
+  src: local('Arial');
+  ascent-override: 137.65%;
+  descent-override: 60.32%;
+  line-gap-override: 0%;
+  size-adjust: 94.66%;
+}
+
+:root {
+  --font-arabic: 'Cairo', 'Cairo Fallback';
+
+  /* z-index scale — never use raw z-[n] in components. */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 30;
+  --z-header: 50;
+  --z-sheet: 60;
+  --z-overlay: 80;
+  --z-chat: 90;
+  --z-toast: 100;
+  --z-cursor: 110;
+  /* vertical rhythm between page sections */
+  --space-section: clamp(72px, 9vw, 144px);
+  --space-block: clamp(32px, 4vw, 64px);
 }
 
 @layer base {
@@ -178,11 +247,127 @@
   }
 }
 
-/* ══ DEVORA OS — homepage WebGL experience ═══════════════════════════════
-   The immersive homepage lives inside [data-experience]. Its inline styles
-   reference these dv* keyframes by name, so they're defined unconditionally
-   and neutralised for reduced-motion users further down. */
-@keyframes dvSafety { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+/* ══ v2 surface + light utilities ════════════════════════════════════════ */
+@layer utilities {
+  .py-section { padding-block: var(--space-section); }
+  .mt-section { margin-top: var(--space-section); }
+  .pb-section { padding-bottom: var(--space-section); }
+  .gap-block { gap: var(--space-block); }
+
+  /* Translucent glass panel: blur + hairline border, no shadow. */
+  .glass {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    -webkit-backdrop-filter: blur(14px) saturate(1.25);
+    backdrop-filter: blur(14px) saturate(1.25);
+  }
+  .glass-hi {
+    background: var(--color-glass-hi);
+    border: 1px solid var(--color-glass-border);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+  }
+
+  /* Ambient radial "light" behind a block: set --aura-color (defaults amber).
+     Replaces ad-hoc box-shadow glows. */
+  .aura { position: relative; isolation: isolate; }
+  .aura::before {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto;
+    height: 70%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(60% 100% at 50% 0%,
+      color-mix(in oklab, var(--aura-color, var(--color-amber)) 22%, transparent), transparent 70%);
+  }
+  .aura-signal { --aura-color: var(--color-signal); }
+  .aura-soft { --aura-color: var(--color-pillar-soft); }
+
+  /* Cursor-following spotlight on a surface + its border. <Spotlight> (or any
+     pointermove handler) writes --mx / --my in px. Hidden until hover and
+     without a fine pointer it simply never lights. */
+  .spot { position: relative; isolation: isolate; }
+  .spot::before,
+  .spot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-out-quint);
+  }
+  .spot::before {
+    z-index: -1;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--spot-color, var(--color-amber)) 16%, transparent), transparent 62%);
+  }
+  .spot::after {
+    padding: 1px;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--spot-color, var(--color-amber)) 70%, transparent), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .spot:hover::before,
+    .spot:hover::after { opacity: 1; }
+  }
+  .spot-signal { --spot-color: var(--color-signal); }
+  .spot-soft { --spot-color: var(--color-pillar-soft); }
+
+  /* Specular highlight that rides with <TiltCard> (--hx / --hy in %). */
+  .tilt-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(240px circle at var(--hx, 50%) var(--hy, 0%),
+      rgb(255 255 255 / 0.10), transparent 60%);
+    opacity: var(--sheen, 0);
+    transition: opacity 0.3s ease;
+  }
+
+  /* Tabular numerals for counters / prices. */
+  .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  /* Soft vertical fade used at the edge of scrolling regions. */
+  .fade-y {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  }
+}
+
+/* Page transitions (React <ViewTransition> via experimental.viewTransition). */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(.page-out) { animation: pageOut 0.22s ease both; }
+  ::view-transition-new(.page-in) { animation: pageIn 0.5s var(--ease-out-quint) both; }
+  @keyframes pageOut { to { opacity: 0; transform: translateY(-6px); } }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(14px); } }
+}
+
+/* Visible keyboard focus everywhere (components may override the colour). */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+/* Honour reduced motion for any remaining transitions/animations. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Lenis (smooth scroll) — required rules. */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+/* Film-grain drift (used by .devora-grain). */
 @keyframes dvGrain {
   0% { transform: translate(0, 0); } 10% { transform: translate(-5%, -5%); }
   20% { transform: translate(-9%, 4%); } 30% { transform: translate(5%, -9%); }
@@ -191,152 +376,36 @@
   80% { transform: translate(-13%, 0); } 90% { transform: translate(9%, 5%); }
   100% { transform: translate(4%, 0); }
 }
-@keyframes dvBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-@keyframes dvCue { 0% { transform: translateY(0); opacity: 0.25; } 50% { opacity: 1; } 100% { transform: translateY(9px); opacity: 0.25; } }
-@keyframes dvPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
-@keyframes dvRing { 0% { transform: scale(0.4); opacity: 0.85; } 100% { transform: scale(2.4); opacity: 0; } }
-@keyframes dvShimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-@keyframes dvDash { to { stroke-dashoffset: 0; } }
+
+/* KineticHeadline entrance: transform + opacity from .25, never fully hidden
+   (keeps the headline an immediate LCP candidate). */
+@media (prefers-reduced-motion: no-preference) {
+  .kinetic-word { animation: kRise 0.7s var(--ease-out-quint) both; }
+  @keyframes kRise { from { opacity: 0.25; transform: translateY(0.32em); } }
+}
+/* PageIntro entrance (HeroReveal / WordReveal): pure CSS so it runs from first
+   paint instead of waiting for hydration — the headline is an immediate LCP
+   candidate. Reduced motion → no animation, content simply visible. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-rise { animation: heroRise 0.75s var(--ease-out-quint) both; }
+  .word-rise { animation: wordRise 0.95s var(--ease-out-quint) both; }
+  @keyframes heroRise { from { opacity: 0.2; transform: translateY(26px); } }
+  @keyframes wordRise { from { transform: translateY(120%); } }
+}
+.kinetic [data-k] { transition: font-weight 0.12s linear; }
+
+/* Section ambient keyframes (referenced via motion-safe:animate-[…] in components). */
 @keyframes dvFlow { to { stroke-dashoffset: -60; } }
-@keyframes dvRiseBar { 0% { transform: scaleY(0.12); } 100% { transform: scaleY(1); } }
+@keyframes dvCue { 0% { transform: translateY(0); opacity: 0.25; } 50% { opacity: 1; } 100% { transform: translateY(9px); opacity: 0.25; } }
 
-/* Skip link (keyboard) — hidden until focused. */
-[data-experience] .dvx-skip {
-  position: fixed; top: -60px; inset-inline-start: 12px; z-index: 400;
-  background: var(--accent, #f2a84b); color: #0a0805; padding: 10px 16px;
-  border-radius: 8px; font-weight: 600; text-decoration: none;
-  transition: top 0.2s ease;
-}
-[data-experience] .dvx-skip:focus { top: 12px; }
-
-/* Keyboard focus visibility inside the experience. */
-[data-experience] a:focus-visible,
-[data-experience] button:focus-visible {
-  outline: 2px solid var(--accent, #f2a84b);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
-/* RTL: mirror the fixed side-rail to the left, and neutralise Latin letter-
-   spacing on Arabic text (tracking breaks Arabic ligatures) — brand wordmarks
-   opt out via [data-latin]. */
-:root[dir="rtl"] [data-experience] [data-rail-nav] {
-  right: auto !important; left: clamp(14px, 2.2vw, 30px) !important; align-items: flex-start;
-}
-:root[dir="rtl"] [data-experience] [data-build-num] {
-  left: auto !important; right: clamp(10px, 4vw, 70px) !important;
-}
-/* [data-svc-reticle] is intentionally left unmirrored: it's a zero-size JS
-   transform anchor (see updateServicesDOM/render3D in devora-universe.ts),
-   positioned via `transform: translate(sx, sy)` computed in physical window
-   pixels to track the WebGL-rendered planet, which itself isn't direction-
-   aware. Its left:0/top:0 anchor and the corner-bracket children's symmetric
-   border-left/border-right pairs already render identically in RTL — flipping
-   left/right here would offset the anchor and misalign the reticle. */
-:root[dir="rtl"] [data-experience] *:not([data-latin]) {
-  letter-spacing: normal !important;
-}
-
-/* Reduced motion: freeze all ambient motion. The controller detects the same
-   preference and renders a fully static, readable page (no WebGL, no smooth
-   scroll); this also lets the preloader's dvSafety fade resolve instantly. */
-@media (prefers-reduced-motion: reduce) {
-  [data-experience] *,
-  [data-experience] *::before,
-  [data-experience] *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Mobile-lite: coarse-pointer devices take the same no-WebGL static path as
-   reduced-motion (DevoraExperience forces it), so there's nothing heavy to wait
-   for behind the preloader. Resolve its dvSafety fade almost immediately so the
-   server-rendered hero — not the preloader — is the LCP; the controller's
-   hidePreloader() still runs when its chunk loads. Doesn't touch desktop or the
-   other ambient dv* animations. */
-@media (pointer: coarse) {
-  [data-experience] [data-preloader] {
-    animation-delay: 0s !important;
-    animation-duration: 0.45s !important;
-  }
-  /* The right-hand section rail is a hover scrubber: its labels only reveal on
-     hover, and its invisible labels reserve ~100px of width with pointer-events
-     enabled, so on touch it silently intercepts taps meant for content. Hide it
-     on touch — the bottom progress bar and footer nav cover wayfinding. */
-  [data-experience] [data-rail-nav] {
+/* Print / save-as-PDF: drop site chrome so calculator summaries print cleanly. */
+@media print {
+  body > header,
+  body > footer,
+  body > canvas,
+  body > a[href="#main"],
+  .devora-cosmos,
+  .devora-grain {
     display: none !important;
   }
-}
-
-/* Small screens: the fixed HUD is desktop chrome — thin it out so the top and
-   bottom bars never crowd the phone viewport. The design's headings, spacing
-   and particle counts already scale down via clamp() and the mobile caps in
-   setupThree(). */
-@media (max-width: 720px) {
-  [data-experience] [data-hud-center] { display: none !important; }
-}
-@media (max-width: 560px) {
-  [data-experience] [data-coords] { display: none; }
-  [data-experience] [data-rail-nav] { gap: 12px; }
-  /* Header: drop the decorative tagline and the ambient-sound toggle (no WebGL
-     audio on the mobile-lite path) so the language switch and the Book-a-call
-     button fit the viewport instead of spilling off the right edge. */
-  [data-experience] header [data-latin] + span,
-  [data-experience] header [data-sound] {
-    display: none !important;
-  }
-}
-
-/* Narrow screens: several acts are built as two side-by-side, absolutely
-   positioned columns that assume desktop width. Reflow them to a single column
-   so nothing overlaps or spills off-screen. The acts stay scroll-driven, so the
-   remaining panel still cycles through its content as you scroll. */
-@media (max-width: 760px) {
-  /* ACT 05 — Services: the left index list + hover reticle don't fit beside the
-     detail card. Show only the card (it advances through the 12 services on
-     scroll), centered and wider. */
-  [data-experience] [data-svc-list],
-  [data-experience] [data-svc-reticle] { display: none !important; }
-  [data-experience] [data-svc-card] {
-    inset-inline: auto !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translate(-50%, -50%) !important;
-    width: min(90vw, 460px) !important;
-  }
-
-  /* ACT 06 — Cases: the 200%-wide track scrubs sideways on scroll, which on a
-     phone just clips panels and shows two half-cases at once. Convert it to a
-     normal vertical stack — one case per block, text over its screenshot. The
-     controller's translateX is inline (no !important) so `transform:none` wins. */
-  [data-experience] #act-cases { height: auto !important; }
-  [data-experience] #act-cases > div {
-    position: relative !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-  [data-experience] [data-case-track] {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    flex-direction: column !important;
-    transform: none !important;
-  }
-  [data-experience] [data-world] {
-    width: 100% !important;
-    height: auto !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    padding: 56px 22px !important;
-    gap: 20px !important;
-  }
-  [data-experience] [data-world] > * { max-width: 100% !important; }
-  [data-experience] [data-case-ghost] { display: none !important; }
-  /* In a vertical stack the section label + horizontal position dots are
-     redundant (each case is self-labelled) and overlap the first case. */
-  [data-experience] [data-case-heading],
-  [data-experience] [data-case-dots] { display: none !important; }
 }

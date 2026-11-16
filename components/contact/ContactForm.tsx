@@ -1,57 +1,84 @@
 'use client';
 
 import type {ReactNode} from 'react';
-import {useState} from 'react';
-import {useTranslations} from 'next-intl';
+import {useEffect, useRef, useState} from 'react';
+import {useLocale, useTranslations} from 'next-intl';
+import {budgetParams} from '@/lib/pricing/budget';
 import Magnetic from '@/components/motion/Magnetic';
+import {SITE} from '@/lib/site';
 import {validateContact, type ContactErrorKey} from '@/lib/validation';
 
-type Status = 'idle' | 'sending' | 'sent' | 'error';
+type Status = 'idle' | 'sending' | 'sent' | 'error' | 'rate';
+type FieldKey = 'name' | 'email' | 'details' | 'consent';
 
 const inputCls =
-  'w-full rounded-[10px] border border-border-card bg-surface px-4 py-[15px] font-display text-[15px] text-ink outline-none transition-colors placeholder:text-faint focus:[outline:2px_solid_var(--color-amber)]';
+  'w-full rounded-input border border-border-card bg-surface px-4 py-[15px] font-display text-[15px] text-ink outline-none transition-colors placeholder:text-faint focus:border-amber';
 
 function Field({
+  id,
   label,
   error,
   full,
   children,
 }: {
+  id: string;
   label: string;
   error?: string;
   full?: boolean;
   children: ReactNode;
 }) {
   return (
-    <label className={`flex flex-col gap-2.5 ${full ? 'nav:col-span-2' : ''}`}>
-      <span className="u-mono font-mono text-[11px] uppercase tracking-[0.18em] text-muted-2">
+    <div className={`flex flex-col gap-2.5 ${full ? 'nav:col-span-2' : ''}`}>
+      <label
+        htmlFor={id}
+        className="u-mono font-mono text-[11px] uppercase tracking-[0.18em] text-muted-2"
+      >
         {label}
-      </span>
+      </label>
       {children}
-      {error && <span className="text-xs text-[#e0715f]">{error}</span>}
-    </label>
+      {error && (
+        <span id={`${id}-err`} className="text-xs text-danger">
+          {error}
+        </span>
+      )}
+    </div>
   );
 }
 
 export default function ContactForm() {
   const t = useTranslations('contact');
-  const [errors, setErrors] = useState<
-    Partial<Record<'name' | 'email' | 'details', ContactErrorKey>>
-  >({});
+  const locale = useLocale();
+  const bp = budgetParams(locale);
+  const [errors, setErrors] = useState<Partial<Record<FieldKey, ContactErrorKey>>>({});
   const [status, setStatus] = useState<Status>('idle');
+  const [ref, setRef] = useState<string | null>(null);
+  // One idempotency key per form session; a retry after an error reuses it.
+  const key = useRef<string>('');
+  const startedAt = useRef<number>(0);
+  useEffect(() => {
+    key.current = crypto.randomUUID();
+    startedAt.current = Date.now();
+  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === 'sending') return;
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries()) as Record<
-      string,
-      string
-    >;
+    const fd = new FormData(form);
+    const val = (k: string) => String(fd.get(k) ?? '').trim();
+    const consent = fd.get('consent') === 'on';
 
-    const errs = validateContact(data);
+    const errs = validateContact({
+      name: val('name'),
+      email: val('email'),
+      details: val('details'),
+      consent,
+    });
     setErrors(errs);
-    if (Object.keys(errs).length > 0) {
+    const first = (Object.keys(errs) as FieldKey[])[0];
+    if (first) {
       setStatus('idle');
+      form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
       return;
     }
 
@@ -60,9 +87,30 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          source: 'contact',
+          idempotencyKey: key.current,
+          locale,
+          startedAtMs: startedAt.current,
+          website: val('website'),
+          contact: {
+            name: val('name'),
+            businessName: val('company') || undefined,
+            email: val('email'),
+            phone: val('phone') || undefined,
+            preferredContact: 'email',
+            consent: true,
+          },
+          answers: {message: val('details'), budget: val('budget') || undefined},
+        }),
       });
-      if (!res.ok) throw new Error('bad status');
+      if (res.status === 429) {
+        setStatus('rate');
+        return;
+      }
+      const json = (await res.json().catch(() => null)) as {ok?: boolean; leadRef?: string} | null;
+      if (!res.ok || !json?.ok) throw new Error('bad status');
+      setRef(json.leadRef ?? null);
       setStatus('sent');
       form.reset();
     } catch {
@@ -72,29 +120,63 @@ export default function ContactForm() {
 
   const budgetOptions = ['o1', 'o2', 'o3', 'o4', 'o5'] as const;
 
+  const err = (k: FieldKey) => (errors[k] ? t(errors[k]) : undefined);
+  const a11y = (k: FieldKey) => ({
+    'aria-invalid': errors[k] ? true : undefined,
+    'aria-describedby': errors[k] ? `c-${k}-err` : undefined,
+  });
+
   return (
     <form onSubmit={onSubmit} noValidate className="grid gap-7 nav:grid-cols-2">
-      <Field label={t('f_name')} error={errors.name && t(errors.name)}>
-        <input name="name" type="text" autoComplete="name" className={inputCls} />
+      <Field id="c-name" label={t('f_name')} error={err('name')}>
+        <input id="c-name" name="name" type="text" autoComplete="name" className={inputCls} {...a11y('name')} />
       </Field>
-      <Field label={t('f_email')} error={errors.email && t(errors.email)}>
-        <input name="email" type="email" autoComplete="email" className={inputCls} />
+      <Field id="c-email" label={t('f_email')} error={err('email')}>
+        <input id="c-email" name="email" type="email" autoComplete="email" dir="ltr" className={`${inputCls} text-start`} {...a11y('email')} />
       </Field>
-      <Field label={t('f_company')}>
-        <input name="company" type="text" autoComplete="organization" className={inputCls} />
+      <Field id="c-company" label={t('f_company')}>
+        <input id="c-company" name="company" type="text" autoComplete="organization" className={inputCls} />
       </Field>
-      <Field label={t('f_budget')}>
-        <select name="budget" className={inputCls}>
+      <Field id="c-phone" label={t('f_phone')}>
+        <input id="c-phone" name="phone" type="tel" autoComplete="tel" dir="ltr" className={`${inputCls} text-start`} />
+      </Field>
+      <Field id="c-budget" label={t('f_budget')} full>
+        <select id="c-budget" name="budget" className={inputCls}>
           {budgetOptions.map((o) => (
-            <option key={o} value={t(o)}>
-              {t(o)}
+            <option key={o} value={t(o, bp)}>
+              {t(o, bp)}
             </option>
           ))}
         </select>
       </Field>
-      <Field label={t('f_details')} error={errors.details && t(errors.details)} full>
-        <textarea name="details" rows={6} className={`${inputCls} resize-y`} />
+      <Field id="c-details" label={t('f_details')} error={err('details')} full>
+        <textarea id="c-details" name="details" rows={6} className={`${inputCls} resize-y`} {...a11y('details')} />
       </Field>
+
+      {/* Honeypot: real users never see or fill it. */}
+      <div aria-hidden className="absolute -start-[9999px] h-0 w-0 overflow-hidden">
+        <label>
+          Website
+          <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+
+      <div className="flex flex-col gap-2 nav:col-span-2">
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-ink-2">
+          <input
+            name="consent"
+            type="checkbox"
+            className="mt-1 h-5 w-5 shrink-0 accent-amber"
+            {...a11y('consent')}
+          />
+          <span>{t('f_consent')}</span>
+        </label>
+        {errors.consent && (
+          <span id="c-consent-err" className="text-xs text-danger">
+            {t(errors.consent)}
+          </span>
+        )}
+      </div>
 
       <div className="flex flex-wrap items-center gap-4 nav:col-span-2">
         <Magnetic>
@@ -106,16 +188,28 @@ export default function ContactForm() {
             {status === 'sending' ? t('sending') : t('f_send')}
           </button>
         </Magnetic>
-        {status === 'sent' && (
-          <p className="text-sm text-amber" role="status">
-            {t('send_success')}
-          </p>
-        )}
-        {status === 'error' && (
-          <p className="text-sm text-[#e0715f]" role="alert">
-            {t('send_error')}
-          </p>
-        )}
+        <div aria-live="polite" className="text-sm">
+          {status === 'sent' && (
+            <p className="text-amber">
+              {t('send_success')}
+              {ref && (
+                <>
+                  {' '}
+                  {t('sent_ref')}: <span dir="ltr" className="num font-mono">{ref}</span>
+                </>
+              )}
+            </p>
+          )}
+          {status === 'rate' && <p className="text-danger" role="alert">{t('err_rate')}</p>}
+          {status === 'error' && (
+            <p className="text-danger" role="alert">
+              {t('send_error')}{' '}
+              <a href={`mailto:${SITE.email}`} dir="ltr" className="underline">
+                {SITE.email}
+              </a>
+            </p>
+          )}
+        </div>
       </div>
     </form>
   );

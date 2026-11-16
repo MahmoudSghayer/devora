@@ -3,9 +3,11 @@ import {notFound} from 'next/navigation';
 import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import {setRequestLocale, getMessages} from 'next-intl/server';
 import {routing, type Locale} from '@/i18n/routing';
-import {spaceGrotesk, spaceMono, arabic} from '@/lib/fonts';
+import {spaceGrotesk, spaceMono} from '@/lib/fonts';
 import ChatWidget from '@/components/chat/ChatWidgetLazy';
 import StructuredData from '@/components/seo/StructuredData';
+import {pickMessages} from '@/lib/i18n/pickMessages';
+import {preload} from 'react-dom';
 import {Analytics} from '@vercel/analytics/next';
 
 export function generateStaticParams() {
@@ -24,14 +26,20 @@ export default async function LocaleLayout({
 
   // Enable static rendering for this locale.
   setRequestLocale(locale);
-  const messages = await getMessages();
+  // Only the namespaces read by always-mounted client islands: chrome (common)
+  // and the chat widget (chat). Pages scope the rest via <ScopedMessages>.
+  const messages = pickMessages(await getMessages(), ['common', 'chat']);
+  // Arabic is the default locale: preload Cairo there only (EN never fetches it).
+  if (locale === 'ar') {
+    preload('/fonts/cairo-arabic.9ff27b8a.woff2', {as: 'font', type: 'font/woff2', crossOrigin: 'anonymous'});
+  }
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
     <html
       lang={locale}
       dir={dir}
-      className={`${spaceGrotesk.variable} ${spaceMono.variable} ${arabic.variable}`}
+      className={`${spaceGrotesk.variable} ${spaceMono.variable}`}
     >
       <body className="flex min-h-dvh flex-col bg-bg text-ink font-display antialiased">
         <StructuredData locale={locale as Locale} />

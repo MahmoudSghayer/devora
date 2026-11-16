@@ -1,0 +1,37 @@
+{
+  "note": "Homepage FAQ was removed from the homepage (owner decision). Objection Q&A preserved here for the /faq page. Prices use ICU params from pricingParams(locale).",
+  "en": {
+    "label": "FAQ",
+    "title": "The questions people ask before they start.",
+    "link": "All questions",
+    "q1": "How accurate is the estimate?",
+    "a1": "It is indicative, not a quotation. The calculators give you a realistic range from the scope you describe, and a detailed assessment follows before any price is agreed in writing.",
+    "q2": "Will automation replace my staff?",
+    "a2": "The aim is to take repetitive work off people, such as copying data, chasing replies and sorting requests, so your team has time for work that needs judgement and a human touch. We will tell you plainly when a task is better left to a person.",
+    "q3": "Who owns the code and the site?",
+    "a3": "You do. We hand over clean, documented, editable code and the accounts it runs on, with no lock-in.",
+    "q4": "How long does a project take?",
+    "a4": "A focused landing page can ship in about two weeks. A full brand-and-site build is typically 4–8 weeks, depending on scope and how quickly feedback comes back. Automation and custom software are scoped after discovery.",
+    "q5": "What does it cost, and are there hidden fees?",
+    "a5": "A landing page starts around {launch_from} to build, a full business site from {studio_from} and a larger custom or e-commerce build from {growth_from}. The Care Plan ({care_min}–{care_max} a month) covers hosting, updates and support. These are indicative starting points, and the quote you receive states exactly what is included.",
+    "q6": "What if I need changes after launch?",
+    "a6": "Every build includes a support window, and the Care Plan covers ongoing updates, fixes and improvements. You can also edit content yourself, because we set up a CMS and train your team."
+  },
+  "ar": {
+    "label": "الأسئلة الشائعة",
+    "title": "الأسئلة التي يطرحها الناس قبل أن يبدؤوا.",
+    "link": "كل الأسئلة",
+    "q1": "ما مدى دقة التقدير؟",
+    "a1": "التقدير استرشادي وليس عرض سعر. تعطيك الحاسبات نطاقًا واقعيًا بحسب ما تصفه من نطاق العمل، ثم يأتي تقييم مفصّل قبل الاتفاق كتابةً على أي سعر.",
+    "q2": "هل ستحلّ الأتمتة محلّ موظفيّ؟",
+    "a2": "الهدف رفع الأعمال المتكررة عن كاهل فريقك، كنسخ البيانات ومتابعة الردود وفرز الطلبات، ليتفرّغ لأعمال تحتاج إلى حُكم ولمسة بشرية. وسنخبرك بصراحة حين يكون الأفضل أن يتولّى شخصٌ المهمة.",
+    "q3": "من يملك الشيفرة والموقع؟",
+    "a3": "أنت. نسلّمك شيفرة نظيفة وموثّقة وقابلة للتعديل مع الحسابات التي تعمل عليها، بلا أي قيود.",
+    "q4": "كم يستغرق المشروع؟",
+    "a4": "يمكن إطلاق صفحة هبوط مركّزة في نحو أسبوعين. أما بناء الهوية والموقع كاملًا فيستغرق عادةً من 4 إلى 8 أسابيع بحسب النطاق وسرعة وصول الملاحظات. وتُحدَّد مدة الأتمتة والبرمجيات المخصّصة بعد مرحلة الاستكشاف.",
+    "q5": "كم التكلفة، وهل هناك رسوم مخفية؟",
+    "a5": "تبدأ صفحة الهبوط من نحو {launch_from}، والموقع التجاري الكامل من {studio_from}، والمشروع المخصّص أو المتجر الأكبر من {growth_from}. وتغطّي خطة العناية ({care_min} إلى {care_max} شهريًا) الاستضافة والتحديثات والدعم. هذه نقاط بداية استرشادية، وعرض السعر الذي تتلقاه يحدّد بدقة ما يشمله.",
+    "q6": "ماذا لو احتجت إلى تعديلات بعد الإطلاق؟",
+    "a6": "يشمل كل مشروع فترة دعم، وتغطّي خطة العناية التحديثات والإصلاحات والتحسينات المستمرة. ويمكنك كذلك تعديل المحتوى بنفسك، فنحن نجهّز نظام إدارة محتوى وندرّب فريقك."
+  }
+}

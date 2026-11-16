@@ -1,13 +1,9 @@
 import {NextResponse} from 'next/server';
-import {z} from 'zod';
 import {getAdminUser} from '@/lib/admin/auth';
 import {updateLeadStatus} from '@/lib/admin/queries';
+import {leadIdSchema, leadStatusSchema} from '@/lib/validation';
 
 export const runtime = 'nodejs';
-
-const schema = z.object({
-  status: z.enum(['new', 'qualified', 'contacted', 'won', 'lost']),
-});
 
 export async function PATCH(
   request: Request,
@@ -18,10 +14,21 @@ export async function PATCH(
     return NextResponse.json({ok: false, error: 'unauthorized'}, {status: 401});
   }
   const {id} = await params;
-  const parsed = schema.safeParse(await request.json().catch(() => null));
+  if (!leadIdSchema.safeParse(id).success) {
+    return NextResponse.json({ok: false, error: 'invalid_id'}, {status: 400});
+  }
+  const parsed = leadStatusSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ok: false, error: 'validation'}, {status: 422});
   }
-  await updateLeadStatus(id, parsed.data.status);
+  try {
+    const found = await updateLeadStatus(id, parsed.data.status);
+    if (!found) {
+      return NextResponse.json({ok: false, error: 'not_found'}, {status: 404});
+    }
+  } catch (err) {
+    console.error('[admin/leads] status update failed:', err);
+    return NextResponse.json({ok: false, error: 'update_failed'}, {status: 500});
+  }
   return NextResponse.json({ok: true});
 }

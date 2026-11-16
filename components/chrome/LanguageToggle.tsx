@@ -16,6 +16,7 @@ export default function LanguageToggle() {
     <button
       type="button"
       dir="ltr"
+      lang={other}
       onClick={() => router.replace(pathname, {locale: other})}
       className="rounded-pill border border-border-ghost px-4 py-2 font-mono text-xs text-ink transition-colors hover:border-amber hover:text-amber"
     >

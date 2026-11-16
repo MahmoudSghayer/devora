@@ -1,5 +1,7 @@
 # Devora — Competitor-Informed Strategy & Content
 
+> **Historical (pre-transformation).** The site has since moved to three pillars (Websites · Automation & AI agents · Custom software), ₪ pricing without fixed packages, and three guided calculators. Current direction: see `docs/transformation/REPORT.md`, `docs/design-system.md` and `docs/pricing-engine.md`. The five-discipline model and USD tiers described below are retired.
+
 A senior-agency-style analysis of the competitor **web.barq.agency**, translated into a stronger, original content and site-architecture strategy for **devora.design** — then wired into the live site.
 
 **This was not a copy job.** barq is mined for *structural* ideas (subscription model, service breadth, pricing transparency, industry targeting); every idea is re-expressed at a higher altitude for Devora's premium, bilingual (EN/AR) positioning. No competitor text is reused, and no metrics, testimonials or clients are invented.

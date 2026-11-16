@@ -36,7 +36,7 @@ if (!url || !key) {
 
 const supabase = createClient(url, key, {auth: {persistSession: false}});
 
-const SKIP_NS = new Set(['chat']);
+const SKIP_NS = new Set(['chat', 'estimator', 'roi', 'discuss']);
 const GLYPH = /^[→←✦·—]+$/;
 
 function flattenStrings(value, out = []) {

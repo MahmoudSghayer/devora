@@ -161,13 +161,12 @@ export async function insertLead(input: {
   phone?: string;
   company?: string;
   request: string;
-  recommendedPackage?: string;
   aiSummary?: string;
   locale: ChatLocale;
 }): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
   const supabase = createSupabaseServiceClient();
-  const {data} = await supabase
+  const {data, error} = await supabase
     .from('leads')
     .insert({
       conversation_id: input.conversationId ?? null,
@@ -176,20 +175,25 @@ export async function insertLead(input: {
       phone: input.phone ?? null,
       company: input.company ?? null,
       request: input.request,
-      recommended_package: input.recommendedPackage ?? null,
       ai_summary: input.aiSummary ?? null,
       locale: input.locale,
     })
     .select('id')
     .single();
+  if (error || !data) {
+    // Surface — callers decide whether the lead is still deliverable by email.
+    console.error('[leads] insertLead failed:', error);
+    throw new Error(`insert_lead_failed: ${error?.message ?? 'no row returned'}`);
+  }
   // Attach the contact details to the conversation for the admin view.
   if (input.conversationId) {
-    await supabase
+    const {error: convErr} = await supabase
       .from('conversations')
       .update({visitor_name: input.name, visitor_email: input.email})
       .eq('id', input.conversationId);
+    if (convErr) console.error('[leads] conversation update failed:', convErr);
   }
-  return data?.id ?? null;
+  return data.id as string;
 }
 
 export async function insertSupportRequest(input: {

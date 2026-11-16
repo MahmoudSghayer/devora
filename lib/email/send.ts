@@ -35,7 +35,13 @@ export async function sendMail(opts: {
   const transporter = nodemailer.createTransport({
     host: process.env.ZOHO_SMTP_HOST || 'smtp.zoho.com',
     port,
-    secure: port === 465, // 465 = implicit SSL/TLS; 587 = STARTTLS
+    // 465 = implicit SSL/TLS; 587 = STARTTLS. ZOHO_SMTP_SECURE=false|true
+    // overrides (used by the local SMTP integration test on a plain port).
+    secure:
+      process.env.ZOHO_SMTP_SECURE !== undefined &&
+      process.env.ZOHO_SMTP_SECURE !== ''
+        ? process.env.ZOHO_SMTP_SECURE === 'true'
+        : port === 465,
     auth: {user, pass},
     // Fail fast on a serverless function: without these, an unreachable or slow
     // Zoho SMTP hangs until Vercel kills the function (surfaces as a platform 502

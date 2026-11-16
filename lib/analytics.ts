@@ -9,7 +9,12 @@ export type AnalyticsType =
   | 'released'
   | 'out_of_scope'
   | 'language_detected'
-  | 'cache_usage';
+  | 'cache_usage'
+  | 'calculator_started'
+  | 'calculator_step'
+  | 'estimate_submitted'
+  | 'roi_submitted'
+  | 'discuss_submitted';
 
 // Fire-and-forget analytics. Never throws, never blocks the response path, and
 // no-ops when Supabase isn't configured.

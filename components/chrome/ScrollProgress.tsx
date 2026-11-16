@@ -11,7 +11,7 @@ export default function ScrollProgress() {
   return (
     <motion.div
       style={{width}}
-      className="fixed start-0 top-0 z-[100] h-[3px] bg-amber"
+      className="fixed start-0 top-0 z-[100] h-[3px] bg-amber print:hidden"
     />
   );
 }

@@ -6,7 +6,12 @@ import {createHash} from 'crypto';
 // Upstash env isn't set, every check succeeds — so local dev / previews aren't
 // blocked. Limits are deliberately generous; tighten in production if needed.
 
-type LimiterName = 'chat' | 'lead' | 'conversation';
+type LimiterName =
+  | 'chat'
+  | 'lead'
+  | 'conversation'
+  | 'calculator'
+  | 'calculator_email';
 
 let redis: Redis | null | undefined;
 function getRedis(): Redis | null {
@@ -14,6 +19,9 @@ function getRedis(): Redis | null {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   redis = url && token ? new Redis({url, token}) : null;
+  if (!redis && process.env.NODE_ENV === 'production') {
+    console.warn('[ratelimit] UPSTASH_REDIS_REST_URL/TOKEN not set in production — rate limiting is DISABLED (fails open).');
+  }
   return redis;
 }
 
@@ -27,7 +35,11 @@ function getLimiter(name: LimiterName): Ratelimit | null {
         ? Ratelimit.slidingWindow(20, '60 s')
         : name === 'lead'
           ? Ratelimit.slidingWindow(5, '3600 s')
-          : Ratelimit.slidingWindow(15, '60 s');
+          : name === 'calculator'
+            ? Ratelimit.slidingWindow(5, '3600 s') // per IP
+            : name === 'calculator_email'
+              ? Ratelimit.slidingWindow(3, '3600 s') // per email address
+              : Ratelimit.slidingWindow(15, '60 s');
     limiters.set(name, new Ratelimit({redis: r, limiter, prefix: `rl:${name}`}));
   }
   return limiters.get(name)!;
@@ -36,12 +48,17 @@ function getLimiter(name: LimiterName): Ratelimit | null {
 export async function rateLimit(
   name: LimiterName,
   identifier: string
-): Promise<{success: boolean}> {
+): Promise<{success: boolean; retryAfterSec?: number}> {
   const limiter = getLimiter(name);
   if (!limiter) return {success: true};
   try {
-    const {success} = await limiter.limit(identifier);
-    return {success};
+    const {success, reset} = await limiter.limit(identifier);
+    return {
+      success,
+      retryAfterSec: success
+        ? undefined
+        : Math.max(1, Math.ceil((reset - Date.now()) / 1000)),
+    };
   } catch {
     return {success: true}; // fail open — never block on limiter errors
   }

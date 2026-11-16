@@ -1,6 +1,7 @@
 import {useTranslations} from 'next-intl';
 import Container from '@/components/ui/Container';
 import Reveal from '@/components/motion/Reveal';
+import Spotlight from '@/components/motion/Spotlight';
 
 const STEPS = [
   {n: '01', t: 's1_t', d: 's1_d', out: 's1_out'},
@@ -10,47 +11,57 @@ const STEPS = [
   {n: '05', t: 's5_t', d: 's5_d', out: 's5_out'},
 ] as const;
 
-// The five moves in depth. Each step shows what happens + what you walk away
-// with. First step accented amber, like the Services process strip.
+// The five steps in depth, as a vertical timeline: a hairline rail with a node
+// per step, each step a glass card with what happens and what you walk away with.
 export default function ProcessDetail() {
   const p = useTranslations('process');
 
   return (
-    <section>
+    <section aria-label={p('pr_title')} className="py-section">
       <Container>
-        {STEPS.map((step, i) => (
-          <Reveal
-            key={step.n}
-            className="grid gap-8 border-b border-border-sub py-16 nav:grid-cols-[5fr_7fr]"
-          >
-            <div className="flex items-baseline gap-6">
+        <ol className="relative flex flex-col gap-6 ps-10 nav:ps-20">
+          <span
+            aria-hidden
+            className="absolute inset-y-2 start-[11px] w-px bg-[linear-gradient(180deg,var(--color-amber),var(--color-border-card)_40%,transparent)] nav:start-[27px]"
+          />
+          {STEPS.map((step, i) => (
+            <li key={step.n} className="relative">
               <span
-                className={`font-mono text-sm ${
-                  i === 0 ? 'text-amber' : 'text-faint'
+                aria-hidden
+                className={`absolute -start-10 top-8 flex h-6 w-6 items-center justify-center rounded-full border bg-bg nav:-start-20 nav:h-14 nav:w-14 ${
+                  i === 0 ? 'border-amber' : 'border-border-chip'
                 }`}
               >
-                {step.n}
-              </span>
-              <h2
-                className="u-track font-display font-semibold tracking-[-0.02em]"
-                style={{fontSize: 'clamp(28px, 3vw, 40px)'}}
-              >
-                {p(step.t)}
-              </h2>
-            </div>
-            <div>
-              <p className="max-w-[620px] text-[17px] leading-[1.65] text-muted">
-                {p(step.d)}
-              </p>
-              <div className="mt-6 inline-flex items-center gap-3 rounded-pill border border-border-chip px-4 py-2">
-                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
-                  {p('out_label')}
+                <span
+                  className={`num font-mono text-[10px] nav:text-sm ${
+                    i === 0 ? 'text-amber' : 'text-muted-2'
+                  }`}
+                >
+                  <span className="max-nav:hidden">{step.n}</span>
+                  <span className="nav:hidden">{i + 1}</span>
                 </span>
-                <span className="text-sm text-ink-2">{p(step.out)}</span>
-              </div>
-            </div>
-          </Reveal>
-        ))}
+              </span>
+              <Reveal>
+                <Spotlight className="glass grid gap-6 rounded-panel p-6 nav:grid-cols-[4fr_7fr] nav:gap-12 nav:p-10">
+                  <h2 className="u-track font-display text-h3 font-semibold leading-tight tracking-[-0.02em]">
+                    {p(step.t)}
+                  </h2>
+                  <div>
+                    <p className="max-w-[620px] text-[17px] leading-[1.65] text-muted">
+                      {p(step.d)}
+                    </p>
+                    <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-card border border-border-chip px-4 py-3">
+                      <span className="u-mono font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
+                        {p('out_label')}
+                      </span>
+                      <span className="text-sm text-ink-2">{p(step.out)}</span>
+                    </p>
+                  </div>
+                </Spotlight>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </Container>
     </section>
   );

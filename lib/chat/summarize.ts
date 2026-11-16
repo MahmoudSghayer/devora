@@ -19,7 +19,7 @@ export async function summarize(input: {
 
     const system =
       input.kind === 'lead'
-        ? "A visitor to devora (a full-stack web studio) submitted a lead through the site assistant. Write a concise 2–3 sentence internal summary for the team: what they want, any useful context, and which build package fits best and why — Launch ($1,650 + $200/mo), Studio ($2,650 + $250/mo) or Growth ($5,000 + $300/mo). Be factual; never invent details. Respond in English regardless of the conversation language."
+        ? `A visitor to devora (a full-stack web studio) submitted a lead through the site assistant. Write a concise 2–3 sentence internal summary for the team: what they want and any useful context. Do not mention packages or tiers. Be factual; never invent details. Respond in English regardless of the conversation language.`
         : 'A visitor submitted a support request through the site assistant. Write a concise 2–3 sentence internal summary for the team: the problem and any relevant context. Be factual; never invent details. Respond in English regardless of the conversation language.';
 
     const res = await anthropic.messages.create({

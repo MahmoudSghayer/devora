@@ -18,7 +18,7 @@ const COLORS = [
 
 // `className` lets a caller re-layer the canvas. The marketing layout uses the
 // default (behind transparent page content); the homepage mobile-lite hero
-// passes a higher z so the stars sit above the experience root's opaque base.
+// passes a higher z so the stars sit above.
 export default function StarField({className}: {className?: string} = {}) {
   const ref = useRef<HTMLCanvasElement>(null);
 

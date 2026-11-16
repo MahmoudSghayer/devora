@@ -8,7 +8,7 @@ export default function Logo({className = ''}: {className?: string}) {
     <Link
       href="/"
       dir="ltr"
-      aria-label="devora — home"
+      // No aria-label: the name comes from the visible text (WCAG 2.5.3 label in name).
       className={`inline-flex items-center gap-[10px] ${className}`}
     >
       <DevoraMark size={26} />

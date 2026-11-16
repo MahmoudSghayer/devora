@@ -8,13 +8,14 @@ export default function Story() {
   const a = useTranslations('about');
 
   return (
-    <section className="border-b border-border">
-      <Container className="grid gap-10 py-24 nav:grid-cols-[5fr_7fr] nav:gap-16">
+    <section aria-labelledby="about-story-title" className="border-b border-border py-section">
+      <Container className="grid gap-10 nav:grid-cols-[5fr_7fr] nav:gap-16">
         <Reveal>
           <p className="u-mono font-mono text-xs uppercase tracking-[0.22em] text-amber">
+            <span aria-hidden>{'// '}</span>
             {a('story_label')}
           </p>
-          <h2 className="u-track mt-4 font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">
+          <h2 id="about-story-title" className="u-track mt-4 font-display text-h2 font-semibold leading-[1.05] tracking-[-0.02em]">
             {a('story_title')}
           </h2>
         </Reveal>

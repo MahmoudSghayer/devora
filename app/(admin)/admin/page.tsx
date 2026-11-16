@@ -1,3 +1,4 @@
+import {LEAD_SOURCE_LABEL, type LeadSource} from '@/lib/leads/types';
 import {redirect} from 'next/navigation';
 import {getAdminUser} from '@/lib/admin/auth';
 import {dashboardStats, getAnalytics} from '@/lib/admin/queries';
@@ -46,6 +47,18 @@ export default async function AdminOverview() {
             <p className="mt-1 text-[13px] text-muted">{c.label}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-4 rounded-[14px] border border-border-sub bg-surface p-5">
+        <h2 className="mb-3 text-[15px] font-semibold">Leads by source</h2>
+        <ul className="flex flex-wrap gap-x-8 gap-y-2 text-[13px]">
+          {Object.entries(stats.leadsBySource).map(([src, n]) => (
+            <li key={src} className="flex items-baseline gap-2">
+              <span className="text-[20px] font-bold text-ink">{n}</span>
+              <span className="text-muted">{LEAD_SOURCE_LABEL[src as LeadSource] ?? src.replace(/_/g, ' ')}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">

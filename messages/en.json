@@ -49,7 +49,7 @@
     "cta_title": "Got a project?",
     "cta_sub": "Tell us where you're headed — we'll take it all the way to launch.",
     "cta_btn": "Tell us about it",
-    "footer_tag": "Full-stack web studio. From first sketch to live site — and everything after.",
+    "footer_tag": "Websites, automation & custom software that grow your business.",
     "footer_pages": "Pages",
     "footer_more": "Studio",
     "footer_social": "Social",
@@ -58,75 +58,25 @@
     "footer_sig": "devora — dev + aura",
     "nf_title": "Page not found.",
     "marquee": "STRATEGY ✦ BRAND ✦ DESIGN ✦ CODE ✦ AI ✦ LAUNCH ✦ GROWTH ✦ SUPPORT ✦",
-    "svc": {
-      "s1_t": "Strategy & brand",
-      "s1_d": "Positioning, naming, identity systems and content that says the right thing.",
-      "s2_t": "Design & UX",
-      "s2_d": "Interfaces people enjoy using — from first prototype to design system.",
-      "s3_t": "Full-stack build",
-      "s3_d": "Fast, solid sites: CMS, e-commerce, integrations and testing.",
-      "s4_t": "Launch & growth",
-      "s4_d": "SEO, analytics, campaigns and support that keeps it growing.",
-      "s5_t": "AI & automation",
-      "s5_d": "Chatbots, workflow automation and custom AI that do the busywork for you."
-    }
-  },
-  "home": {
-    "hero_label": "devora · dev + aura · full-stack web studio",
-    "hero_h1a": "We design, build & launch websites.",
-    "hero_h1b": "End to end.",
-    "hero_sub": "Strategy, brand, design, code and growth — one senior team from first call to launch day. Dev meets aura: websites with a presence you can feel.",
-    "hero_cta2": "See the work",
-    "svc_label": "What we do",
-    "svc_title": "Everything a website needs. Under one roof.",
-    "svc_link": "All services",
-    "proc_label": "How we work",
-    "proc_title": "A clear path from brief to launch.",
-    "proc_sub": "Five moves, one team, no lost handoffs — you always know what's happening and what comes next.",
-    "proc_link": "See the process",
-    "work_label": "Selected work",
-    "work_link": "All work",
-    "w1_d": "An AI-assisted gallery platform for photographers.",
-    "w1_tags": "Product · SaaS · Build",
-    "w2_d": "An Arabic-first platform for articles and opinions.",
-    "w2_tags": "Strategy · Editorial · Build",
-    "w3_d": "A custom store for paintings, tees and hoodies.",
-    "w3_tags": "Brand · E-commerce · Build",
-    "w4_d": "A portfolio built so the reel plays first.",
-    "w4_tags": "Design · Build",
-    "ind_label": "Who we build for",
-    "ind_title": "Made for teams that live by their website.",
-    "ind_sub": "Studios, shops and founders who need their site to do real work — not just look the part.",
-    "ind_link": "Explore industries",
-    "care_label": "Beyond launch",
-    "care_title": "We don't disappear at launch.",
-    "care_sub": "A Care Plan keeps your site fast, current and growing — updates, improvements and a team on call, from $200/mo.",
-    "care_p1": "Ongoing updates & fixes",
-    "care_p2": "Performance & SEO care",
-    "care_p3": "A senior team on call",
-    "care_link": "See pricing",
-    "test_label": "Kind words",
-    "t1_q": "They handled everything — brand, site, launch. We just watched it happen fast.",
-    "t1_a": "Founder — Zawiya Studio",
-    "t2_q": "One team instead of three vendors. Best decision we made this year.",
-    "t2_a": "Team — Aldarb",
-    "team_label": "The crew",
-    "team_title": "One team, every discipline.",
-    "team_sub": "Engineers, designers and marketers working the same brief — no lost handoffs, no middlemen.",
-    "tc1": "Full-stack engineering",
-    "tc2": "Product design",
-    "tc3": "Brand & identity",
-    "tc4": "Marketing & growth",
-    "tc5": "Content & copy",
-    "tc6": "SEO & analytics",
-    "faq_label": "Questions",
-    "faq_title": "Good questions, answered.",
-    "faq_link": "All FAQs"
+    "nav_estimate": "Cost estimator",
+    "nav_roi": "Automation ROI",
+    "menu_label": "Main menu",
+    "menu_open": "Open menu",
+    "menu_close": "Close menu",
+    "footer_tools": "Tools",
+    "footer_services": "Services",
+    "nav_pillar_web": "Websites",
+    "nav_pillar_auto": "Automation & AI agents",
+    "nav_pillar_soft": "Custom software",
+    "skip": "Skip to content",
+    "nav_aria": "Primary",
+    "footer_nav_aria": "Footer",
+    "home_title": "devora — Websites, automation & custom software that grow your business"
   },
   "work": {
     "wk_label": "Work",
     "wk_title": "Real sites, real launches.",
-    "wk_sub": "Every project delivered whole — from strategy to well past launch.",
+    "wk_sub": "Four live products, each built end to end.",
     "visit": "Visit site",
     "view_case": "View case study",
     "c1_tags": "Product design · SaaS · Development",
@@ -144,106 +94,37 @@
     "detail_outcome": "The outcome",
     "detail_disc": "Industry",
     "detail_back": "All work",
-    "detail_next": "See more work"
+    "detail_next": "See more work",
+    "next_sub": "Tell us what you need: a website, an automation or a custom system."
   },
   "services": {
     "sv_label": "Services",
-    "sv_title": "Five disciplines. One pipeline.",
-    "sv_sub": "Hire one team for the whole journey, or plug us in where you need us.",
-    "sb1_d": "Before pixels, clarity: who you are, who you're talking to, and why they should pick you.",
-    "d11": "Positioning & messaging",
-    "d12": "Naming",
-    "d13": "Visual identity",
-    "d14": "Content & copywriting",
-    "sb2_d": "Design that serves the goal: clear flows, beautiful interfaces, and a system that's easy to grow.",
-    "d21": "UX research & flows",
-    "d22": "UI design",
-    "d23": "Prototyping",
-    "d24": "Design systems",
-    "sb3_d": "Clean code and high performance — from landing pages to stores and custom platforms.",
-    "d31": "Full-stack development",
-    "d32": "CMS & e-commerce",
-    "d33": "Integrations & APIs",
-    "d34": "QA & performance",
-    "sb4_d": "Launch is a start, not an end: we measure, improve, and keep your presence growing.",
-    "d41": "SEO & analytics",
-    "d42": "Campaigns & ads",
-    "d43": "Email & content marketing",
-    "d44": "Care & support",
-    "sb5_d": "Software that works while you sleep: assistants, automations and AI wired into the tools you already use.",
-    "d51": "AI chatbots & assistants",
-    "d52": "Workflow automation",
-    "d53": "Integrations & data",
-    "d54": "Custom AI tools",
-    "pr_label": "How we work",
-    "pr_title": "From brief to live in five moves.",
-    "p1_t": "Discover",
-    "p1_d": "Goals, audience, scope. We ask a lot of questions.",
-    "p2_t": "Define",
-    "p2_d": "Strategy, sitemap, timeline — one plan everyone signs.",
-    "p3_t": "Design",
-    "p3_d": "From wireframes to a pixel-perfect system, reviewed together.",
-    "p4_t": "Build",
-    "p4_d": "Clean code, real content, tested on everything.",
-    "p5_t": "Launch & grow",
-    "p5_d": "Go live, measure, improve — we stick around.",
+    "sv_title": "Websites, automation and software. One team.",
+    "sv_sub": "Pick one pillar or combine them. Each starts with a conversation and ends with something live that you own.",
+    "nav_aria": "Service areas",
+    "help_label": "Not sure where to start?",
+    "help_title": "Which pillar is right for you?",
+    "help_web_q": "I want more enquiries, bookings or sales online.",
+    "help_auto_q": "My team loses hours to repetitive tasks and messages.",
+    "help_soft_q": "Spreadsheets and off-the-shelf tools no longer fit how we work.",
+    "help_go": "Jump to",
+    "help_foot": "Still unsure? Tell us what is slowing you down and we will point you to the right starting point.",
+    "help_link": "Talk to us",
+    "process_link": "See the full process",
     "em_label": "Ways to work with us",
-    "em_title": "Hire the whole team, or just the part you're missing.",
+    "em_title": "Three ways to work together.",
     "em1_n": "Project",
-    "em1_d": "A fixed-scope build — brand, site or both — delivered end to end.",
+    "em1_d": "A fixed-scope build, whether a website, an automation or a custom system, delivered end to end.",
     "em2_n": "Care Plan",
-    "em2_d": "An ongoing monthly partnership that keeps your site growing after launch.",
+    "em2_d": "An ongoing monthly plan ({care_min}–{care_max}) covering hosting, updates, fixes and growth after launch.",
     "em3_n": "Embedded team",
-    "em3_d": "Design and engineering that plug into your team for as long as you need.",
+    "em3_d": "Design and engineering that plug into your team for as long as you need them.",
     "em_link": "Compare & see pricing"
   },
   "pricing": {
     "p_label": "Pricing",
-    "p_title": "Transparent from the first email.",
-    "p_sub": "Clear ways to start, honest numbers, and no surprise invoices. Every engagement is scoped to what you actually need.",
-    "models_label": "Ways to start",
-    "note": "A one-time build, then a simple monthly for hosting, updates and support. Indicative — every project is quoted to fit.",
-    "btn": "Get a quote",
-    "btn_care": "Start a conversation",
-    "m1_n": "Launch",
-    "m1_d": "A sharp landing page or small site, out the door fast.",
-    "m1_p": "from $1,650",
-    "m1_mo": "then $200/mo",
-    "m1_f1": "Up to 5 custom pages",
-    "m1_f2": "Mobile-first responsive design",
-    "m1_f3": "Contact form + WhatsApp",
-    "m1_f4": "Google Business setup",
-    "m1_f5": "Basic SEO + analytics",
-    "m1_f6": "Editable CMS + blog",
-    "m1_f7": "Hosting, domain & SSL",
-    "m1_f8": "Live in ~2 weeks",
-    "m2_tag": "Most requested",
-    "m2_n": "Studio",
-    "m2_d": "The full site: brand, design, build and launch.",
-    "m2_p": "from $2,650",
-    "m2_mo": "then $250/mo",
-    "m2_f1": "Everything in Launch",
-    "m2_f2": "Up to 12 pages",
-    "m2_f3": "Full brand identity",
-    "m2_f4": "Custom design & build",
-    "m2_f5": "E-commerce ready",
-    "m2_f6": "Copywriting for key pages",
-    "m2_f7": "Advanced SEO foundations",
-    "m2_f8": "Social media graphics kit",
-    "m2_f9": "Monthly performance report",
-    "m3_tag": "Complete",
-    "m3_n": "Growth",
-    "m3_d": "A larger, custom site — e-commerce, bookings or integrations, built to scale.",
-    "m3_p": "from $5,000",
-    "m3_mo": "then $300/mo",
-    "m3_f1": "Everything in Studio",
-    "m3_f2": "Unlimited pages",
-    "m3_f3": "Full store or booking system",
-    "m3_f4": "Custom integrations & APIs",
-    "m3_f5": "AI chatbot & automation",
-    "m3_f6": "Bilingual site (EN/AR)",
-    "m3_f7": "Advanced analytics & CRO",
-    "m3_f8": "Dedicated support & strategy calls",
+    "p_title": "How pricing works.",
+    "p_sub": "A one-time build and an optional monthly plan. Every figure is indicative and every engagement is scoped to what you actually need.",
     "inc_label": "Every engagement includes",
     "inc_title": "The essentials, built in.",
     "inc_1": "Strategy & kickoff workshop",
@@ -253,22 +134,41 @@
     "inc_5": "Performance & SEO foundations",
     "inc_6": "Bilingual-ready (EN/AR, RTL)",
     "faq_label": "Pricing questions",
-    "faq_title": "Before you ask."
+    "faq_title": "Before you ask.",
+    "custom_label": "Custom needs?",
+    "custom_title": "Run the estimator, or tell us what you need.",
+    "custom_sub": "Websites, automation and custom software are each scoped differently, so start with the tool that fits. All figures are indicative, not a quotation.",
+    "custom_web_d": "Pick features and get an indicative range for your website in a couple of minutes.",
+    "custom_auto_d": "Enter your repetitive tasks and see the time and money automation could give back.",
+    "custom_soft_d": "Describe the system you need and we will scope it with you.",
+    "how_label": "The model",
+    "how_title": "One build. Optional care.",
+    "how_sub": "No price list to decode: we scope the work with you, state exactly what is included, and add no hidden fees.",
+    "build_t": "One-time build",
+    "build_d": "A fixed price for the website, automation or system you need, based on its features, pages and integrations. The estimator gives you an indicative range first; a detailed assessment confirms it before anything is agreed in writing.",
+    "care_t": "Care Plan (optional)",
+    "care_d": "A monthly plan, indicatively {care_min}–{care_max}, covering hosting, updates, security, fixes and support after launch. Skip it and you still own everything we built.",
+    "how_note": "All figures are indicative, not a quotation.",
+    "paths_label": "Start here",
+    "paths_title": "Choose how you want to begin.",
+    "paths_sub": "Three guided paths, each ending with a clear next step. Pick the one that fits.",
+    "plain_label": "Prefer to write?",
+    "plain_title": "Send us a message."
   },
   "about": {
     "a_label": "About",
     "a_title": "One team with a bias for shipping.",
-    "a_sub": "devora is a compact, senior studio — strategy, design and engineering under one roof, building websites with a presence you can feel.",
+    "a_sub": "devora is a small studio that builds websites, automation and custom software for businesses, planned and built by the same team.",
     "story_label": "Why devora",
     "story_title": "Dev meets aura.",
     "story_p1": "The name is dev + aura: the rigor of engineering, and the presence great design leaves behind. Most sites get one or the other — a pretty template no one maintains, or solid code that feels lifeless. We refuse the trade-off.",
-    "story_p2": "So we kept the team small and senior, and put every discipline on the same brief. Strategy talks to design, design talks to code, and nothing gets lost in a handoff. The result looks considered and runs fast — because the same people made both true.",
+    "story_p2": "So we keep the team small and put planning, design and engineering on the same brief. Nothing gets lost in a handoff, and what we build, whether a site, an automation or a system, looks considered and runs fast, because the same people made both true.",
     "diff_label": "How we're different",
     "diff_title": "No middlemen. No lost handoffs. No filler.",
     "diff_1_t": "One team, end to end",
     "diff_1_d": "The people who plan it are the people who build it.",
-    "diff_2_t": "Senior by default",
-    "diff_2_d": "You work with the makers, not a rotating cast of juniors.",
+    "diff_2_t": "Direct access",
+    "diff_2_d": "You talk to the people doing the work, not an account layer.",
     "diff_3_t": "Bilingual by design",
     "diff_3_d": "Native EN & AR, RTL done right — not an afterthought.",
     "diff_4_t": "Built to last",
@@ -283,47 +183,52 @@
     "val_3_d": "Speed, polish and the small details are part of the product.",
     "val_4_t": "Own the whole result",
     "val_4_d": "One team accountable from first sketch to live site.",
-    "team_label": "The crew",
-    "team_title": "Small team, senior hands.",
-    "team_sub": "Engineers, designers and strategists who ship together — on the same brief, in the same room."
+    "team_label": "How we work",
+    "team_title": "Remote-first, bilingual, direct.",
+    "team_sub": "We work with clients across MENA and worldwide, in Arabic or English, and in your timezone when it matters.",
+    "team_pillars": "What we build"
   },
   "process": {
     "pr_label": "Process",
-    "pr_title": "From brief to live in five moves.",
+    "pr_title": "From first call to live in five steps.",
     "pr_sub": "A calm, predictable path. You always know what stage we're in, what we need from you, and what comes next.",
     "out_label": "What you get",
-    "s1_t": "Discover",
-    "s1_d": "We dig into your goals, audience and scope — and ask the questions most agencies skip. No assumptions, no guesswork.",
+    "s1_t": "Discovery",
+    "s1_d": "We dig into your goals, audience and constraints — and ask the questions most agencies skip. No assumptions, no guesswork.",
     "s1_out": "Goals, audience & scope, agreed.",
-    "s2_t": "Define",
-    "s2_d": "We turn the brief into a plan: strategy, sitemap, timeline and budget — one document everyone signs before a pixel moves.",
-    "s2_out": "A signed strategy, sitemap & timeline.",
-    "s3_t": "Design",
-    "s3_d": "From wireframes to a pixel-perfect, reusable system — reviewed together at every step, so there are no surprises later.",
-    "s3_out": "A design system you've seen and approved.",
-    "s4_t": "Build",
-    "s4_d": "Clean, tested code with your real content in it. Fast, accessible, and easy for your team to edit after we're gone.",
-    "s4_out": "A tested, editable site with real content.",
-    "s5_t": "Launch & grow",
-    "s5_d": "We go live, measure what matters, and keep improving. A support window on every build, and a Care Plan when you want more.",
-    "s5_out": "A live site, measured and improving."
+    "s2_t": "Planning",
+    "s2_d": "We turn the brief into a plan: strategy, sitemap or system map, timeline and budget — one document everyone signs before work moves.",
+    "s2_out": "A signed plan, timeline & budget.",
+    "s3_t": "Development",
+    "s3_d": "Design and build in short, reviewed iterations. Clean, tested code with your real content — fast, accessible and easy to hand over.",
+    "s3_out": "A tested product you have already seen working.",
+    "s4_t": "Deployment",
+    "s4_d": "We launch, connect your domains, analytics and integrations, and verify everything on real devices. A calm go-live, not a leap of faith.",
+    "s4_out": "A live, monitored launch with a handover.",
+    "s5_t": "Support",
+    "s5_d": "After launch we keep improving: a support window on every build, and a Care Plan when you want ongoing updates, fixes and growth.",
+    "s5_out": "A product that keeps getting better.",
+    "pr_pillars_t": "The same five steps, whatever we build.",
+    "pr_pillars_d": "A website, an automation and a custom system all follow this path. See what each one covers."
   },
   "industries": {
     "i_label": "Industries",
-    "i_title": "Built for teams that live by their website.",
-    "i_sub": "Generalists in craft, specialists in outcomes. These are the teams we do our best work for.",
+    "i_title": "Built around how your industry works.",
+    "i_sub": "The same three pillars apply everywhere. Here is how they usually show up for the kinds of businesses we are asked to help.",
     "i1_t": "Studios & creative",
-    "i1_d": "Portfolios and brand sites that look as good as the work they showcase.",
+    "i1_d": "Portfolios and client-gallery tools: a site that shows the work, and systems that handle delivery, bookings and contracts.",
     "i2_t": "E-commerce & retail",
-    "i2_d": "Fast, trustworthy stores that turn browsers into buyers.",
+    "i2_d": "Fast, trustworthy stores, plus automation for order updates, WhatsApp support and back-office reports.",
     "i3_t": "Professional services",
-    "i3_d": "Clinics, firms and consultancies that need to look credible and convert.",
+    "i3_d": "Booking-ready websites for clinics, firms and consultancies, and assistants that answer routine questions after hours.",
     "i4_t": "Hospitality & venues",
-    "i4_d": "Menus, bookings and galleries that fill tables and rooms.",
+    "i4_d": "Menus, bookings and galleries, with reminders and confirmations sent automatically.",
     "i5_t": "Startups & SaaS",
-    "i5_d": "Launch-ready marketing sites that keep up with a moving product.",
+    "i5_d": "Marketing sites that keep up with the product, and web apps, dashboards and portals from idea to launch.",
     "i6_t": "Local & regional brands",
-    "i6_d": "Bilingual EN/AR sites that speak to the whole market, RTL and all."
+    "i6_d": "Bilingual EN/AR sites and WhatsApp-first workflows that speak to the whole market, RTL and all.",
+    "i_note": "Do not see your industry? The pillars travel. Tell us how you work and we will map them to it.",
+    "i_note_link": "Talk to us"
   },
   "faq": {
     "f_label": "FAQ",
@@ -332,7 +237,6 @@
     "g_general": "General",
     "g_pricing": "Pricing & engagement",
     "g_process": "Working together",
-    "g_tech": "Ownership & tech",
     "q1": "Do you work with clients outside your region?",
     "a1": "Yes — we're remote-first and work across MENA and worldwide. Most collaboration happens over calls and shared docs, in your timezone when it matters.",
     "q2": "Can you build in both English and Arabic?",
@@ -342,9 +246,9 @@
     "q4": "Do you offer AI and automation?",
     "a4": "Yes — chatbots, workflow automation and custom AI wired into the tools you already use, so routine work runs itself.",
     "q5": "How much does a project cost?",
-    "a5": "A landing page is about $1,650 to build, then $200/mo. A full business site runs ~$2,650 + $250/mo, and a larger custom or e-commerce build ~$5,000 + $300/mo. The monthly covers hosting, updates and support — no hidden fees.",
+    "a5": "Pricing has two parts: a one-time build scoped to what you need, and an optional monthly Care Plan ({care_min}–{care_max}) for hosting, updates and support. The build price depends on features, pages and integrations, so there is no fixed price list. The cost estimator gives an indicative range in a couple of minutes, and the quote you receive states exactly what is included, with no hidden fees.",
     "q6": "What's a Care Plan?",
-    "a6": "The low monthly built into every plan ($200–$300): hosting, updates, security, care and support that keep your site fast and current after launch — so it keeps improving instead of going stale.",
+    "a6": "The optional monthly plan ({care_min}–{care_max}): hosting, updates, security and support that keep your site fast and current after launch, so it keeps improving instead of going stale.",
     "q7": "How long does a website take?",
     "a7": "A focused landing page can ship in about two weeks. A full brand-and-site build is typically 4–8 weeks, depending on scope and how fast feedback comes back.",
     "q8": "What do you need from us to start?",
@@ -356,7 +260,18 @@
     "q11": "Do you do SEO and marketing?",
     "a11": "Launch is a start, not the finish. We handle SEO foundations, analytics, content and campaigns — and a Care Plan keeps them going.",
     "q12": "What happens after launch?",
-    "a12": "We stick around: a support window on every build, and an optional Care Plan for ongoing design, dev and growth."
+    "a12": "We stick around: a support window on every build, and an optional Care Plan for ongoing design, dev and growth.",
+    "g_start": "Before you start",
+    "q13": "How accurate is the estimate?",
+    "a13": "It is indicative, not a quotation. The calculators give you a realistic range from the scope you describe, and a detailed assessment follows before any price is agreed in writing.",
+    "q14": "Will automation replace my staff?",
+    "a14": "The aim is to take repetitive work off people, such as copying data, chasing replies and sorting requests, so your team has time for work that needs judgement and a human touch. We will tell you plainly when a task is better left to a person.",
+    "q15": "How long do automation and custom software take?",
+    "a15": "Both are scoped after discovery, because the timeline depends on how many systems and workflows are involved. The plan you sign before work begins states the timeline and budget.",
+    "l_estimate": "Try the cost estimator",
+    "l_roi": "Calculate your automation savings",
+    "l_pricing": "See pricing",
+    "l_process": "See the full process"
   },
   "contact": {
     "ct_label": "Contact",
@@ -366,10 +281,10 @@
     "f_email": "Email",
     "f_company": "Company (optional)",
     "f_budget": "Rough budget",
-    "o1": "Under $3k",
-    "o2": "$3k–$8k",
-    "o3": "$8k–$20k",
-    "o4": "$20k+",
+    "o1": "Under {b1}",
+    "o2": "{b1}–{b2}",
+    "o3": "{b2}–{b3}",
+    "o4": "{b3}+",
     "o5": "Not sure yet",
     "f_details": "Project details",
     "f_send": "Send it",
@@ -384,141 +299,1378 @@
     "err_email": "Please enter a valid email.",
     "err_details": "Tell us a little about the project.",
     "send_success": "Thanks — we'll be in touch within two working days.",
-    "send_error": "Something went wrong. Please try again or email us."
+    "send_error": "Something went wrong. Please try again or email us.",
+    "f_phone": "Phone / WhatsApp (optional)",
+    "f_consent": "I agree that Devora may use these details to reply to my enquiry.",
+    "err_consent": "Please confirm so we can contact you.",
+    "sent_ref": "Reference",
+    "err_rate": "Too many attempts. Please wait a little and try again.",
+    "retry": "Try again",
+    "mail_fallback": "Or email us at"
   },
-  "experience": {
-    "meta_title": "devora — full-stack web studio",
-    "preloader_init": "Initializing DEVORA OS",
-    "preloader_compiling": "compiling universe",
-    "tagline": "Full-stack web studio",
-    "os_version": "DEVORA OS v3.0",
-    "sound": "Sound",
-    "sound_on": "Sound on",
-    "sound_aria": "Toggle ambient sound",
-    "book_call": "Book a call",
-    "skip_link": "Skip to content",
-    "scroll_initiate": "Scroll to initiate",
-    "lat": "LAT",
-    "lon": "LON",
-    "lang_switch_aria": "Switch language",
-    "home_aria": "DEVORA — home",
-    "sections_aria": "Sections",
-    "rail": ["Origin", "Studio", "Build", "Services", "Work", "Contact"],
-    "act_labels": {
-      "hero": "ORIGIN",
-      "dive": "DECONSTRUCT",
-      "manifesto": "STUDIO",
-      "build": "BUILD",
-      "services": "SERVICES",
-      "cases": "WORK",
-      "stats": "WHY US",
-      "cta": "CONTACT"
+  "pillars": {
+    "label": "What we build",
+    "title": "Three ways Devora grows your business.",
+    "sub": "Use one or combine them: a website that sells, automation that gives you your time back, and software built around the way you actually work.",
+    "scenario_label": "In the real world",
+    "outcomes_label": "What you get",
+    "includes_label": "What's included",
+    "explore": "Explore this pillar",
+    "web": {
+      "name": "Websites",
+      "kicker": "Grow",
+      "headline": "Sites that turn visitors into customers.",
+      "desc": "Fast, bilingual, search-ready websites and stores that look like your brand and are built to bring in enquiries, bookings and sales.",
+      "i1": "Landing pages",
+      "i2": "Business & company websites",
+      "i3": "E-commerce stores",
+      "i4": "Booking & appointment systems",
+      "i5": "Portfolios & showcase sites",
+      "i6": "Bilingual Arabic / English with real RTL",
+      "i7": "SEO foundations & analytics",
+      "i8": "Redesigns, hosting & ongoing care",
+      "scenario_title": "A clinic that fills its calendar",
+      "scenario": "A dental clinic gets most of its enquiries by phone and loses the ones that arrive after hours. A site with online booking and a WhatsApp button lets patients pick a slot at 11pm — and the front desk wakes up to a full day.",
+      "o1": "More enquiries from the traffic you already have",
+      "o2": "A site you own and can edit yourself",
+      "o3": "Fast, accessible, ready to be found",
+      "cta": "Estimate your website"
     },
-    "hero": {
-      "eyebrow": "dev + aura",
-      "h1a": "We design, build",
-      "h1b": "& launch websites.",
-      "sub": "One senior team for strategy, brand, design, code and growth — from the first call to launch day and everything after. Dev meets aura: websites with a presence you can feel.",
-      "cta1": "Start a project",
-      "cta2": "How we work"
+    "auto": {
+      "name": "Automation & AI agents",
+      "kicker": "Save time",
+      "headline": "Hand the repetitive work to software.",
+      "desc": "Chatbots, AI agents and workflow automation wired into the tools you already use, so routine tasks run on their own and your team spends its time on work that needs people.",
+      "i1": "WhatsApp & messaging automation",
+      "i2": "AI chatbots & assistants",
+      "i3": "AI agents for support and sales",
+      "i4": "CRM & lead follow-up automation",
+      "i5": "Scheduling, reminders & notifications",
+      "i6": "Invoices, reports & data entry",
+      "i7": "System-to-system data sync",
+      "i8": "Email automation",
+      "scenario_title": "Three hours a day on WhatsApp",
+      "scenario": "A small team answers the same ten questions on WhatsApp for about three hours every day. An assistant answers the routine ones instantly, collects the details for the rest and hands them over — so people only step in when judgement is needed.",
+      "o1": "Hours handed back to your team every week",
+      "o2": "Faster replies, day and night",
+      "o3": "Fewer manual errors and missed follow-ups",
+      "cta": "Calculate your savings"
     },
-    "dive": {
-      "label": "diving into the core",
-      "title": "Deconstructing the core",
-      "out": "reassembling as systems",
-      "shards": ["Websites", "Brand systems", "Campaigns", "Dashboards", "AI agents", "Growth loops"]
+    "soft": {
+      "name": "Custom software",
+      "kicker": "Scale",
+      "headline": "Software built around how you work.",
+      "desc": "When spreadsheets and off-the-shelf tools stop fitting, we build the web application your business actually needs, with the integrations and access control to run it.",
+      "i1": "Custom web applications",
+      "i2": "Dashboards & reporting",
+      "i3": "Customer portals",
+      "i4": "Internal tools & admin panels",
+      "i5": "Subscriptions & payments",
+      "i6": "APIs & third-party integrations",
+      "i7": "Authentication & user roles",
+      "i8": "SaaS products from idea to launch",
+      "scenario_title": "From scattered spreadsheets to one system",
+      "scenario": "A growing business tracks jobs in spreadsheets, messages and a shared inbox. A single portal gives staff one place to work and customers one place to check status — with the numbers in a live dashboard.",
+      "o1": "One source of truth instead of five tools",
+      "o2": "Processes that fit your business, not the other way round",
+      "o3": "A product you own, built to grow",
+      "cta": "Discuss your system"
+    }
+  },
+  "hero": {
+    "chip": "Websites · Automation & AI · Custom software",
+    "title": "Websites, automation & software that grow your business.",
+    "emphasis": "grow,business",
+    "sub": "We build the digital side of your business so you win more customers, give your team hours back every week and cut what it costs to run.",
+    "cta_estimate": "Estimate your project",
+    "cta_roi": "Calculate automation savings",
+    "cta_talk": "or talk to us",
+    "scroll": "Scroll",
+    "proof": {
+      "label": "Live products we've built",
+      "new_tab": "(opens in a new tab)",
+      "see_work": "See the work",
+      "list_aria": "Live client products"
     },
-    "manifesto": {
-      "label": "dev + aura",
-      "h2a": "Dev meets aura.",
-      "h2b": "The rigor of engineering, and the ",
-      "h2c": "presence great design leaves behind.",
-      "principles": [
-        {"n": "01 / One team", "d": "Strategy, design and engineering under one roof. No handoffs, no finger-pointing, no lost momentum."},
-        {"n": "02 / Craft you own", "d": "Fast, custom builds on clean code — with a CMS your team can run long after launch. No lock-in."},
-        {"n": "03 / Senior, end to end", "d": "A small, senior team from the first call to launch day and beyond. Weeks, not quarters — done properly."}
-      ]
-    },
-    "build": {
-      "label_a": "build sequence — ",
-      "label_b": "brief → launch",
-      "viewport": "DEVORA://build.viewport",
-      "stage_word": "Stage",
-      "stages": [
-        {"t": "The idea", "d": "A single glowing spark of ambition. Everything begins here."},
-        {"t": "Wireframes", "d": "The spark becomes structure — architecture before aesthetics."},
-        {"t": "UI systems", "d": "Structure becomes a living design system, component by component."},
-        {"t": "A living website", "d": "Design becomes a real, fast, breathing product."},
-        {"t": "Traffic flows", "d": "The right people start arriving — engineered, not hoped for."},
-        {"t": "Analytics activate", "d": "Every signal captured. The system learns what works."},
-        {"t": "Marketing engines", "d": "Demand generation kicks in and never stops pulsing."},
-        {"t": "Revenue grows", "d": "Attention converts. The numbers begin to climb."},
-        {"t": "A living system", "d": "It all connects into one fast, living site that keeps working for you."}
-      ]
-    },
-    "services": {
-      "label_a": "service ecosystem — ",
-      "label_b": "12 orbital systems",
-      "system_word": "SYSTEM",
-      "online": "Online",
-      "traverse": "scroll to traverse the ecosystem",
-      "items": [
-        {"name": "Strategy", "tag": "We plan the whole thing before we build it.", "caps": ["Market intelligence", "Positioning", "Roadmapping", "Unit economics"]},
-        {"name": "Branding", "tag": "A brand with a presence you can feel.", "caps": ["Naming", "Visual identity", "Voice & tone", "Brand systems"]},
-        {"name": "Website Design", "tag": "Interfaces that feel inevitable.", "caps": ["UX architecture", "UI design", "Design systems", "Prototyping"]},
-        {"name": "Website Development", "tag": "Engineered to load fast and convert hard.", "caps": ["Next.js builds", "Headless CMS", "WebGL / 3D", "Performance"]},
-        {"name": "Automation", "tag": "Your business runs while you sleep.", "caps": ["Workflow automation", "Integrations", "Internal tools", "Ops systems"]},
-        {"name": "Marketing", "tag": "Demand on tap.", "caps": ["Paid acquisition", "Lifecycle", "Creative", "Attribution"]},
-        {"name": "SEO", "tag": "Get found in search.", "caps": ["Technical SEO", "Content SEO", "Authority", "Local"]},
-        {"name": "Content Creation", "tag": "Content that compounds.", "caps": ["Editorial", "Video", "Social", "Thought leadership"]},
-        {"name": "Growth Systems", "tag": "Loops, not campaigns.", "caps": ["Funnels", "Experimentation", "Retention", "Referral"]},
-        {"name": "AI Solutions", "tag": "AI that does real work.", "caps": ["Agents", "RAG systems", "Copilots", "Fine-tuning"]},
-        {"name": "Analytics", "tag": "See everything. Guess nothing.", "caps": ["Data pipelines", "Dashboards", "Modeling", "Insight"]},
-        {"name": "Scaling", "tag": "Built to grow with you.", "caps": ["Infrastructure", "Team", "Process", "Expansion"]}
-      ]
-    },
-    "cases": {
-      "label_a": "case files — ",
-      "label_b": "enter the dimensions",
-      "items": [
-        {"tag": "Dimension 01 · zawiya.studio", "name": "Zawiya", "metric": "SaaS · Photography", "meta": "Product, end to end", "desc": "An AI-assisted client-gallery platform for photographers — delivery, bookings, invoices and contracts in one bilingual product.", "tags": ["Product design", "SaaS", "Development"]},
-        {"tag": "Dimension 02 · aldarb.co", "name": "Aldarb", "metric": "Publishing platform", "meta": "Strategy → launch", "desc": "An Arabic-first publishing platform where anyone can share articles, opinions and ideas openly.", "tags": ["Strategy", "Editorial", "Development"]},
-        {"tag": "Dimension 03 · rabea.art", "name": "Rabea Hamoud", "metric": "Art · E-commerce", "meta": "Brand → storefront", "desc": "A custom storefront for an artist — original paintings alongside printed and embroidered t-shirts and hoodies.", "tags": ["Brand", "E-commerce", "Development"]},
-        {"tag": "Dimension 04 · kareem.video", "name": "Kareem", "metric": "Video editing", "meta": "Design → build", "desc": "A portfolio for a video editor sharing his work and craft — built so the reel plays first.", "tags": ["Web design", "Development"]}
-      ]
-    },
-    "stats": {
-      "label": "why devora",
-      "title": "Why teams choose devora.",
-      "items": [
-        {"value": "EN · AR", "label": "Bilingual & RTL-native"},
-        {"value": "End to end", "label": "Strategy to launch — and after"},
-        {"value": "One team", "label": "Senior, in-house, no handoffs"},
-        {"value": "You own it", "label": "No lock-in — your code, your CMS"}
-      ]
+    "value": {
+      "label": "Why it matters",
+      "title": "Technology should pay for itself.",
+      "growth_t": "More customers",
+      "growth_d": "A fast, clear website that speaks your customers' language turns visitors into enquiries and keeps working while you sleep.",
+      "time_t": "Hours back",
+      "time_d": "Automation takes over the repetitive follow-ups, data entry and reports so your people can focus on work that needs a human.",
+      "cost_t": "Lower running cost",
+      "cost_d": "One system that fits how you work replaces a pile of overlapping tools, manual workarounds and avoidable errors.",
+      "edge_t": "A real edge",
+      "edge_d": "Faster replies, smoother service and software built around your process are hard for competitors to copy."
     },
     "cta": {
-      "label": "let's work together",
-      "h2a": "Let's build",
-      "h2b": "yours.",
-      "sub": "We take on a handful of projects at a time. Tell us where you're headed — we'll take it all the way to launch.",
-      "btn": "Start a project",
-      "meta": ["2-day reply", "Remote — MENA & worldwide", "EN & AR"]
+      "title": "Ready to build what's next?",
+      "sub": "Tell us about your idea, or get an indicative estimate first. Whichever suits you.",
+      "primary": "Start a project",
+      "secondary": "Estimate your project",
+      "process_link": "See how we work",
+      "faq_link": "Common questions"
+    }
+  },
+  "homeB": {
+    "tabs_label": "Choose a service pillar",
+    "sim": {
+      "label": "Try it",
+      "title": "What does 3 hours a day on WhatsApp really cost?",
+      "sub": "Move the sliders to match your team. The numbers come from the same engine as our free ROI calculator, so the two never disagree.",
+      "controls_label": "Your situation",
+      "hours": "Hours per person, per day, on repetitive chats",
+      "people": "People doing it",
+      "cost": "Hourly cost of their time",
+      "auto": "Share of that work automated",
+      "before_title": "Today",
+      "after_title": "With automation",
+      "legend_chat": "Repetitive chats",
+      "legend_left": "Chats still handled by people",
+      "legend_reclaimed": "Reclaimed time",
+      "legend_other": "Other work",
+      "workday": "One person's {hours}-hour workday",
+      "bars_alt": "Two bars compare one person's {workday}-hour workday. Today, {chat} hours go to repetitive chats. With automation, {left} hours of chats remain and {saved} hours a day become free time.",
+      "res_hours": "Hours reclaimed per month",
+      "res_month": "Indicative value per month",
+      "res_year": "Indicative value per year",
+      "hours_unit": "hours",
+      "cta": "Run the full calculator",
+      "honesty": "Indicative, based on the assumptions below. Automation frees time; it doesn't promise to replace people.",
+      "assumptions_title": "Assumptions",
+      "assumptions": "{days} working days a month · {pct} of the chat time automated · time valued at {cost} an hour · the value is capacity freed, not guaranteed savings.",
+      "summary": "Today {hours} hours of each person's day go to repetitive chats. With {pct} automated, about {saved} hours a month are reclaimed, worth roughly {month} a month or {year} a year. Indicative."
     },
-    "footer": {
-      "tag": "Full-stack web studio. From first sketch to live site — and everything after.",
-      "navigate": "Navigate",
-      "connect": "Connect",
-      "nav": [
-        {"k": "hero", "label": "Origin"},
-        {"k": "build", "label": "Build"},
-        {"k": "services", "label": "Services"},
-        {"k": "cases", "label": "Work"}
-      ],
-      "email_label": "Email",
-      "instagram": "Instagram",
-      "copy": "© 2026 devora — full-stack web studio",
-      "back": "Back to origin"
+    "calc": {
+      "label": "Free tools",
+      "title": "Three ways to start before you commit to anything.",
+      "sub": "All free and with no obligation. Numbers are indicative, not a quotation.",
+      "free": "Free · takes about 3 minutes · no obligation",
+      "web_kicker": "Websites & software",
+      "web_title": "Website cost estimator",
+      "web_desc": "Pick the kind of project and see a starting range. The full estimator adds features, integrations and design.",
+      "chooser_label": "What are you building?",
+      "type_landing": "Landing page",
+      "type_business": "Business site",
+      "type_ecommerce": "Online store",
+      "type_webapp": "Web app",
+      "range_label": "Indicative starting range",
+      "range": "{low} – {high}",
+      "timeline": "About {low}–{high} weeks",
+      "web_note": "Indicative, not a quotation. Features and design change the total.",
+      "web_cta": "Open the full estimator",
+      "roi_kicker": "Automation & AI",
+      "roi_title": "Automation ROI calculator",
+      "roi_desc": "See what reclaiming repetitive work could be worth, task by task, with every assumption on the table.",
+      "roi_example": "Example: WhatsApp replies, one person, {pct} automated",
+      "roi_value": "of capacity freed in a year (indicative)",
+      "roi_chart_alt": "Line chart rising steadily over 12 months. Example: WhatsApp replies for one person free up about {value} of capacity after a year.",
+      "roi_axis_start": "Month 1",
+      "roi_axis_end": "Month 12",
+      "roi_note": "Illustrative, based on default assumptions you can change.",
+      "roi_cta": "Open the ROI calculator",
+      "disc_kicker": "Custom software",
+      "disc_title": "Discuss your system",
+      "disc_desc": "Describe what your business needs to run: who uses it, what data it holds, what it connects to. We talk it through with you.",
+      "disc_map_alt": "Diagram of connected nodes, representing the parts of a custom system linking together.",
+      "disc_note": "A conversation first. Scope and a quote follow once we understand the system, with no price guessed in advance.",
+      "disc_cta": "Start the conversation",
+      "free_talk": "Free · no obligation"
+    }
+  },
+  "stack": {
+    "label": "Under the hood",
+    "title": "A modern stack, chosen for your business.",
+    "sub": "Nothing here is for show. Every tool on this map is one we actually ship with, and each earns its place in how fast, how safe and how ownable your product ends up.",
+    "b1_t": "Speed",
+    "b1_d": "Server-rendered pages and lazily loaded effects keep sites quick on real phones, which matters for search and for visitors who leave slow pages.",
+    "b2_t": "Ownership",
+    "b2_d": "Mainstream, open tooling that any capable developer can pick up. You are never locked into a proprietary platform.",
+    "b3_t": "Security",
+    "b3_d": "Inputs validated on the server, rate limits on public endpoints and secrets kept out of the browser, by default.",
+    "hint": "Hover, focus or tap a node to see what we use it for.",
+    "map_aria": "Technology map, grouped by area",
+    "list_aria": "Technologies we use, grouped by area",
+    "hub": "devora",
+    "g_frontend": "Frontend",
+    "g_backend": "Backend & data",
+    "g_ai": "AI & automation",
+    "g_infra": "Infrastructure & delivery",
+    "g_quality": "Quality",
+    "n_nextjs": "Next.js",
+    "n_react": "React",
+    "n_typescript": "TypeScript",
+    "n_tailwind": "Tailwind CSS",
+    "n_three": "three.js / WebGL",
+    "n_gsap": "GSAP",
+    "n_motion": "Motion",
+    "n_lenis": "Lenis",
+    "n_nextintl": "next-intl",
+    "n_supabase": "Supabase",
+    "n_postgres": "PostgreSQL",
+    "n_zod": "Zod",
+    "n_nodemailer": "Nodemailer",
+    "n_upstash": "Upstash Redis",
+    "n_claude": "Claude API",
+    "n_vercel": "Vercel",
+    "n_actions": "GitHub Actions",
+    "n_playwright": "Playwright",
+    "n_vitest": "Vitest",
+    "u_nextjs": "Server-rendered pages and API routes, so content is fast to load and easy for search engines to read.",
+    "u_react": "The component layer behind every interface, with small interactive islands only where they are needed.",
+    "u_typescript": "Strict types across the codebase, so mistakes surface while we build rather than after launch.",
+    "u_tailwind": "A token-based design system: consistent spacing, colour and right-to-left aware layout.",
+    "u_three": "The WebGL scenes on the homepage, loaded lazily so they never block the page.",
+    "u_gsap": "Scroll-driven scenes, downloaded only on the pages that use them.",
+    "u_motion": "Reveals, tilt and spring interactions that switch off for visitors who prefer reduced motion.",
+    "u_lenis": "Smooth scrolling that stays in sync with the scroll animations.",
+    "u_nextintl": "Real English and Arabic routing, translations and RTL, from a single codebase.",
+    "u_supabase": "Hosted database behind contact leads, calculator submissions, AI chat history and the admin area.",
+    "u_postgres": "The relational database for leads and chat data. The pgvector extension is enabled, ready for retrieval features.",
+    "u_zod": "Every form and API input is validated on the server before anything is stored or emailed.",
+    "u_nodemailer": "Sends lead notifications and confirmations over SMTP.",
+    "u_upstash": "Redis-backed rate limiting that protects forms and the chat endpoint from abuse.",
+    "u_claude": "Powers the AI support assistant, grounded in a knowledge base we maintain.",
+    "u_vercel": "Hosting and deployment: pushes to the main branch go live automatically.",
+    "u_actions": "Typecheck, lint and build run on every push and pull request before anything ships.",
+    "u_playwright": "Browser-driven smoke tests for the AI assistant and the admin gate.",
+    "u_vitest": "Unit tests for the pricing, estimator and lead-handling logic."
+  },
+  "why": {
+    "label": "Why Devora",
+    "title": "One team that builds the whole thing, and hands it over.",
+    "sub": "Fewer vendors, fewer hand-offs, and nothing you do not own at the end.",
+    "a_t": "One team, three disciplines",
+    "a_d": "The website, the automation behind it and the custom software around it are designed and built by the same people, so the pieces actually fit together.",
+    "b_t": "Arabic and English, properly",
+    "b_d": "Real right-to-left layout and translated copy from the first screen, not a mirrored afterthought.",
+    "b_en": "English",
+    "b_ar": "العربية",
+    "c_t": "You own what we build",
+    "c_d": "Clean, documented, editable code handed over to you. No lock-in, no hostage plugins.",
+    "d_t": "Pricing you can read",
+    "d_d": "Our free estimator gives you an indicative range in minutes, before you talk to anyone. A detailed quote follows once we understand your project.",
+    "d_link": "Try the cost estimator",
+    "e_t": "AI-aware engineering",
+    "e_d": "We build with AI and for AI: assistants grounded in your own content, and automation that frees people for work that needs judgement. Try the assistant on this site.",
+    "sw_label": "Selected work",
+    "sw_title": "Real sites, built and launched.",
+    "sw_sub": "Four live projects for real clients. Visit them, judge the work yourself.",
+    "sw_all": "All work",
+    "sw_case": "Read the case",
+    "sw_live": "Visit live site",
+    "sw_image_alt": "{domain} website screenshot",
+    "process_link": "See how we work",
+    "faq_link": "Common questions",
+    "list_aria": "What sets Devora apart",
+    "sw_new_tab": "(opens in a new tab)"
+  },
+  "roi": {
+    "meta": {
+      "title": "Automation ROI calculator",
+      "description": "Find out how many hours and how much money automating repetitive work could free up for your business. An honest, indicative estimate with every assumption shown."
+    },
+    "page": {
+      "eyebrow": "Automation ROI calculator",
+      "title": "How much could automation save your business?",
+      "sub": "Pick the tasks that eat your team's time, add your own numbers, and get an honest, indicative estimate in a few minutes.",
+      "honest": "Automation frees your people for higher-value work — it doesn't necessarily replace them. This calculator keeps real cost savings and freed-up capacity apart, so you can see which is which.",
+      "noscript": "This calculator needs JavaScript. Without it, tell us about your repetitive tasks and we will run the numbers for you.",
+      "noscriptLink": "Contact us",
+      "calculator": "Automation ROI calculator"
+    },
+    "step": {
+      "of": "Step {n} of {total}",
+      "nav": "Calculator steps",
+      "go": "Go to step {n}: {title}",
+      "title": {
+        "tasks": "What takes up your team's time?",
+        "workload": "How much time does each task take?",
+        "labor": "What does an hour of work cost you?",
+        "potential": "How much of it can be automated?",
+        "results": "Your estimated savings",
+        "form": "Review your answers and get your plan"
+      },
+      "short": {
+        "tasks": "Tasks",
+        "workload": "Workload",
+        "labor": "Labor cost",
+        "potential": "Potential",
+        "results": "Results",
+        "form": "Your plan"
+      },
+      "lead": {
+        "tasks": "Pick every task that eats time in your business. You can change your mind at any point.",
+        "labor": "We need an hourly cost to turn saved hours into money. A rough figure is fine.",
+        "results": "Live numbers: change anything on the earlier steps and this page updates. It is an indicative estimate, not a quotation or a guarantee.",
+        "form": "Tell us how to reach you. We will review your numbers and come back with a concrete plan, with no obligation."
+      }
+    },
+    "nav": {
+      "back": "Back",
+      "next": "Next",
+      "toResults": "See my results",
+      "toForm": "Get my tailored plan",
+      "startOver": "Start over",
+      "restored": "We restored the answers you entered earlier on this device."
+    },
+    "tasks": {
+      "legend": "Tasks that take up time (choose one or more)",
+      "selected": "{count, plural, one {# task selected} other {# tasks selected}}"
+    },
+    "err": {
+      "required": "This field is required.",
+      "number": "Enter a number.",
+      "int": "Enter a whole number.",
+      "range": "Enter a value between {min} and {max}.",
+      "choose": "Choose one option.",
+      "noTask": "Choose at least one task to continue.",
+      "perDay": "One employee cannot spend more than 24 hours a day on this. Check times per day and minutes.",
+      "noHours": "Total time is zero. Enter a time greater than zero for at least one group.",
+      "summary": "{count, plural, one {Please fix 1 field before continuing.} other {Please fix # fields before continuing.}}"
+    },
+    "workload": {
+      "intro": "For each task, tell us how often one person does it, how long it takes and how many people do it. We pre-selected typical options: change any that do not fit. Add another group if different people work differently.",
+      "q": {
+        "times": "How many times a day, per person?",
+        "minutes": "How long does each one take?",
+        "employees": "How many people do this?"
+      },
+      "group": "Group {n}",
+      "times": "Times per day",
+      "timesHint": "Per employee, each working day",
+      "minutes": "Minutes each time",
+      "minutesHint": "Average for one occurrence",
+      "employees": "Employees",
+      "employeesHint": "How many people do this task",
+      "groupTotal": "Group total: {hours} h per day",
+      "teamTotal": "Team total: {day} h/day · {month} h/month",
+      "add": "Add group",
+      "addLabel": "Add another group for {task}",
+      "addHint": "Use groups when, for example, part-timers do the same task more or less often than full-timers.",
+      "dup": "Duplicate",
+      "dupLabel": "Duplicate group {n} of {task}",
+      "remove": "Remove",
+      "removeLabel": "Remove group {n} of {task}",
+      "formula": "Hours per day = times per day × minutes each × employees ÷ 60."
+    },
+    "labor": {
+      "legend": "How do you want to give us the cost of an hour?",
+      "mode": {
+        "hourly": "I know the hourly cost",
+        "salary": "I know the monthly salary",
+        "unknown": "I don't know — use typical values"
+      },
+      "modeDesc": {
+        "hourly": "Fully-loaded cost per hour: pay plus employer costs. Typical: {hourly}.",
+        "salary": "We turn the gross salary into employer cost, then into a cost per hour.",
+        "unknown": "We use {hourly} per hour. You can refine it later."
+      },
+      "hourly": "Fully-loaded cost per hour",
+      "hourlyHint": "What one hour of an employee really costs you: pay plus employer costs.",
+      "perHour": "₪/h",
+      "salary": "Monthly GROSS salary (per employee)",
+      "salaryHint": "The salary before tax and deductions, as written in the contract, not what reaches the bank account.",
+      "perMonth": "₪/month",
+      "multiplier": "Employer-cost multiplier",
+      "multiplierHint": "Typical: {multiplier}× the gross salary",
+      "derived": "Gross {gross} × {mult} ÷ {hours} hours = {hourly} per hour, fully loaded.",
+      "grossTitle": "Gross salary vs. employer cost: what is the difference?",
+      "grossBody1": "Gross salary is the figure in the contract, before income tax and the employee's own deductions. The employer cost is higher: you also pay social security, pension contributions, severance provisions and similar charges on top.",
+      "grossBody2": "That is why we multiply by {multiplier} by default. It is an indicative average, not legal or payroll advice. One full-time month is about {hours} working hours.",
+      "unknownNote": "We will use typical values: {hourly} per hour and {days} working days a month. You can come back and refine them at any time.",
+      "days": "Working days per month",
+      "daysHint": "How many days a month this work happens. Typical: {days}.",
+      "bandsHourly": "Typical fully-loaded cost of one employee hour",
+      "bandsSalary": "Monthly gross salary of a typical employee",
+      "multiplierFixed": "We add typical employer costs: gross salary × {multiplier}, then divide by {hours} hours a month. Switch to exact numbers to change it.",
+      "perMonthDays": "days/month"
+    },
+    "potential": {
+      "intro": "We pre-filled typical shares of time that automation removes. Adjust them to your reality, and err on the cautious side.",
+      "high": "High potential",
+      "medium": "Medium potential",
+      "low": "Low potential",
+      "sliderLabel": "Share of “{task}” time automated",
+      "valueText": "{pct} percent of {task} automated",
+      "typical": "Typical: {pct}",
+      "reset": "Reset",
+      "resetLabel": "Reset {task} to the typical value"
+    },
+    "direct": {
+      "title": "How much of the freed time becomes real savings?",
+      "badge": "Assumption",
+      "label": "Share counted as direct cost reduction",
+      "valueText": "{pct} percent counted as direct cost reduction",
+      "desc": "Freed time does not automatically cut your costs. It does only if you pay for fewer hours, avoid a hire or reduce overtime. The rest becomes capacity for sales, service and growth. We assume {pct} by default. Set it to match your plan."
+    },
+    "exact": {
+      "label": "Enter exact numbers instead",
+      "hint": "Quick options use a typical value for each range. Exact numbers let you type your own; the maths is identical."
+    },
+    "level": {
+      "title": "How standardised are these tasks?",
+      "desc": "This sets a starting automation share for every task. Changing it resets the sliders below to the typical values for that level."
+    },
+    "bucket": {
+      "timesPerDay": {
+        "1-5": "1 to 5 times",
+        "6-15": "6 to 15 times",
+        "16-40": "16 to 40 times",
+        "40+": "More than 40 times"
+      },
+      "minutes": {
+        "lt2": "Under 2 minutes",
+        "2-5": "2 to 5 minutes",
+        "5-15": "5 to 15 minutes",
+        "15-30": "15 to 30 minutes",
+        "30+": "More than 30 minutes"
+      },
+      "people": {
+        "1": "Just 1 person",
+        "2-3": "2 to 3 people",
+        "4-6": "4 to 6 people",
+        "7+": "7 or more people"
+      },
+      "hourly": {
+        "lt40": "Under ₪40 an hour",
+        "40-60": "₪40 to ₪60 an hour",
+        "60-90": "₪60 to ₪90 an hour",
+        "90-150": "₪90 to ₪150 an hour",
+        "150+": "More than ₪150 an hour"
+      },
+      "salary": {
+        "lt8k": "Under ₪8,000 a month",
+        "8-12k": "₪8,000 to ₪12,000 a month",
+        "12-18k": "₪12,000 to ₪18,000 a month",
+        "18-25k": "₪18,000 to ₪25,000 a month",
+        "25k+": "More than ₪25,000 a month"
+      },
+      "labor": {
+        "unknown": "I don't know — use typical values"
+      },
+      "standardisation": {
+        "very": "Very repetitive: the same steps almost every time",
+        "mostly": "Mostly repetitive, with some exceptions",
+        "varies": "Varies a lot: each case is different"
+      }
+    },
+    "summary": {
+      "title": "Review your answers",
+      "intro": "This is what we will base the plan on. Use Edit to change anything.",
+      "tasks": "Tasks",
+      "workload": "Workload",
+      "labor": "Cost of an hour",
+      "automation": "Automation potential",
+      "edit": "Edit",
+      "editLabel": "Edit {section}",
+      "workLine": "{task}: {times} times a day × {minutes} min × {people} people = {hours} h/day",
+      "laborHourly": "{hourly} per hour (fully loaded)",
+      "laborSalary": "Gross salary {gross} × {mult} ÷ {hours} h = {hourly} per hour",
+      "laborUnknown": "Typical values: {hourly} per hour",
+      "days": "{days} working days a month",
+      "level": "Standardisation: {level}",
+      "pctLine": "{task}: {pct} automated",
+      "direct": "{pct} of the freed time counted as direct savings (an assumption)"
+    },
+    "results": {
+      "intro": "Indicative estimate based on the numbers you entered. Not a quotation, not a guarantee.",
+      "live": "Estimated {hours} hours reclaimed per month, with a capacity value of {value} per month.",
+      "noAutomation": "Every task is set to 0% automation, so nothing is reclaimed. Raise at least one slider on the Potential step.",
+      "hoursDay": "Hours reclaimed per working day",
+      "hoursMonth": "Hours reclaimed per month",
+      "hoursYear": "Hours reclaimed per year",
+      "today": "Today your team spends <n>{hours}</n> hours a month on these tasks. With automation, about <n>{left}</n> hours remain.",
+      "totalTitle": "Total value of the freed time",
+      "totalNote": "Freed hours × your cost per hour. It is the sum of the direct reduction and the productivity value below.",
+      "perMonth": "per month",
+      "perYear": "per year",
+      "threeTitle": "Three different kinds of value, kept apart on purpose",
+      "direct": {
+        "title": "Direct cost reduction",
+        "desc": "The part of the freed time that becomes real savings: fewer paid hours, avoided hires, less overtime. It is {pct} of the total, which is your assumption."
+      },
+      "productivity": {
+        "title": "Productivity value",
+        "desc": "Freed time that goes into other useful work. It is real value, but it only reaches your accounts if that work brings results."
+      },
+      "growth": {
+        "title": "Growth capacity",
+        "fte": "{fte} FTE equivalent",
+        "desc": "The same freed hours as a share of one full-time employee ({hours} h a month). Room to serve more customers or do higher-value work, not a cost saving by itself.",
+        "hoursLine": "{hours} h a month"
+      },
+      "roiTitle": "Return on investment, first 12 months",
+      "basis": {
+        "direct": "Direct savings only",
+        "capacity": "Including freed capacity"
+      },
+      "roi": "12-month ROI",
+      "payback": "Payback time",
+      "months": "{months} months",
+      "na": "n/a",
+      "noteDirect": "Counts only the real cost reduction. This is the cautious view.",
+      "noteCapacity": "Counts all freed time at your hourly cost. This is the optimistic view unless the time is truly put to use.",
+      "plain": "In plain words: over 12 months, every ₪1 you invest comes back as about {back}.",
+      "plainLoss": "In plain words: on this basis the first 12 months return less than they cost.",
+      "noPayback": "It does not pay back on this basis with these numbers.",
+      "costTitle": "Indicative investment",
+      "implementation": "One-time implementation",
+      "running": "Running cost",
+      "costNote": "Typical figures from our price model for {count, plural, one {# automated task type} other {# automated task types}}. Indicative, not a quotation: the real proposal depends on the tools and systems involved.",
+      "assumptionTitle": "An assumption you can change",
+      "cta": "Like what you see? Get a plan built around your numbers."
+    },
+    "unit": {
+      "h": "h",
+      "hMonth": "h/month",
+      "hDay": "h/day",
+      "month": "month",
+      "day": "day"
+    },
+    "chart": {
+      "showTable": "Show data table",
+      "hideTable": "Hide data table",
+      "beforeAfter": {
+        "title": "Team time on these tasks, per month",
+        "aria": "Stacked bars. Today: {today} hours a month of manual work. With automation: {left} hours still manual and {saved} hours freed.",
+        "today": "Today",
+        "after": "With automation",
+        "manual": "Still manual",
+        "freed": "Freed",
+        "caption": "Table: team hours per month before and after automation",
+        "colScenario": "Scenario",
+        "colManual": "Manual hours/month",
+        "colFreed": "Freed hours/month"
+      },
+      "contribution": {
+        "title": "Where the savings come from",
+        "aria": "Bar chart of hours saved per month by task, largest first: {list}.",
+        "caption": "Table: hours saved per month by task",
+        "colTask": "Task",
+        "colToday": "Hours/month today",
+        "colSaved": "Hours saved/month",
+        "colValue": "Value/month",
+        "row": "{hours} h saved · {value}"
+      },
+      "cumulative": {
+        "title": "Cumulative savings versus cost",
+        "aria": "Line chart over {months} months of net value after implementation and running costs. Capacity basis: {capacity}. Direct basis: {direct}.",
+        "paybackAt": "pays back in month {months}",
+        "noPayback": "does not pay back in this period",
+        "axisX": "Months from launch",
+        "axisY": "Net value after costs (₪)",
+        "capacity": "Including freed capacity",
+        "direct": "Direct savings only",
+        "payback": "Payback point",
+        "caption": "Table: cumulative net value by month",
+        "colMonth": "Month"
+      }
+    },
+    "calc": {
+      "title": "How we calculate this",
+      "intro": "Every number on this page comes from the formulas below, filled in with your inputs. Change an input and they update.",
+      "hoursTitle": "1. Time spent today",
+      "hoursDay": "Hours per working day",
+      "hoursMonth": "Hours per month",
+      "savedTitle": "2. Time freed by automation",
+      "saved": "Hours saved per month",
+      "laborTitle": "3. Cost of one hour",
+      "laborHourly": "You entered a fully-loaded hourly cost",
+      "laborSalary": "Gross salary × employer multiplier ÷ hours per month",
+      "laborUnknown": "Typical value used because you chose \"I don't know\"",
+      "valueTitle": "4. Value of the freed time",
+      "valueMonth": "Value per month = hours saved × cost per hour",
+      "valueYear": "Value per year = value per month × 12",
+      "splitTitle": "5. Splitting the value (your assumption)",
+      "splitDirect": "Direct cost reduction = value × direct share",
+      "splitProductivity": "Productivity value = value − direct reduction",
+      "fteTitle": "6. Growth capacity",
+      "fte": "FTE equivalent = hours saved ÷ hours per full-time month",
+      "costTitle": "7. Investment and running cost (indicative)",
+      "implementation": "Implementation = base + per-task × automated tasks",
+      "running": "Running cost per month = base + per-task × automated tasks",
+      "roiTitle": "8. Payback and ROI",
+      "paybackDirect": "Payback (direct) = implementation ÷ (direct reduction − running)",
+      "paybackCapacity": "Payback (capacity) = implementation ÷ (value − running)",
+      "roiDirect": "ROI (direct) = (12 × direct − 12 × running − implementation) ÷ (implementation + 12 × running)",
+      "roiCapacity": "ROI (capacity) = (12 × value − 12 × running − implementation) ÷ (implementation + 12 × running)",
+      "assumptionsTitle": "Assumptions to keep in mind",
+      "assumptions": {
+        "a1": "Automation percentages are typical values for each task, not measurements of your business.",
+        "a2": "Only {pct} of the freed time is counted as direct cost reduction. That share is an assumption you can change.",
+        "a3": "Investment and running costs come from our price model and are indicative, not a quotation.",
+        "a4": "Results assume {days} working days a month and one full-time month of {hours} hours."
+      }
+    },
+    "form": {
+      "title": "Your contact details",
+      "recapTitle": "Your numbers at a glance",
+      "recapHours": "Hours reclaimed per month",
+      "recapValue": "Value of freed time per month",
+      "recapTasks": "Tasks included",
+      "name": "Your name",
+      "business": "Business name",
+      "optional": "optional",
+      "email": "Email",
+      "phone": "Phone / WhatsApp number",
+      "details": "Anything else we should know?",
+      "detailsHint": "Which tools do you use today? What hurts the most?",
+      "preferred": "How should we contact you?",
+      "channel": {
+        "email": "Email",
+        "phone": "Phone call",
+        "whatsapp": "WhatsApp"
+      },
+      "consent": "I agree that Devora may use these details and my calculator answers to contact me about this enquiry. I can withdraw at any time.",
+      "submit": "Show Me How Much My Business Can Save",
+      "sending": "Sending…",
+      "retry": "Try again",
+      "honeypot": "Leave this field empty",
+      "err": {
+        "name": "Please enter your name.",
+        "email": "Enter a valid email address, for example name@company.com.",
+        "phone": "Enter a phone number so we can call or message you.",
+        "long": "This is too long. Please shorten it.",
+        "consent": "Please tick the box to agree before sending.",
+        "summary": "{count, plural, one {Please fix 1 field below.} other {Please fix # fields below.}}",
+        "e400": "Some details were not accepted. Please check the form and try again.",
+        "e403": "Your browser's request was blocked for security reasons. Reload the page and try again.",
+        "e413": "Your message is too long. Shorten the details and try again.",
+        "e429": "Too many requests. Please wait {seconds} seconds, then try again.",
+        "e503": "Our service is temporarily unavailable. Nothing was lost: try again in a moment.",
+        "network": "We could not reach the server. Check your connection and try again.",
+        "unknown": "Something went wrong. Please try again."
+      },
+      "fallbackTitle": "Prefer email?",
+      "fallbackBody": "You can send us your numbers directly and we will take it from there.",
+      "mailto": "Email these numbers to Devora",
+      "mailSubject": "Automation ROI enquiry",
+      "mailBody": "Hello Devora,\n\nI used the automation ROI calculator.\nTasks: {tasks}\nHours freed per month: {hours}\nValue of freed time per month: {value}\n\nName: {name}"
+    },
+    "success": {
+      "title": "Thank you, we have your numbers",
+      "sub": "Keep this reference. It identifies your request if you contact us.",
+      "refLabel": "Your reference",
+      "copy": "Copy reference",
+      "copied": "Copied",
+      "copyFail": "Copy failed. Select the reference and copy it manually.",
+      "duplicate": "We already had this request, so we are showing your existing reference.",
+      "recapTitle": "Your estimate",
+      "recapNote": "Indicative estimate from the numbers you entered on {date}. Not a quotation or a guarantee.",
+      "nextTitle": "What happens next",
+      "next1": "We review your numbers and the tasks you picked.",
+      "next2": "We get back to you through your preferred channel: {channel}.",
+      "next3": "If it makes sense, we agree a scope and start with the task that frees the most time.",
+      "print": "Print or save as PDF",
+      "printHeading": "Automation ROI estimate",
+      "altTitle": "Prefer to talk right now?",
+      "altEmail": "Email us",
+      "altInstagram": "Message us on Instagram",
+      "again": "Start a new calculation"
+    },
+    "task": {
+      "whatsappReplies": "WhatsApp replies",
+      "repetitiveFaqs": "Repetitive customer questions (FAQs)",
+      "scheduling": "Scheduling appointments",
+      "reminders": "Reminders",
+      "leadFollowUps": "Lead follow-ups",
+      "spreadsheetEntry": "Data entry in spreadsheets",
+      "invoices": "Invoices",
+      "reports": "Reports",
+      "copyingBetweenSystems": "Copying data between systems",
+      "crmUpdates": "CRM updates",
+      "collectCustomerInfo": "Collecting customer information",
+      "sendingEmails": "Sending emails",
+      "orderProcessing": "Order processing",
+      "customerSupport": "Customer support",
+      "other": "Other repetitive work"
+    },
+    "why": {
+      "whatsappReplies": "Most customer messages are the same handful of questions, so an assistant can answer instantly and hand over anything unusual.",
+      "repetitiveFaqs": "Opening hours, prices, delivery and policies: answers that rarely change are ideal for automation.",
+      "scheduling": "Booking, rescheduling and confirming follow clear rules, so customers can do it themselves at any hour.",
+      "reminders": "Sending a reminder on time is pure rule-following, and automation never forgets.",
+      "leadFollowUps": "A prompt first reply and timed follow-ups can be automated, leaving your people the real conversations.",
+      "spreadsheetEntry": "Typing the same fields into sheets is mechanical work that integrations do faster and without typos.",
+      "invoices": "Creating and sending standard invoices can be automated; exceptions and disputes still need a person.",
+      "reports": "Pulling numbers together every week or month is repetitive; the interpretation is where people add value.",
+      "copyingBetweenSystems": "Re-entering the same data in two tools is the classic automation win.",
+      "crmUpdates": "Logging calls, messages and status changes can happen automatically; judging the relationship stays human.",
+      "collectCustomerInfo": "Smart forms and chat flows can gather the details and send them straight to the right place.",
+      "sendingEmails": "Routine, templated emails can go out automatically; personal ones still deserve a personal touch.",
+      "orderProcessing": "Confirming, routing and updating orders is largely rules, though unusual orders need a human check.",
+      "customerSupport": "Automation handles the common requests; complex or sensitive cases still need your team, so expect a lower share.",
+      "other": "Anything rule-based that you repeat daily can be a candidate, but we would need to look closer, so we assume a cautious share."
+    }
+  },
+  "estimator": {
+    "step": {
+      "1": {
+        "title": "Goals"
+      },
+      "2": {
+        "title": "Size"
+      },
+      "3": {
+        "title": "Project type"
+      },
+      "4": {
+        "title": "Scope"
+      },
+      "5": {
+        "title": "Features"
+      },
+      "6": {
+        "title": "Design"
+      },
+      "7": {
+        "title": "Integrations"
+      }
+    },
+    "q": {
+      "goals": {
+        "label": "What do you want your website to do?",
+        "hint": "Pick everything that applies."
+      },
+      "size": {
+        "label": "How big should it be?",
+        "hint": "A rough size is fine."
+      },
+      "types": {
+        "label": "What do you want to build?",
+        "hint": "Pick everything that applies.",
+        "opt": {
+          "landing": "Landing page",
+          "business": "Business website (up to 5 pages)",
+          "ecommerce": "E-commerce store",
+          "booking": "Booking / scheduling system",
+          "dashboard": "Dashboard / internal tool",
+          "portal": "Customer portal",
+          "webapp": "Custom web app",
+          "unsure": "Project to be defined (discovery)"
+        }
+      },
+      "pages": {
+        "label": "How many pages?",
+        "hint": "The first five are included.",
+        "opt": {
+          "n5": "5 pages",
+          "n8": "8 pages",
+          "n12": "12 pages",
+          "n20": "20 pages",
+          "n30": "30 pages"
+        }
+      },
+      "products": {
+        "label": "How many products?",
+        "hint": "Approximate catalog size.",
+        "opt": {
+          "p1_20": "Catalog: 1–20 products",
+          "p21_100": "Catalog: 21–100 products",
+          "p101_500": "Catalog: 101–500 products",
+          "p501_1000": "Catalog: 501–1,000 products",
+          "p1000_plus": "Catalog: 1,000+ products"
+        }
+      },
+      "roles": {
+        "label": "How many user roles?",
+        "hint": "For example admin, staff, customer.",
+        "opt": {
+          "one": "User roles: single role",
+          "few": "User roles: 2–3 roles",
+          "many": "User roles: 4+ roles"
+        }
+      },
+      "features": {
+        "business": {
+          "label": "Website features",
+          "hint": "Select what you need.",
+          "opt": {
+            "blog": "Blog / articles",
+            "leadForm": "Contact / lead collection",
+            "booking": "Online booking"
+          }
+        },
+        "shared": {
+          "label": "Common features",
+          "hint": "Select what you need.",
+          "opt": {
+            "crm": "CRM integration",
+            "multilingual": "Multilingual (Hebrew / Arabic / English)",
+            "advancedSeo": "Advanced SEO",
+            "adminDashboard": "Admin dashboard",
+            "payments": "Online payments"
+          }
+        },
+        "ecommerce": {
+          "label": "Store features",
+          "hint": "Select what you need.",
+          "opt": {
+            "categories": "Product categories",
+            "filtering": "Advanced filtering & search",
+            "accounts": "Customer accounts",
+            "cart": "Shopping cart & checkout",
+            "shipping": "Shipping options",
+            "inventory": "Inventory management",
+            "coupons": "Coupons & discounts",
+            "orderTracking": "Order tracking",
+            "notifications": "Customer notifications"
+          }
+        },
+        "webapp": {
+          "label": "App features",
+          "hint": "Select what you need.",
+          "opt": {
+            "auth": "Authentication & accounts",
+            "subscriptions": "Subscriptions & billing plans",
+            "dashboards": "Dashboards & charts",
+            "database": "Database management screens",
+            "apiIntegrations": "API integrations",
+            "realtime": "Real-time updates",
+            "aiFeatures": "AI features"
+          }
+        }
+      },
+      "design": {
+        "existing": {
+          "label": "I already have a design",
+          "hint": "We build from your design."
+        },
+        "brandIdentity": {
+          "label": "I need a brand identity",
+          "hint": "Logo, colors and typography."
+        },
+        "advancedMotion": {
+          "label": "Advanced 3D / animation",
+          "hint": "Rich motion and interactive visuals."
+        },
+        "premium": {
+          "label": "Premium visual design",
+          "hint": "Extra polish and custom visuals."
+        }
+      },
+      "integrations": {
+        "label": "Integrations & services",
+        "hint": "Connect the tools you already use.",
+        "opt": {
+          "whatsapp": "WhatsApp integration",
+          "emailAutomation": "Email automation",
+          "aiChatbot": "AI chatbot",
+          "aiAgents": "AI agents / workflows",
+          "thirdPartyApi": "Third-party API integration",
+          "analytics": "Analytics & reporting",
+          "hosting": "Hosting & domain setup",
+          "maintenance": "Ongoing care plan (billed monthly, shown separately)",
+          "crm": "CRM integration",
+          "multilingual": "Multilingual (Hebrew / Arabic / English)",
+          "advancedSeo": "Advanced SEO",
+          "payments": "Online payments"
+        }
+      }
+    },
+    "goal": {
+      "leads": "Get more leads",
+      "sell": "Sell products online",
+      "bookings": "Take bookings",
+      "brand": "Build my brand",
+      "content": "Publish content",
+      "portal": "Give customers a portal",
+      "other": "Something else"
+    },
+    "size": {
+      "small": "Small (1–5 pages)",
+      "medium": "Medium (6–15 pages)",
+      "large": "Large (16–40 pages)",
+      "xlarge": "Very large (40+ pages)",
+      "unsure": "Not sure"
+    },
+    "item": {
+      "feature": {
+        "blog": "Blog / articles",
+        "leadForm": "Contact / lead collection",
+        "booking": "Online booking",
+        "crm": "CRM integration",
+        "multilingual": "Multilingual (Hebrew / Arabic / English)",
+        "advancedSeo": "Advanced SEO",
+        "adminDashboard": "Admin dashboard",
+        "payments": "Online payments",
+        "categories": "Product categories",
+        "filtering": "Advanced filtering & search",
+        "accounts": "Customer accounts",
+        "cart": "Shopping cart & checkout",
+        "shipping": "Shipping options",
+        "inventory": "Inventory management",
+        "coupons": "Coupons & discounts",
+        "orderTracking": "Order tracking",
+        "notifications": "Customer notifications",
+        "auth": "Authentication & accounts",
+        "subscriptions": "Subscriptions & billing plans",
+        "dashboards": "Dashboards & charts",
+        "database": "Database management screens",
+        "apiIntegrations": "API integrations",
+        "realtime": "Real-time updates",
+        "aiFeatures": "AI features"
+      },
+      "integration": {
+        "whatsapp": "WhatsApp integration",
+        "emailAutomation": "Email automation",
+        "aiChatbot": "AI chatbot",
+        "aiAgents": "AI agents / workflows",
+        "thirdPartyApi": "Third-party API integration",
+        "analytics": "Analytics & reporting",
+        "hosting": "Hosting & domain setup",
+        "maintenance": "Ongoing care plan (billed monthly, shown separately)"
+      },
+      "base": {
+        "landing": "Landing page",
+        "business": "Business website (up to 5 pages)",
+        "ecommerce": "E-commerce store",
+        "booking": "Booking / scheduling system",
+        "dashboard": "Dashboard / internal tool",
+        "portal": "Customer portal",
+        "webapp": "Custom web app",
+        "unsure": "Project to be defined (discovery)"
+      },
+      "type": {
+        "landing": "Additional: Landing page",
+        "business": "Additional: Business website (up to 5 pages)",
+        "ecommerce": "Additional: E-commerce store",
+        "booking": "Additional: Booking / scheduling system",
+        "dashboard": "Additional: Dashboard / internal tool",
+        "portal": "Additional: Customer portal",
+        "webapp": "Additional: Custom web app",
+        "unsure": "Additional: Project to be defined (discovery)"
+      },
+      "pages": "Extra pages",
+      "products": "Product catalog size",
+      "roles": "User roles",
+      "design": {
+        "existing": "Existing design provided",
+        "premium": "Premium visual design",
+        "brandIdentity": "Brand identity",
+        "advancedMotion": "Advanced 3D / animation"
+      }
+    },
+    "meta": {
+      "title": "Website cost estimator",
+      "description": "Answer a few option-based questions and see an indicative price range and timeline for your website or app. Not a quotation."
+    },
+    "intro": {
+      "label": "Cost estimator",
+      "title": "Estimate your project in a few minutes",
+      "sub": "Pick from simple options and watch an indicative range update live — no typing until the very end."
+    },
+    "trust": "Indicative estimate — not a quotation; final pricing follows a detailed assessment.",
+    "disclaimer": "Indicative estimate, not a quotation — final pricing follows a detailed assessment.",
+    "nojs": "The estimator needs JavaScript. You can still tell us about your project on the contact page.",
+    "nojs_link": "Go to the contact page",
+    "nav": {
+      "label": "Estimator progress"
+    },
+    "step_of": "Step {n} of {total}",
+    "flow": {
+      "s1": {
+        "title": "What should your project achieve?",
+        "short": "Goals"
+      },
+      "s2": {
+        "title": "How big will it be?",
+        "short": "Size"
+      },
+      "s3": {
+        "title": "What are we building?",
+        "short": "Project type"
+      },
+      "s4": {
+        "title": "What do you need inside?",
+        "short": "Requirements"
+      },
+      "s5": {
+        "title": "How should it look and feel?",
+        "short": "Design"
+      },
+      "s6": {
+        "title": "What should it connect to?",
+        "short": "Integrations"
+      },
+      "s7": {
+        "title": "Review your estimate",
+        "short": "Estimate"
+      },
+      "s8": {
+        "title": "Summary and your details",
+        "short": "Summary"
+      }
+    },
+    "btn_back": "Back",
+    "btn_next": "Continue",
+    "btn_print": "Print or save as PDF",
+    "start_over": "Start over",
+    "optional": "(optional)",
+    "on": "On",
+    "off": "Off",
+    "step3": {
+      "need": "Choose at least one project type to continue.",
+      "suggested": "Suggested for your goals"
+    },
+    "design": {
+      "legend": "Design options",
+      "hint": "Switch on what applies. Design choices adjust the estimate."
+    },
+    "restored": {
+      "note": "We restored your previous answers."
+    },
+    "panel": {
+      "title": "Your estimate",
+      "range_label": "Estimated one-time cost",
+      "empty": "Choose a project type to see your live estimate.",
+      "discovery": "You are not sure yet, so this range is a placeholder for a discovery phase. We define the scope together before pricing.",
+      "timeline": "Estimated timeline",
+      "weeks": "{low}–{high} weeks",
+      "weeks_one": "{n} weeks",
+      "breakdown": "Breakdown",
+      "maintenance": "Monthly care plan",
+      "per_month": "per month",
+      "maintenance_note": "{plan} level. Billed monthly, separately from the one-time project cost."
+    },
+    "plan": {
+      "launch": "Launch",
+      "studio": "Studio",
+      "growth": "Growth"
+    },
+    "group": {
+      "build": "Build",
+      "features": "Features",
+      "integrations": "Integrations",
+      "design": "Design"
+    },
+    "live": {
+      "announce": "Estimated cost {low} to {high}, {weeks}."
+    },
+    "sheet": {
+      "bar_label": "Estimated",
+      "bar_empty": "Pick a type",
+      "open": "Details",
+      "close": "Close",
+      "title": "Estimate details"
+    },
+    "review": {
+      "intro": "This is your live indicative estimate. Change anything and it updates instantly.",
+      "edit": "Change your answers",
+      "continue": "Continue to summary"
+    },
+    "sum": {
+      "title": "Your project summary",
+      "goals": "Goals",
+      "size": "Size",
+      "types": "Project type",
+      "scope": "Scope",
+      "features": "Features",
+      "design": "Design",
+      "integrations": "Integrations",
+      "edit": "Edit",
+      "edit_section": "Edit {section}"
+    },
+    "f": {
+      "title": "Your details",
+      "name": "Full name",
+      "business": "Business name",
+      "email": "Email",
+      "phone": "Phone / WhatsApp",
+      "details": "Anything else we should know?",
+      "details_hint": "Deadlines, examples you like, your budget, or anything that helps us prepare.",
+      "preferred": "How should we contact you?",
+      "consent": "I agree that Devora may contact me about this project and store these details for that purpose."
+    },
+    "pref": {
+      "email": "Email",
+      "phone": "Phone call",
+      "whatsapp": "WhatsApp"
+    },
+    "cta": "Let's Build Your Project",
+    "submitting": "Sending…",
+    "retry": "Try again",
+    "err": {
+      "summary": "Please fix the following:",
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "phone": "Please enter a phone number so we can reach you.",
+      "consent": "Please agree to be contacted to continue.",
+      "validation": "Some details were not accepted. Please check the form and try again.",
+      "origin": "We could not confirm the request came from our site. Please reload the page and try again.",
+      "too_large": "Your request is too large. Please shorten your notes and try again.",
+      "rate": "Too many requests. Please try again in {sec} seconds.",
+      "rate_generic": "Too many requests. Please wait a little and try again.",
+      "unavailable": "We could not send your request right now. Your answers are kept: try again, or email us instead.",
+      "network": "Network problem. Check your connection and try again, or email us instead.",
+      "mailto": "Email us this summary instead"
+    },
+    "mailto": {
+      "subject": "Project estimate request",
+      "intro": "Hello Devora, I would like to discuss this project:"
+    },
+    "success": {
+      "title": "Request received",
+      "sub": "Thank you, {name}. We have your project details and will be in touch.",
+      "duplicate": "We already had this request, so this is the same reference as before.",
+      "ref": "Your reference number"
+    },
+    "copy": "Copy",
+    "copied": "Copied",
+    "copy_failed": "Could not copy. Please select and copy it manually.",
+    "next": {
+      "1": "We review your answers and prepare a detailed assessment.",
+      "2": "We contact you the way you prefer, usually within two working days.",
+      "3": "You receive a clear proposal. Until then, the figures here stay indicative.",
+      "title": "What happens next"
+    },
+    "alt": {
+      "title": "Prefer another way to reach us?"
+    },
+    "new_tab": "(opens in a new tab)",
+    "print_heading": "Devora — indicative project estimate",
+    "new": "Start a new estimate"
+  },
+  "discuss": {
+    "meta": {
+      "title": "Discuss your system | Devora",
+      "description": "Tell us what custom software you need in a few quick choices. We reply with next steps and a typical starting range. No obligation."
+    },
+    "intro": {
+      "label": "Custom software",
+      "title": "Discuss your system",
+      "sub": "Tell us what you need in a few quick choices. We will reply with next steps. No obligation."
+    },
+    "trust": "This is a conversation starter, not a quotation. The range you see is a typical starting point, confirmed together once we understand your system.",
+    "nojs": "This guided flow needs JavaScript. You can still reach us directly:",
+    "nojs_link": "Contact us",
+    "step_of": "Step {n} of {total}",
+    "nav": {
+      "label": "Progress"
+    },
+    "optional": "(optional)",
+    "optional_step": "You can skip this step.",
+    "btn_next": "Next",
+    "btn_back": "Back",
+    "btn_review": "Review",
+    "btn_back_summary": "Back to summary",
+    "btn_print": "Print or save as PDF",
+    "start_over": "Start over",
+    "restored": {
+      "note": "We restored your earlier choices on this device."
+    },
+    "flow": {
+      "s1": {
+        "short": "Goal"
+      },
+      "s2": {
+        "short": "Users"
+      },
+      "s3": {
+        "short": "Today"
+      },
+      "s4": {
+        "short": "Connections"
+      },
+      "s5": {
+        "short": "Must-haves"
+      },
+      "s6": {
+        "short": "Timeline"
+      },
+      "s7": {
+        "short": "Budget"
+      },
+      "s8": {
+        "short": "Review",
+        "title": "Review and send"
+      }
+    },
+    "q": {
+      "purpose": {
+        "title": "What do you want the software to do?",
+        "hint": "Pick everything that applies."
+      },
+      "users": {
+        "title": "Who will use it?",
+        "hint": "Pick one."
+      },
+      "today": {
+        "title": "How do you handle this today?",
+        "hint": "Pick the closest."
+      },
+      "integrations": {
+        "title": "Does it need to connect to other tools?",
+        "hint": "For example accounting, CRM, WhatsApp or payment systems."
+      },
+      "mustHaves": {
+        "title": "What must it have?",
+        "hint": "Pick everything that is a must."
+      },
+      "timeline": {
+        "title": "When do you need it?",
+        "hint": "A rough timeframe is fine."
+      },
+      "budget": {
+        "title": "What budget do you have in mind?",
+        "hint": "This only helps us suggest the right scope."
+      }
+    },
+    "purpose": {
+      "replace-spreadsheets": "Replace spreadsheets",
+      "run-operations": "Run daily operations",
+      "customer-portal": "A portal for my customers",
+      "internal-dashboard": "An internal dashboard",
+      "ai-tool": "An AI-powered tool",
+      "connect-tools": "Connect the tools I already use",
+      "other": "Something else"
+    },
+    "users": {
+      "me": "Just me",
+      "team-2-10": "A team of 2–10",
+      "team-10-50": "A team of 10–50",
+      "customers": "My customers",
+      "team-and-customers": "My team and my customers"
+    },
+    "today": {
+      "spreadsheets": "Spreadsheets or paper",
+      "off-the-shelf": "Off-the-shelf software that does not fit",
+      "disconnected-tools": "Several disconnected tools",
+      "nothing": "Nothing yet"
+    },
+    "integrations": {
+      "none": "No",
+      "one-two": "One or two",
+      "many": "Many",
+      "unsure": "Not sure"
+    },
+    "mustHaves": {
+      "auth-roles": "Logins and user roles",
+      "payments": "Online payments",
+      "dashboards": "Dashboards and reports",
+      "notifications": "WhatsApp or email notifications",
+      "mobile": "Works well on mobile",
+      "ai-assistant": "AI assistant",
+      "bilingual": "Arabic and English"
+    },
+    "timeline": {
+      "lt-1m": "Under a month",
+      "1-3m": "1–3 months",
+      "3-6m": "3–6 months",
+      "flexible": "Flexible"
+    },
+    "budget": {
+      "lt5k": "Under {b1}",
+      "5-10k": "{b1} – {b2}",
+      "10-20k": "{b2} – {b3}",
+      "20k+": "{b3} or more",
+      "unsure": "Not sure yet"
+    },
+    "sum": {
+      "title": "Your choices",
+      "purpose": "What it should do",
+      "users": "Who uses it",
+      "today": "Today",
+      "integrations": "Connections",
+      "mustHaves": "Must-haves",
+      "timeline": "Timeline",
+      "budget": "Budget",
+      "edit": "Edit",
+      "edit_section": "Edit {section}",
+      "skipped": "Skipped"
+    },
+    "range": {
+      "title": "Typical starting range",
+      "indicative": "Indicative only, not a quotation.",
+      "indicative_short": "indicative",
+      "timeline": "Typical delivery",
+      "maintenance": "Care plan from",
+      "per_month": "/ month",
+      "weeks": "{low}–{high} weeks",
+      "weeks_one": "{n, plural, one{# week} other{# weeks}}",
+      "announce": "Typical starting range updated: {low} to {high}, around {weeks}. Indicative only."
+    },
+    "fit": {
+      "below": "Your budget band is below the typical starting range for what you described. We can talk about a smaller first release and grow from there.",
+      "within": "Your budget band overlaps the typical starting range for what you described.",
+      "above": "Your budget band is above the typical starting range, which leaves room for extras or a phased roadmap."
+    },
+    "assume": {
+      "title": "What this assumes",
+      "spreadsheets": "Your existing spreadsheets are imported once into the new system.",
+      "disconnected": "Your current tools stay in place and are connected where they offer an API.",
+      "offtheshelf": "Your data is migrated from your current tool where an export exists.",
+      "mobile": "A mobile-friendly interface is included. Native mobile apps are quoted separately.",
+      "notifications": "Notifications are priced as email automation. WhatsApp and SMS are extra.",
+      "int_unsure": "Connections are not defined yet, so one third-party integration is assumed.",
+      "int_many": "Several connections are assumed. Each additional system may add cost.",
+      "time_short": "Your requested timeline is shorter than the typical delivery time, so the scope may need to be phased.",
+      "time_long": "The typical delivery time is longer than three months, so the scope may need to be phased."
+    },
+    "disclaimer": "Indicative typical starting range, not a quotation. The final scope and price are agreed with you after a discovery conversation.",
+    "f": {
+      "title": "How can we reach you?",
+      "name": "Your name",
+      "business": "Business name",
+      "email": "Email",
+      "phone": "Phone or WhatsApp",
+      "notes": "Anything else we should know?",
+      "notes_hint": "Optional. Describe your system in your own words, in English or Arabic.",
+      "preferred": "Preferred way to reach you",
+      "consent": "I agree that Devora may use these details to reply to my request."
+    },
+    "pref": {
+      "email": "Email",
+      "phone": "Phone call",
+      "whatsapp": "WhatsApp"
+    },
+    "err": {
+      "summary": "Please fix the following:",
+      "name": "Enter your name.",
+      "email": "Enter a valid email address.",
+      "phone": "Enter a phone number so we can reach you the way you prefer.",
+      "consent": "Please agree so we can reply to you.",
+      "validation": "Some details were not accepted. Please check the form and try again.",
+      "origin": "We could not verify this request. Please reload the page and try again.",
+      "too_large": "Your request is too large. Please shorten your notes and try again.",
+      "rate": "Too many requests. Please try again in {sec} seconds.",
+      "rate_generic": "Too many requests. Please try again in a little while.",
+      "unavailable": "We could not send your request right now. Your answers are saved, so you can try again.",
+      "network": "We could not reach the server. Check your connection and try again.",
+      "mailto": "Or email us your request instead"
+    },
+    "mailto": {
+      "subject": "Discuss my system",
+      "intro": "Hello Devora, I would like to discuss a custom software project:"
+    },
+    "cta": "Discuss my system",
+    "retry": "Try again",
+    "submitting": "Sending...",
+    "success": {
+      "title": "Thank you, we have your request",
+      "sub": "Thanks, {name}. We will reply with next steps by your preferred contact method.",
+      "ref": "Your reference",
+      "duplicate": "We had already received this request, so nothing was sent twice."
+    },
+    "copy": "Copy reference",
+    "copied": "Copied",
+    "copy_failed": "Could not copy. Select the reference and copy it manually.",
+    "next": {
+      "1": "We read your answers and notes and prepare a few questions.",
+      "2": "We reply to you, usually within one or two working days, to arrange a short discovery conversation.",
+      "3": "After that you get a clear scope and a fixed proposal. No obligation.",
+      "title": "What happens next"
+    },
+    "alt": {
+      "title": "Prefer another way to reach us?"
+    },
+    "new": "Start a new request",
+    "new_tab": "(opens in a new tab)",
+    "print_heading": "Devora: software discovery summary",
+    "step1": {
+      "need": "Choose at least one option to continue."
     }
   }
 }

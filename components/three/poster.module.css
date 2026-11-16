@@ -1,0 +1,91 @@
+/* Still glow poster: server-rendered, shown for phones / reduced motion / no WebGL and until the
+   canvas cross-fades in. Animation is CSS-only and switched off for reduced motion. */
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+}
+
+.aura {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(92cqw, 92cqh);
+  height: min(92cqw, 92cqh);
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in oklab, var(--color-amber-hi) 34%, transparent) 0%,
+    color-mix(in oklab, var(--color-amber) 20%, transparent) 24%,
+    color-mix(in oklab, var(--color-amber) 7%, transparent) 50%,
+    transparent 72%
+  );
+  animation: breathe 7s ease-in-out infinite;
+}
+
+.mark,
+.glow {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  /* Matches the WebGL framing: the 512 viewBox is drawn at 1/1.3 of the short side. */
+  width: min(76.9cqw, 76.9cqh);
+  height: min(76.9cqw, 76.9cqh);
+  overflow: visible;
+}
+
+.mark {
+  animation: drift 11s ease-in-out infinite;
+}
+
+.glow {
+  filter: blur(14px);
+  opacity: 0.55;
+  animation: drift 11s ease-in-out infinite, breathe 7s ease-in-out infinite;
+}
+
+.stroke {
+  stroke: var(--color-amber);
+}
+
+.stopHi {
+  stop-color: var(--color-amber-hi);
+}
+
+.stopLo {
+  stop-color: var(--color-amber);
+}
+
+.dot {
+  fill: var(--color-amber-hi);
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -1.2cqh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aura,
+  .mark,
+  .glow {
+    animation: none;
+  }
+}

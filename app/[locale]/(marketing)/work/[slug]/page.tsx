@@ -1,7 +1,8 @@
 import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
-import {alternates} from '@/lib/seo';
+import {pageMetadata} from '@/lib/seo';
+import {BreadcrumbJsonLd} from '@/components/seo/schemas';
 import {CASES} from '@/lib/site';
 import CaseStudyDetail from '@/components/work/CaseStudyDetail';
 import AmberBand from '@/components/ui/AmberBand';
@@ -23,13 +24,7 @@ export async function generateMetadata({
   const copy = locale === 'ar' ? data.ar : data.en;
   const title = `${data.domain} — ${copy.industry}`;
   const description = copy.summary;
-  return {
-    title,
-    description,
-    alternates: alternates(`/work/${slug}`, locale as 'en' | 'ar'),
-    openGraph: {title, description},
-    twitter: {title, description},
-  };
+  return pageMetadata({locale, path: `/work/${slug}`, title, description, type: 'article'});
 }
 
 export default async function CasePage({
@@ -43,9 +38,19 @@ export default async function CasePage({
   if (!data) notFound();
 
   const c = await getTranslations({locale, namespace: 'common'});
+  const wk = await getTranslations({locale, namespace: 'work'});
+  const copy = locale === 'ar' ? data.ar : data.en;
 
   return (
     <>
+      <BreadcrumbJsonLd
+        locale={locale as 'en' | 'ar'}
+        items={[
+          {name: c('nav_home'), path: ''},
+          {name: wk('wk_label'), path: '/work'},
+          {name: `${data.domain} — ${copy.industry}`, path: `/work/${slug}`},
+        ]}
+      />
       <CaseStudyDetail data={data} locale={locale} />
       <AmberBand
         title={c('cta_title')}

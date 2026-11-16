@@ -10,7 +10,7 @@ Deploys happen automatically via Vercel's Git integration:
 `.github/workflows/ci.yml` runs on **every push to `main`** and **every pull request**:
 
 ```
-npm ci  →  tsc --noEmit  →  eslint  →  next build
+npm ci  →  tsc --noEmit  →  eslint  →  vitest  →  SMTP integration  →  next build
 ```
 
 Watch runs under the repo's **Actions → CI** tab. Green = types, lint and build all pass.
