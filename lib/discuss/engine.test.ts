@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import {ESTIMATOR_CONFIG} from '@/lib/pricing/config';
 import keysJson from '@/docs/transformation/discuss-i18n-keys.json';
+import {DISCUSS_BUDGET_BOUNDS, DISCUSS_CONFIG} from './config';
 import {budgetFit, estimateDiscuss} from './engine';
 import {discussI18nKeys} from './i18n-keys';
 import {
@@ -21,8 +22,8 @@ describe('estimateDiscuss', () => {
   it('a mid app lands at or above the web-app base', () => {
     const r = estimateDiscuss(mid);
     expect(r.estimate.subtotal).toBeGreaterThanOrEqual(ESTIMATOR_CONFIG.projectBase.webapp.amount);
-    expect(r.startingLow % 500).toBe(0);
-    expect(r.startingHigh % 500).toBe(0);
+    expect(r.startingLow % 100).toBe(0);
+    expect(r.startingHigh % 100).toBe(0);
     expect(r.startingLow).toBeLessThanOrEqual(r.estimate.subtotal);
     expect(r.startingHigh).toBeGreaterThanOrEqual(r.estimate.subtotal);
     expect(r.configVersion).toBe(ESTIMATOR_CONFIG.configVersion);
@@ -58,14 +59,22 @@ describe('estimateDiscuss', () => {
     const r = estimateDiscuss(mid);
     expect(estimateDiscuss({...mid, budget: 'unsure'}).budgetFit).toBe('unknown');
     expect(estimateDiscuss(mid).budgetFit).toBe('unknown');
-    expect(budgetFit('lt15k', r.startingLow, r.startingHigh)).toBe(r.startingLow > 15000 ? 'below' : 'within');
-    expect(budgetFit('lt15k', 20000, 30000)).toBe('below');
-    expect(budgetFit('15-30k', 20000, 30000)).toBe('within');
-    expect(budgetFit('60k+', 20000, 30000)).toBe('above');
-    expect(budgetFit('60k+', 40000, 90000)).toBe('within');
-    expect(budgetFit('30-60k', 10000, 20000)).toBe('above');
-    expect(estimateDiscuss({...mid, budget: '60k+'}).budgetFit).toBe('above');
-    expect(estimateDiscuss({...mid, budget: 'lt15k'}).budgetFit).toBe('below');
+    expect(budgetFit('lt5k', r.startingLow, r.startingHigh)).toBe(r.startingLow > 5000 ? 'below' : 'within');
+    expect(budgetFit('lt5k', 8000, 10000)).toBe('below');
+    expect(budgetFit('5-10k', 8000, 10000)).toBe('within');
+    expect(budgetFit('10-20k', 8000, 10000)).toBe('within'); // touches at 10k
+    expect(budgetFit('10-20k', 4000, 6000)).toBe('above');
+    expect(budgetFit('20k+', 8000, 10000)).toBe('above');
+    expect(budgetFit('20k+', 15000, 25000)).toBe('within');
+    expect(budgetFit('5-10k', 15000, 20000)).toBe('below');
+    expect(estimateDiscuss({...mid, budget: '20k+'}).budgetFit).toBe('above');
+    expect(estimateDiscuss({...mid, budget: 'lt5k'}).budgetFit).toBe('below');
+  });
+  it('bands follow the 5k / 10k / 20k boundaries and the shared range factors', () => {
+    expect(DISCUSS_BUDGET_BOUNDS).toEqual([5000, 10000, 20000]);
+    expect(DISCUSS_CONFIG.budgetBands['5-10k']).toEqual({min: 5000, max: 10000});
+    expect(DISCUSS_CONFIG.budgetBands['20k+']).toEqual({min: 20000, max: null});
+    expect(DISCUSS_CONFIG.startingRange).toEqual(ESTIMATOR_CONFIG.range);
   });
 });
 

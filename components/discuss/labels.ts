@@ -1,3 +1,4 @@
+import {DISCUSS_BUDGET_BOUNDS} from '@/lib/discuss/config';
 import {formatMoney} from '@/lib/pricing/config';
 import {QUESTIONS, toSchemaAnswers, type Answers, type QuestionId, type StepNo} from './model';
 import type {Tx} from './i18n';
@@ -8,9 +9,9 @@ const iso = (s: string) => `⁦${s}⁩`;
 /** Budget band thresholds (ILS) used in the card labels; formatted per locale. */
 export function budgetParams(locale: string): Record<string, string> {
   return {
-    b15: iso(formatMoney(15000, locale)),
-    b30: iso(formatMoney(30000, locale)),
-    b60: iso(formatMoney(60000, locale)),
+    b1: iso(formatMoney(DISCUSS_BUDGET_BOUNDS[0], locale)),
+    b2: iso(formatMoney(DISCUSS_BUDGET_BOUNDS[1], locale)),
+    b3: iso(formatMoney(DISCUSS_BUDGET_BOUNDS[2], locale)),
   };
 }
 

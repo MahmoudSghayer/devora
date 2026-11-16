@@ -120,7 +120,7 @@ export interface EstimateResult {
   groups: Record<LineGroup, EstimateGroup>;
   /** one-time total (sum of all line items) */
   subtotal: number;
-  /** indicative range, rounded to ₪500: low rounds down, high rounds up */
+  /** indicative range, rounded to ₪100: low rounds down, high rounds up */
   low: number;
   high: number;
   weeksLow: number;
@@ -183,6 +183,10 @@ export interface EstimatorConfig {
     premiumFactor: number;
     premiumDays: number;
   };
+  /** features a selected project type already includes: never priced or offered on top */
+  typeIncludes: Partial<Record<ProjectType, readonly FeatureId[]>>;
+  /** features a chosen integration already covers: priced once, via the integration */
+  integrationCovers: Partial<Record<IntegrationOnlyId, readonly FeatureId[]>>;
   range: {lowFactor: number; highFactor: number; roundTo: number};
   timeline: {daysPerWeek: number; parallelismLow: number; parallelismHigh: number; bufferWeeksHigh: number};
   /** one-time subtotal at/above which the next care plan applies */

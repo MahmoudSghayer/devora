@@ -6,6 +6,7 @@ import {useFocusTrap} from '@/lib/hooks/useFocusTrap';
 import {useScrollLock} from '@/lib/hooks/useScrollLock';
 import type {EstimateResult} from '@/lib/estimator/types';
 import EstimatePanel, {RangeFigures} from './EstimatePanel';
+import {useBottomBar} from '@/components/chat/bottomBar';
 import {ChevronIcon} from './icons';
 import {useTx} from './i18n';
 
@@ -19,6 +20,8 @@ export default function MobileSheet({est, hasTypes}: {est: EstimateResult; hasTy
   const reduced = useReducedMotion();
   const [open, setOpen] = useState(false);
   const sheetRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  useBottomBar(barRef);
   const close = useCallback(() => setOpen(false), []);
   useFocusTrap(sheetRef, open, close);
   useScrollLock(open);
@@ -26,7 +29,8 @@ export default function MobileSheet({est, hasTypes}: {est: EstimateResult; hasTy
   return (
     <div className="nav:hidden print:hidden">
       <div
-        className="glass-hi fixed inset-x-0 bottom-0 flex items-center justify-between gap-3 rounded-t-panel ps-5 pe-24 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3"
+        ref={barRef}
+        className="glass-hi fixed inset-x-0 bottom-0 flex items-center justify-between gap-3 rounded-t-panel ps-5 pe-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3"
         style={{zIndex: 'var(--z-sheet)'}}
       >
         <div className="min-w-0">

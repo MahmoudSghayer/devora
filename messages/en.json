@@ -1562,10 +1562,10 @@
       "flexible": "Flexible"
     },
     "budget": {
-      "lt15k": "Under {b15}",
-      "15-30k": "{b15} – {b30}",
-      "30-60k": "{b30} – {b60}",
-      "60k+": "{b60} or more",
+      "lt5k": "Under {b1}",
+      "5-10k": "{b1} – {b2}",
+      "10-20k": "{b2} – {b3}",
+      "20k+": "{b3} or more",
       "unsure": "Not sure yet"
     },
     "sum": {

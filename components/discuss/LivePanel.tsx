@@ -1,7 +1,9 @@
 'use client';
 
+import {useRef} from 'react';
 import {useLocale} from 'next-intl';
 import CountUp from '@/components/motion/CountUp';
+import {useBottomBar} from '@/components/chat/bottomBar';
 import {formatMoney} from '@/lib/pricing/config';
 import type {DiscussResult} from '@/lib/discuss/types';
 import {useTx, type Tx} from './i18n';
@@ -73,9 +75,12 @@ export default function LivePanel({result, headingLevel = 2}: {result: DiscussRe
 /** Mobile: a slim bar pinned to the bottom with the running range. Hidden at `nav:`. */
 export function MobileBar({result}: {result: DiscussResult}) {
   const t = useTx();
+  const barRef = useRef<HTMLDivElement>(null);
+  useBottomBar(barRef);
   return (
     <div
-      className="glass-hi fixed inset-x-0 bottom-0 rounded-t-panel ps-5 pe-24 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 nav:hidden print:hidden"
+      ref={barRef}
+      className="glass-hi fixed inset-x-0 bottom-0 rounded-t-panel ps-5 pe-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 nav:hidden print:hidden"
       style={{zIndex: 'var(--z-sheet)'}}
     >
       <p className="text-[12px] leading-none text-muted">{t('range.title')}</p>

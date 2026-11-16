@@ -1,16 +1,21 @@
 // Discovery-flow constants. Prices come from ESTIMATOR_CONFIG; only the budget
-// bands and the "typical starting range" factors live here.
+// bands live here. The starting range reuses the estimator's range factors, so
+// the two flows always quote the same spread.
+import {ESTIMATOR_CONFIG} from '@/lib/pricing/config';
 import type {DiscussConfig} from './types';
 
+/** Budget card boundaries (ILS): under B1 / B1–B2 / B2–B3 / B3 and over. */
+export const DISCUSS_BUDGET_BOUNDS = [5000, 10000, 20000] as const;
+const [B1, B2, B3] = DISCUSS_BUDGET_BOUNDS;
+
 export const DISCUSS_CONFIG: DiscussConfig = {
-  // Budget cards (ILS). 'unsure' never compares.
+  // 'unsure' never compares.
   budgetBands: {
-    lt15k: {min: 0, max: 15000},
-    '15-30k': {min: 15000, max: 30000},
-    '30-60k': {min: 30000, max: 60000},
-    '60k+': {min: 60000, max: null},
+    lt5k: {min: 0, max: B1},
+    '5-10k': {min: B1, max: B2},
+    '10-20k': {min: B2, max: B3},
+    '20k+': {min: B3, max: null},
     unsure: {min: 0, max: null},
   },
-  // Starting range = subtotal x [0.9, 1.2], rounded to 500 (same spread as the website estimator).
-  startingRange: {lowFactor: 0.9, highFactor: 1.2, roundTo: 500},
+  startingRange: ESTIMATOR_CONFIG.range,
 };

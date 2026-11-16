@@ -7,6 +7,7 @@ import type {ChatLocale} from '@/lib/chat/types';
 import {useChat} from './useChat';
 import ChatLauncher from './ChatLauncher';
 import ChatPanel from './ChatPanel';
+import {aboveBottomBar} from './bottomBar';
 
 // Mounted once in app/[locale]/layout.tsx → present on every public page, in
 // both locales, with RTL inherited from <html dir>. The conversation state
@@ -33,7 +34,10 @@ export default function ChatWidget({initialOpen = false}: {initialOpen?: boolean
   }, [chat]);
 
   return (
-    <div className="fixed bottom-5 end-5 z-[60] flex flex-col items-end gap-3 print:hidden">
+    <div
+      className="fixed end-5 z-[60] flex flex-col items-end gap-3 print:hidden"
+      style={{bottom: aboveBottomBar('1.25rem')}}
+    >
       <AnimatePresence>
         {open && (
           <ChatPanel locale={locale} chat={chat} onClose={() => setOpen(false)} />

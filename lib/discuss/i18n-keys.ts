@@ -44,7 +44,8 @@ const OPTIONS: Record<string, Record<string, string>> = {
     bilingual: 'Hebrew / Arabic / English',
   },
   timeline: {'lt-1m': 'Under a month', '1-3m': '1–3 months', '3-6m': '3–6 months', flexible: 'Flexible'},
-  budget: {lt15k: 'Under ₪15,000', '15-30k': '₪15,000–30,000', '30-60k': '₪30,000–60,000', '60k+': '₪60,000+', unsure: 'Not sure yet'},
+  // Amounts are ICU params ({b1}/{b2}/{b3} from DISCUSS_BUDGET_BOUNDS), never hardcoded.
+  budget: {lt5k: 'Under {b1}', '5-10k': '{b1} – {b2}', '10-20k': '{b2} – {b3}', '20k+': '{b3} or more', unsure: 'Not sure yet'},
 };
 
 /** key → English text, namespace `discuss`. */

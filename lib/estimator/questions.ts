@@ -2,6 +2,7 @@
 // appear: use visibleQuestions(answers). All prices are referenced (priceRef),
 // never repeated — they live in ESTIMATOR_CONFIG.
 
+import {redundantFeatureIds} from './engine';
 import {ESTIMATOR_CONFIG, GOAL_OPTIONS, GOAL_TYPE_SUGGESTIONS, SIZE_OPTIONS} from '@/lib/pricing/config';
 import {
   FEATURE_IDS,
@@ -12,6 +13,7 @@ import {
   ROLE_BUCKETS,
   SIZE_IDS,
   type FeatureDef,
+  type FeatureId,
   type ProjectType,
 } from './types';
 
@@ -154,12 +156,26 @@ export const QUESTIONS: readonly Question[] = [
   },
 ];
 
-/** Questions relevant to the selected project types, in flow order. */
-export function visibleQuestions(answers: {types?: readonly ProjectType[]}): Question[] {
+/**
+ * Questions relevant to the selected project types, in flow order. Feature
+ * options the selected types (or chosen integrations) already include are
+ * removed, so the UI never offers a double charge.
+ */
+export function visibleQuestions(answers: {
+  types?: readonly ProjectType[];
+  integrations?: readonly string[];
+}): Question[] {
   const types = answers.types ?? [];
+  const redundant = redundantFeatureIds(types, answers.integrations ?? []);
   return QUESTIONS.filter(
     (qn) => qn.appliesTo === 'all' || qn.appliesTo.some((t) => types.includes(t)),
-  );
+  )
+    .map((qn) =>
+      qn.options && qn.answerKey === 'features'
+        ? {...qn, options: qn.options.filter((o) => !redundant.has(o.id as FeatureId))}
+        : qn,
+    )
+    .filter((qn) => qn.answerKey !== 'features' || (qn.options?.length ?? 0) > 0);
 }
 
 export const STEPS: readonly QuestionStep[] = [1, 2, 3, 4, 5, 6, 7];

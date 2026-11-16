@@ -3,6 +3,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import dynamic from 'next/dynamic';
 import {useTranslations} from 'next-intl';
+import {aboveBottomBar} from './bottomBar';
 
 // The full widget (panel, streaming, Supabase realtime) is not needed for first
 // paint. A static launcher button renders immediately in the exact slot the real
@@ -42,7 +43,10 @@ export default function ChatWidgetLazy() {
   if (loaded) return <ChatWidget initialOpen={openOnLoad} />;
 
   return (
-    <div className="fixed bottom-5 end-5 z-[60] flex flex-col items-end gap-3 print:hidden">
+    <div
+      className="fixed end-5 z-[60] flex flex-col items-end gap-3 print:hidden"
+      style={{bottom: aboveBottomBar('1.25rem')}}
+    >
       <button
         type="button"
         onClick={onClick}

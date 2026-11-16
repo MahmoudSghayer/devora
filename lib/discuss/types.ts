@@ -36,14 +36,14 @@ export type MustHave = (typeof MUST_HAVE_OPTIONS)[number];
 export const TIMELINE_OPTIONS = ['lt-1m', '1-3m', '3-6m', 'flexible'] as const;
 export type Timeline = (typeof TIMELINE_OPTIONS)[number];
 
-export const BUDGET_OPTIONS = ['lt15k', '15-30k', '30-60k', '60k+', 'unsure'] as const;
+export const BUDGET_OPTIONS = ['lt5k', '5-10k', '10-20k', '20k+', 'unsure'] as const;
 export type Budget = (typeof BUDGET_OPTIONS)[number];
 
 export type BudgetFit = 'below' | 'within' | 'above' | 'unknown';
 
 export interface DiscussResult {
   estimate: EstimateResult;
-  /** typical starting range, rounded to ₪500 — indicative, not a quotation */
+  /** typical starting range, rounded to ₪100 — indicative, not a quotation */
   startingLow: number;
   startingHigh: number;
   budgetFit: BudgetFit;

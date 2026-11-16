@@ -7,6 +7,9 @@
 //   3. design     existing-design discount (on build only), premium markup
 //                 (on build + features + discount), flat brand / motion add-ons
 //   4. integrations  fixed prices (+ optional monthly)
+//   Overlaps are never double-charged: a feature that a selected type already
+//   includes (config.typeIncludes) or that a chosen integration covers
+//   (config.integrationCovers) is dropped from pricing.
 //   Shared ids (crm, multilingual, advancedSeo, payments) are priced once even
 //   when chosen in both the features step and the integrations step.
 
@@ -97,8 +100,23 @@ const sum = (items: readonly LineItem[], key: 'amount' | 'days'): number =>
   items.reduce((s, i) => s + i[key], 0);
 
 /** Round to the nearest `step`; floor/ceil variants guarantee low ≤ total ≤ high. */
-const floorTo = (n: number, step: number): number => Math.floor(n / step) * step;
-const ceilTo = (n: number, step: number): number => Math.ceil(n / step) * step;
+// 1e-9 absorbs float noise (e.g. 2000 × 1.15 = 2300.0000000000005) before rounding.
+const floorTo = (n: number, step: number): number => Math.floor(n / step + 1e-9) * step;
+const ceilTo = (n: number, step: number): number => Math.ceil(n / step - 1e-9) * step;
+
+/** Feature ids that are already part of the selected types / chosen integrations. */
+export function redundantFeatureIds(
+  types: readonly ProjectType[],
+  integrations: readonly string[],
+  c: EstimatorConfig = ESTIMATOR_CONFIG,
+): Set<FeatureId> {
+  const out = new Set<FeatureId>();
+  for (const t of types) for (const f of c.typeIncludes[t] ?? []) out.add(f);
+  for (const i of integrations) {
+    for (const f of c.integrationCovers[i as IntegrationOnlyId] ?? []) out.add(f);
+  }
+  return out;
+}
 
 function planFor(subtotal: number, c: EstimatorConfig): MaintenancePlan {
   if (subtotal >= c.maintenanceThresholds.growth) return 'growth';
@@ -122,9 +140,11 @@ export function estimateProject(
 
   // features (step 3): only those relevant to a selected type
   const chosenFeatures = new Set(answers.features ?? []);
+  const redundant = redundantFeatureIds(types, answers.integrations ?? [], c);
   const featureIds = FEATURE_IDS.filter(
     (id) =>
       chosenFeatures.has(id) &&
+      !redundant.has(id) &&
       // an undecided project ('unsure') prices whatever the visitor picked
       (types.includes('unsure') || c.features[id].appliesTo.some((t) => types.includes(t))),
   );

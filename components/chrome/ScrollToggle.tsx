@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import {motion, useReducedMotion} from 'motion/react';
 import {useLocale} from 'next-intl';
 import {EASE} from '@/lib/motion';
+import {aboveBottomBar} from '@/components/chat/bottomBar';
 
 // Floating scroll control on the START side (the chat widget owns the END
 // side, bottom-5 end-5). At the top it points down → one click jumps to the
@@ -44,7 +45,8 @@ export default function ScrollToggle() {
       onClick={handleClick}
       aria-label={label}
       title={label}
-      className="fixed bottom-6 start-6 z-40 flex h-12 w-12 items-center justify-center rounded-pill border border-border-ghost bg-[rgba(5,6,9,0.82)] text-ink backdrop-blur-[12px] transition-colors hover:border-amber hover:text-amber print:hidden"
+      style={{bottom: aboveBottomBar('1.5rem')}}
+      className="fixed start-6 z-40 flex h-12 w-12 items-center justify-center rounded-pill border border-border-ghost bg-[rgba(5,6,9,0.82)] text-ink backdrop-blur-[12px] transition-colors hover:border-amber hover:text-amber print:hidden"
     >
       <motion.span
         aria-hidden

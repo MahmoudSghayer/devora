@@ -6,16 +6,14 @@ import type {RoiResult} from '@/lib/roi/types';
 import type {RoiAnswers} from '@/lib/roi/schema';
 import type {DiscussResult} from '@/lib/discuss/types';
 import type {DiscussAnswers} from '@/lib/discuss/schema';
+import {BUDGET_FIT_LABEL} from '@/lib/leads/discussLabels';
 import {
-  BUDGET_FIT_LABEL,
-  BUDGET_LABEL,
-  INTEGRATIONS_LABEL,
-  MUST_HAVE_LABEL,
-  PURPOSE_LABEL,
-  TIMELINE_LABEL,
-  TODAY_LABEL,
-  USERS_LABEL,
-} from '@/lib/leads/discussLabels';
+  ROI_ANSWER_HEAD,
+  discussAnswerPairs,
+  estimatorAnswerPairs,
+  roiAnswerRows,
+  roiLaborPairs,
+} from '@/lib/leads/answerLabels';
 
 export const esc = (s: string) =>
   s
@@ -278,29 +276,6 @@ const GROUP_LABEL: Record<string, string> = {
   design: 'Design',
 };
 
-const list = (xs?: readonly string[]) => (xs && xs.length ? xs.join(', ') : '—');
-
-function estimatorAnswerPairs(a: EstimatorAnswers): [string, string][] {
-  return [
-    ['Project types', list(a.types)],
-    ['Pages', a.pages != null ? String(a.pages) : '—'],
-    ['Products', a.productBucket ?? '—'],
-    ['User roles', a.rolesBucket ?? '—'],
-    ['Features', list(a.features)],
-    ['Integrations', list(a.integrations)],
-    [
-      'Design',
-      a.design
-        ? Object.entries(a.design)
-            .filter(([, v]) => v)
-            .map(([k]) => k)
-            .join(', ') || '—'
-        : '—',
-    ],
-    ['Problem', a.problem || '—'],
-  ];
-}
-
 export function websiteEstimateEmail(data: CalcEmailBase & {
   answers: EstimatorAnswers;
   result: EstimateResult;
@@ -372,15 +347,6 @@ export function websiteEstimateEmail(data: CalcEmailBase & {
   return {subject, text, html, replyTo: contact.email};
 }
 
-function laborLine(a: RoiAnswers): string {
-  const l = a.labor;
-  if (!l) return 'not provided';
-  if (l.mode === 'hourly') return `hourly cost ${l.hourlyCost}`;
-  if (l.mode === 'salary')
-    return `monthly gross ${l.monthlyGross}${l.employerCostMultiplier ? ` × ${l.employerCostMultiplier}` : ''}`;
-  return 'unknown (defaults used)';
-}
-
 export function automationRoiEmail(data: CalcEmailBase & {
   answers: RoiAnswers;
   result: RoiResult;
@@ -436,20 +402,10 @@ export function automationRoiEmail(data: CalcEmailBase & {
     ['Running', `${money(a.runningBase, cur)} + ${money(a.runningPerTask, cur)} per task / mo`],
   ];
 
-  const ansHead = ['Task', 'Times/day', 'Min each', 'People', 'Automation %'];
+  const ansHead = ROI_ANSWER_HEAD;
   const ansAligns: Align[] = ['left', 'right', 'right', 'right', 'right'];
-  const ansRows = answers.tasks.map((t) => [
-    t.taskId,
-    num(t.timesPerDay),
-    num(t.minutesEach),
-    String(t.employees),
-    `${num(t.automationPct, 0)}%`,
-  ]);
-  const extra: [string, string][] = [
-    ['Labor input', laborLine(answers)],
-    ['Working days override', answers.workingDays != null ? String(answers.workingDays) : '—'],
-    ['Direct share override', answers.directShare != null ? String(answers.directShare) : '—'],
-  ];
+  const ansRows = roiAnswerRows(answers);
+  const extra = roiLaborPairs(answers, cur);
   const tl = timelineLines(data.timeline);
 
   const text = [
@@ -528,23 +484,6 @@ export function contactEmail(
 
 const labelOf = (map: Record<string, string>, v: string) => map[v] ?? v;
 
-function discussAnswerPairs(a: DiscussAnswers): [string, string][] {
-  return [
-    ['What it is for', a.purpose.map((v) => labelOf(PURPOSE_LABEL, v)).join('; ')],
-    ['Who will use it', a.users ? labelOf(USERS_LABEL, a.users) : '—'],
-    ['How they work today', a.today ? labelOf(TODAY_LABEL, a.today) : '—'],
-    ['Integrations', a.integrations ? labelOf(INTEGRATIONS_LABEL, a.integrations) : '—'],
-    [
-      'Must-haves',
-      a.mustHaves && a.mustHaves.length
-        ? a.mustHaves.map((v) => labelOf(MUST_HAVE_LABEL, v)).join('; ')
-        : '—',
-    ],
-    ['Timeline', a.timeline ? labelOf(TIMELINE_LABEL, a.timeline) : '—'],
-    ['Budget', a.budget ? labelOf(BUDGET_LABEL, a.budget) : '—'],
-  ];
-}
-
 export function softwareDiscoveryEmail(data: CalcEmailBase & {
   answers: DiscussAnswers;
   result: DiscussResult;
@@ -575,14 +514,11 @@ export function softwareDiscoveryEmail(data: CalcEmailBase & {
     `Timeline:    ${weeks}`,
     `Maintenance: ${maint}`,
     '',
-    'CHOSEN OPTIONS',
+    'ANSWERS',
     ...pairs.map(([k, v]) => `${k}: ${v}`),
     '',
     r.assumptions.length ? 'ASSUMPTIONS' : '',
     ...r.assumptions.map((x) => `- ${x}`),
-    '',
-    'ANSWERS (raw)',
-    JSON.stringify(answers),
     '',
     tl.length ? 'STEP TIMELINE' : '',
     ...tl,
@@ -603,7 +539,7 @@ export function softwareDiscoveryEmail(data: CalcEmailBase & {
         ['left', 'left', 'left', 'left']
       ) +
       `<p style="font-size:11px;color:#999;margin:6px 0 0">Indicative, not a quotation.</p>` +
-      sectionTitle('Chosen options') +
+      sectionTitle('Answers') +
       htmlTable(['Question', 'Answer'], pairs.map(([k, v]) => [k, v])) +
       (r.assumptions.length
         ? sectionTitle('Assumptions') +
@@ -611,8 +547,6 @@ export function softwareDiscoveryEmail(data: CalcEmailBase & {
             .map((x) => `<li dir="auto">${esc(x)}</li>`)
             .join('')}</ul>`
         : '') +
-      sectionTitle('Answers (raw)') +
-      `<pre style="font-size:11px;white-space:pre-wrap;background:#faf9f5;border:1px solid #eee;border-radius:8px;padding:10px;margin:0">${esc(JSON.stringify(answers, null, 2))}</pre>` +
       (tl.length ? sectionTitle('Step timeline') + `<div style="font-size:12px;color:#555" dir="auto">${esc(tl.join(' → '))}</div>` : '') +
       `<p style="margin-top:20px;font-size:11px;color:#999">Pricing config ${esc(version)}</p>`
   );

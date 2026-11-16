@@ -25,7 +25,7 @@ Worked example: 3 employees × (4 × 30 min = 2 h/day) → 6 h/day, 132 h/month,
 
 ## Cost, payback, ROI
 
-- Implementation = ₪4,000 + ₪2,500 × automated task types (`automationPct > 0`); running = ₪400 + ₪100 × tasks per month. Both are 0 when no task is automated.
+- Implementation = ₪1,500 + ₪900 × automated task types (`automationPct > 0`); running = ₪120 + ₪40 × tasks per month. Both are 0 when no task is automated.
 - `paybackMonths = implementation ÷ (monthlyValue − running)`, on the direct basis and the capacity basis; `null` when the denominator ≤ 0.
 - `roi12 = (12·value − 12·running − implementation) ÷ (implementation + 12·running)`; `null` when the denominator is not positive.
 

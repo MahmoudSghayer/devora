@@ -7,6 +7,46 @@ import {
   softwareDiscoveryEmail,
   websiteEstimateEmail,
 } from '@/lib/email/templates';
+import {
+  DESIGN_FLAGS,
+  DESIGN_LABEL,
+  FEATURE_LABEL,
+  GOAL_LABEL,
+  INTEGRATION_LABEL,
+  PRODUCT_LABEL,
+  ROI_TASK_LABEL,
+  ROLE_LABEL,
+  SIZE_LABEL,
+  TYPE_LABEL,
+} from '@/lib/leads/answerLabels';
+import {
+  BUDGET_LABEL,
+  INTEGRATIONS_LABEL,
+  MUST_HAVE_LABEL,
+  PURPOSE_LABEL,
+  TIMELINE_LABEL,
+  TODAY_LABEL,
+  USERS_LABEL,
+} from '@/lib/leads/discussLabels';
+import {
+  FEATURE_IDS,
+  GOAL_IDS,
+  INTEGRATION_IDS,
+  PRODUCT_BUCKETS,
+  PROJECT_TYPES,
+  ROLE_BUCKETS,
+  SIZE_IDS,
+} from '@/lib/estimator/types';
+import {ROI_TASK_IDS} from '@/lib/roi/types';
+import {
+  BUDGET_OPTIONS,
+  INTEGRATIONS_OPTIONS,
+  MUST_HAVE_OPTIONS,
+  PURPOSE_OPTIONS,
+  TIMELINE_OPTIONS,
+  TODAY_OPTIONS,
+  USERS_OPTIONS,
+} from '@/lib/discuss/types';
 import {estimateProject} from '@/lib/estimator/engine';
 import {computeRoi} from '@/lib/roi/engine';
 import {estimateDiscuss} from '@/lib/discuss/engine';
@@ -93,7 +133,7 @@ describe('software discovery email', () => {
     users: 'team-2-10' as const,
     mustHaves: ['auth-roles' as const, 'bilingual' as const],
     timeline: '1-3m' as const,
-    budget: '15-30k' as const,
+    budget: '5-10k' as const,
   };
   const result = estimateDiscuss(answers);
   const mail = softwareDiscoveryEmail({
@@ -117,8 +157,8 @@ describe('software discovery email', () => {
     expect(mail.text).toContain('Maintenance:');
     expect(mail.text).toContain('ASSUMPTIONS');
     expect(mail.text).toContain(result.assumptions[0]!);
-    expect(mail.text).toContain('ANSWERS (raw)');
-    expect(mail.html).toContain('Chosen options');
+    expect(mail.text).not.toContain('ANSWERS (raw)');
+    expect(mail.html).toContain('Answers');
   });
 
   it('renders the free text prominently and escaped', () => {
@@ -162,5 +202,125 @@ describe('legacy lead email', () => {
     const without = leadEmail({name: 'A', email: 'a@b.co', request: 'r', locale: 'en', history: []});
     expect(without.text).not.toContain('Interested in');
     expect(without.html).not.toContain('Interested in');
+  });
+});
+
+// ── Answers completeness: readable labels, no raw ids ───────────────────────
+
+const plain = (html: string) => html.replace(/<[^>]*>/g, ' ');
+/** camelCase, snake_case and kebab-case/digit ids that must never reach a reader. */
+const RAW_ID = /\b[a-z]+[A-Z][A-Za-z]*\b|\b[a-z0-9]+_[a-z0-9_]+\b|\b(?:replace-spreadsheets|run-operations|customer-portal|internal-dashboard|ai-tool|connect-tools|team-\d|auth-roles|ai-assistant|disconnected-tools|one-two|lt-1m|\d-\d+m|lt15k|\d+-\d+k)\b/;
+
+function expectReadable(mail: {text: string; html: string}, labels: string[]) {
+  for (const l of labels) {
+    expect(l, 'label must be non-empty').toBeTruthy();
+    expect(mail.text).toContain(l);
+    expect(plain(mail.html)).toContain(l.replace(/&/g, '&amp;'));
+  }
+  expect(mail.text).not.toMatch(RAW_ID);
+  expect(plain(mail.html)).not.toMatch(RAW_ID);
+}
+
+describe('label maps cover every option id', () => {
+  const cases: [string, readonly string[], Record<string, string>][] = [
+    ['goals', GOAL_IDS, GOAL_LABEL],
+    ['sizes', SIZE_IDS, SIZE_LABEL],
+    ['types', PROJECT_TYPES, TYPE_LABEL],
+    ['products', PRODUCT_BUCKETS, PRODUCT_LABEL],
+    ['roles', ROLE_BUCKETS, ROLE_LABEL],
+    ['features', FEATURE_IDS, FEATURE_LABEL],
+    ['integrations', INTEGRATION_IDS, INTEGRATION_LABEL],
+    ['design', DESIGN_FLAGS, DESIGN_LABEL],
+    ['roi tasks', ROI_TASK_IDS, ROI_TASK_LABEL],
+    ['purpose', PURPOSE_OPTIONS, PURPOSE_LABEL],
+    ['users', USERS_OPTIONS, USERS_LABEL],
+    ['today', TODAY_OPTIONS, TODAY_LABEL],
+    ['discuss integrations', INTEGRATIONS_OPTIONS, INTEGRATIONS_LABEL],
+    ['must-haves', MUST_HAVE_OPTIONS, MUST_HAVE_LABEL],
+    ['timeline', TIMELINE_OPTIONS, TIMELINE_LABEL],
+    ['budget', BUDGET_OPTIONS, BUDGET_LABEL],
+  ];
+  it.each(cases)('%s', (_n, ids, map) => {
+    for (const id of ids) {
+      expect(map[id], `missing label for "${id}"`).toBeTruthy();
+      expect(map[id]).not.toBe(id);
+    }
+    expect(Object.keys(map).sort()).toEqual([...ids].sort());
+  });
+});
+
+describe('rich-sample emails render every answer readably', () => {
+  it('estimate', () => {
+    const answers = {
+      types: ['business' as const, 'ecommerce' as const, 'webapp' as const],
+      goals: ['leads' as const, 'sell' as const],
+      size: 'medium' as const,
+      pages: 12,
+      productBucket: 'p21_100' as const,
+      rolesBucket: 'few' as const,
+      features: ['advancedSeo' as const, 'leadForm' as const, 'orderTracking' as const, 'aiFeatures' as const],
+      integrations: ['whatsapp' as const, 'emailAutomation' as const, 'crm' as const],
+      design: {existing: true, brandIdentity: true, advancedMotion: true, premium: true},
+      problem: 'We lose leads after hours',
+    };
+    const mail = websiteEstimateEmail({...base, answers, result: estimateProject(answers)});
+    expectReadable(mail, [
+      ...answers.goals.map((g) => GOAL_LABEL[g]),
+      SIZE_LABEL.medium,
+      ...answers.types.map((t) => TYPE_LABEL[t]),
+      '12 pages',
+      PRODUCT_LABEL.p21_100,
+      ROLE_LABEL.few,
+      ...answers.features.map((f) => FEATURE_LABEL[f]),
+      ...answers.integrations.map((i) => INTEGRATION_LABEL[i]),
+      ...DESIGN_FLAGS.map((k) => DESIGN_LABEL[k]),
+      'We lose leads after hours',
+    ]);
+  });
+
+  it('roi', () => {
+    const answers = {
+      tasks: ROI_TASK_IDS.slice(0, 4).map((taskId, i) => ({
+        taskId,
+        timesPerDay: 3 + i,
+        minutesEach: 10,
+        employees: 2,
+        automationPct: 60 + i,
+      })),
+      labor: {mode: 'salary' as const, monthlyGross: 12000, employerCostMultiplier: 1.3},
+      workingDays: 22,
+      directShare: 0.4,
+    };
+    const mail = automationRoiEmail({...base, answers, result: computeRoi(answers)});
+    expectReadable(mail, [
+      ...answers.tasks.map((t) => ROI_TASK_LABEL[t.taskId]),
+      'Monthly gross salary',
+      '× 1.3 employer cost',
+      '22',
+      '40%',
+      '61%',
+    ]);
+  });
+
+  it('discuss', () => {
+    const answers = {
+      purpose: [...PURPOSE_OPTIONS],
+      users: 'team-and-customers' as const,
+      today: 'off-the-shelf' as const,
+      integrations: 'one-two' as const,
+      mustHaves: [...MUST_HAVE_OPTIONS],
+      timeline: 'lt-1m' as const,
+      budget: '5-10k' as const,
+    };
+    const mail = softwareDiscoveryEmail({...base, answers, result: estimateDiscuss(answers)});
+    expectReadable(mail, [
+      ...PURPOSE_OPTIONS.map((v) => PURPOSE_LABEL[v]),
+      USERS_LABEL['team-and-customers'],
+      TODAY_LABEL['off-the-shelf'],
+      INTEGRATIONS_LABEL['one-two'],
+      ...MUST_HAVE_OPTIONS.map((v) => MUST_HAVE_LABEL[v]),
+      TIMELINE_LABEL['lt-1m'],
+      BUDGET_LABEL['5-10k'],
+    ]);
   });
 });
