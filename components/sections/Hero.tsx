@@ -12,7 +12,7 @@ export default function Hero() {
   const emphasis = t('emphasis').split(',');
 
   return (
-    <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-bg pb-24 pt-32 nav:pb-28">
+    <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-bg pb-24 pt-32 max-nav:pb-40 nav:pb-28">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
@@ -23,7 +23,7 @@ export default function Hero() {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 end-0 -z-10 w-full opacity-60 nav:w-[48%] nav:opacity-100"
+        className="pointer-events-none absolute inset-y-0 end-0 -z-10 w-full opacity-35 nav:w-[48%] nav:opacity-100"
       >
         <AuraSceneLazy className="absolute inset-0" intensity={1} interactive />
       </div>
