@@ -1,6 +1,6 @@
 # Pricing engine (project estimator)
 
-All numbers are **indicative, not a quotation**. Currency: ILS (₪). Config version `2026-11-v2` (affordable small-business pricing).
+All numbers are **indicative, not a quotation**. Currency: ILS (₪). Config version `2026-11-v3` (affordable small-business pricing, round 4: about 25–30% below v2).
 
 - Prices: `ESTIMATOR_CONFIG` in `lib/pricing/config.ts` (care-plan prices come from `TIERS`, never repeated).
 - Engine: `estimateProject(answers, config = ESTIMATOR_CONFIG)` in `lib/estimator/engine.ts`. Pure, JSON-in/JSON-out.
@@ -15,20 +15,20 @@ Edit the amounts in `ESTIMATOR_CONFIG` (project bases, `features`, `integrations
 
 | Group | Items |
 |---|---|
-| Project base | landing 1,500 · business site (≤5 pages) 2,900 · e-commerce 5,500 · booking 4,500 · dashboard 7,000 · portal 8,000 · web app 12,000 · not sure 2,900 (discovery) |
+| Project base | landing 1,100 · business site (≤5 pages) 2,100 · e-commerce 3,900 · booking 3,200 · dashboard 5,000 · portal 5,800 · web app 8,600 · not sure 2,100 (discovery) |
 | Extra types | 60% of the type's base (the priciest type is 100%) |
-| Pages | +150 per page beyond 5 |
-| Business features | blog 500 · lead capture 300 · online booking 1,200 · CRM 900 · admin dashboard 1,200 · advanced SEO 700 · multilingual 10% of core (min 600) · notifications 400 · payments 800 |
-| E-commerce | products 1–20: 0, 21–100: 600, 101–500: 1,500, 501–1,000: 2,500, 1,000+: 3,500 · categories 250 · filtering 700 · accounts 700 · cart 400 · shipping 800 · inventory 1,000 · coupons 350 · order tracking 500 (payment gateway = payments 800, admin = admin dashboard 1,200) |
-| Web app | roles 2–3: 1,200, 4+: 2,500 · auth 900 · subscriptions 1,800 · dashboards 1,500 · database screens 1,200 · API integrations 1,000 · real-time 1,800 · AI features 2,500 |
-| Design | existing design ×0.85 of build · brand identity 1,200 · advanced 3D/animation 2,000 · premium ×1.10 |
-| Integrations | WhatsApp 300 · email automation 600 · CRM 900 · AI chatbot 1,800 (+₪100/mo) · AI agents 3,500 (+₪150/mo) · payments 800 · third-party APIs 1,000 · analytics/reporting 400 · advanced SEO 700 · hosting 0 (covered by the care plan) |
-| Care plans | ₪150 / ₪250 / ₪400 per month (`TIERS`, internal) |
+| Pages | +100 per page beyond 5 |
+| Business features | blog 350 · lead capture 200 · online booking 850 · CRM 650 · admin dashboard 850 · advanced SEO 500 · multilingual 10% of core (min 400) · notifications 300 · payments 550 |
+| E-commerce | products 1–20: 0, 21–100: 400, 101–500: 1,100, 501–1,000: 1,800, 1,000+: 2,500 · categories 180 · filtering 500 · accounts 500 · cart 300 · shipping 550 · inventory 700 · coupons 250 · order tracking 350 (payment gateway = payments 550, admin = admin dashboard 850) |
+| Web app | roles 2–3: 850, 4+: 1,800 · auth 650 · subscriptions 1,300 · dashboards 1,100 · database screens 850 · API integrations 700 · real-time 1,300 · AI features 1,800 |
+| Design | existing design ×0.85 of build · brand identity 850 · advanced 3D/animation 1,400 · premium ×1.10 |
+| Integrations | WhatsApp 200 · email automation 450 · CRM 650 · AI chatbot 1,300 (+₪70/mo) · AI agents 2,500 (+₪100/mo) · payments 550 · third-party APIs 700 · analytics/reporting 300 · advanced SEO 500 · hosting 0 (covered by the care plan) |
+| Care plans | ₪100 / ₪180 / ₪290 per month (`TIERS`, internal) |
 
 ## Order of operations
 
 1. **Build**: the highest-priced selected type at 100%; every other type at `additionalTypeRate` (60%, shared foundation). `unsure` is ignored when real types are selected. Plus extra pages beyond the included 5 (business), product-count bucket (e-commerce), user-role bucket (web app / portal).
-2. **Features** (step 3): fixed prices; features not relevant to a selected type are ignored, and so are features a selected type already includes (see Overlaps). Multilingual = max(₪600, 10% of build + other features).
+2. **Features** (step 3): fixed prices; features not relevant to a selected type are ignored, and so are features a selected type already includes (see Overlaps). Multilingual = max(₪400, 10% of build + other features).
 3. **Design**: existing design takes 15% off the *build* only; premium visual adds 10% of (build + features + existing discount); brand identity and advanced 3D/animation are flat add-ons.
 4. **Integrations** (step 5): fixed price + days, some with a monthly cost.
 
@@ -48,21 +48,21 @@ Config: `typeIncludes` and `integrationCovers`. The engine drops a redundant fea
 | `dashboard` type | the dashboard's admin area | `adminDashboard` |
 | `emailAutomation` integration | customer notification emails | `notifications` |
 
-Reviewed and intentionally priced separately: `apiIntegrations` (the app's own integration layer) vs `thirdPartyApi` (one specific external connection); `cart`/`payments` on a store (payments is the shared 800 item, priced once); `auth` on a portal (login is an add-on to the portal base).
+Reviewed and intentionally priced separately: `apiIntegrations` (the app's own integration layer) vs `thirdPartyApi` (one specific external connection); `cart`/`payments` on a store (payments is the shared 550 item, priced once); `auth` on a portal (login is an add-on to the portal base).
 
 ## Range, timeline, maintenance
 
 - `low` = subtotal × 0.9 rounded **down** to ₪100; `high` = subtotal × 1.15 rounded **up** to ₪100, so `low ≤ subtotal ≤ high`.
 - Timeline: Σdays ÷ 5 → `weeksLow = ceil(× 0.6)`, `weeksHigh = ceil(× 0.9 + 1 buffer week)`; integers ≥ 1.
-- Maintenance is shown separately from the one-time total: plan = Launch below `TIERS.studio.from` (₪4,500), Studio below `TIERS.growth.from` (₪12,000), else Growth, so sites map to ₪150, stores/booking to ₪250, apps to ₪400. `maintenanceMonthly` = plan price + recurring integration costs (hosting, AI). The care-plan range quoted in copy is `MONTHLY_MIN`–`MONTHLY_MAX` (₪150–₪400) via `pricingParams`.
+- Maintenance is shown separately from the one-time total: plan = Launch below `TIERS.studio.from` (₪3,200), Studio below `TIERS.growth.from` (₪8,400), else Growth, so sites map to ₪100, stores/booking/dashboards to ₪180, apps to ₪290. `maintenanceMonthly` = plan price + recurring integration costs (hosting, AI). The care-plan range quoted in copy is `MONTHLY_MIN`–`MONTHLY_MAX` (₪100–₪290) via `pricingParams`.
 - `needsDiscovery` is true when the visitor chose "unsure".
 
 ## Calibration (asserted in tests)
 
-- Landing alone: ₪1,400–1,800 (₪1,500).
-- 5-page business site + WhatsApp + hosting: ₪2,600–3,400 (₪3,200).
-- Small store (≤100 products, payments, shipping): ₪6,500–8,500 (₪7,700).
-- Web app with auth + dashboards: ≥ ₪12,000 (₪14,400); complex app low ≥ Growth.from.
+- Landing alone: ₪1,000–1,300 (₪1,100).
+- 5-page business site + WhatsApp + hosting: ₪2,000–2,700 (₪2,300).
+- Small store (21–100 products, payments, shipping): ₪4,800–6,300 (₪5,400).
+- Web app with auth + dashboards: ≥ ₪8,500 (₪10,350); complex app low ≥ Growth.from.
 
 ## Guided flow: goals and size (added)
 

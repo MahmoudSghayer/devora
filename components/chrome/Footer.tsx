@@ -4,6 +4,7 @@ import {Link} from '@/i18n/navigation';
 import Container from '@/components/ui/Container';
 import ScrollToggle from './ScrollToggle';
 import {SITE, SOCIALS} from '@/lib/site';
+import WhatsAppLink from '@/components/ui/WhatsAppLink';
 
 function ColTitle({children}: {children: ReactNode}) {
   return (
@@ -77,6 +78,7 @@ export default function Footer() {
                 <a href={`mailto:${SITE.email}`} className={linkCls} dir="ltr">
                   {SITE.email}
                 </a>
+                <WhatsAppLink className={linkCls} showNumber={false} />
                 {SOCIALS.map((s) => (
                   <a
                     key={s.label}

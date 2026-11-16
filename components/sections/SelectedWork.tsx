@@ -10,7 +10,7 @@ import Parallax from '@/components/motion/Parallax';
 import {CASES} from '@/lib/site';
 
 /**
- * Section 5: the four real client products. Screenshot cards tilt with the
+ * Section 5: the live client products (active CASES). Screenshot cards tilt with the
  * pointer and the image drifts with scroll; the one case without a capture
  * (kareem) is a typographic card with the same aspect ratio, so the grid never
  * shifts. Narrative copy is the localized CASES[i][locale] text.
@@ -65,7 +65,7 @@ export default function SelectedWork() {
                                 dir="ltr"
                                 className="font-display text-case font-bold leading-none tracking-[-0.03em] text-ink"
                               >
-                                {c.domain}
+                                {CASES[i]?.domain}
                               </span>
                             </div>
                           )}

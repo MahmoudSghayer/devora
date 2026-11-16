@@ -42,7 +42,7 @@ export function compileKbDocuments(locale: ChatLocale): KbDocument[] {
       `Name: ${SITE.name} (the name means dev + aura).`,
       `Website: ${SITE.domain}.`,
       `Contact email: ${SITE.email}.`,
-      'A full-stack web studio: strategy, brand, design, code, growth and AI — one senior team, end to end.',
+      'A web studio for small businesses: websites, automation & AI agents, and custom software — one team, end to end.',
       'Remote-first, working across MENA and worldwide. Bilingual EN/AR (RTL done right).',
     ].join('\n'),
   });

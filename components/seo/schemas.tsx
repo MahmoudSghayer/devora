@@ -22,6 +22,7 @@ export function OrganizationJsonLd() {
         url: SITE_URL,
         logo: LOGO_URL,
         email: SITE.email,
+        telephone: SITE.whatsapp,
         sameAs: SOCIALS.map((s) => s.href),
       }}
     />
@@ -55,6 +56,7 @@ export async function ProfessionalServiceJsonLd({locale}: {locale: SeoLocale}) {
         description: t('footer_tag'),
         image: LOGO_URL,
         email: SITE.email,
+        telephone: SITE.whatsapp,
         sameAs: SOCIALS.map((s) => s.href),
         availableLanguage: ['ar', 'en'],
         parentOrganization: orgRef,

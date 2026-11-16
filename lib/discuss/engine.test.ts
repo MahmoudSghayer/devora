@@ -59,21 +59,21 @@ describe('estimateDiscuss', () => {
     const r = estimateDiscuss(mid);
     expect(estimateDiscuss({...mid, budget: 'unsure'}).budgetFit).toBe('unknown');
     expect(estimateDiscuss(mid).budgetFit).toBe('unknown');
-    expect(budgetFit('lt5k', r.startingLow, r.startingHigh)).toBe(r.startingLow > 5000 ? 'below' : 'within');
-    expect(budgetFit('lt5k', 8000, 10000)).toBe('below');
-    expect(budgetFit('5-10k', 8000, 10000)).toBe('within');
-    expect(budgetFit('10-20k', 8000, 10000)).toBe('within'); // touches at 10k
-    expect(budgetFit('10-20k', 4000, 6000)).toBe('above');
-    expect(budgetFit('20k+', 8000, 10000)).toBe('above');
-    expect(budgetFit('20k+', 15000, 25000)).toBe('within');
-    expect(budgetFit('5-10k', 15000, 20000)).toBe('below');
-    expect(estimateDiscuss({...mid, budget: '20k+'}).budgetFit).toBe('above');
-    expect(estimateDiscuss({...mid, budget: 'lt5k'}).budgetFit).toBe('below');
+    expect(budgetFit('lt3k', r.startingLow, r.startingHigh)).toBe(r.startingLow > 3000 ? 'below' : 'within');
+    expect(budgetFit('lt3k', 5000, 7000)).toBe('below');
+    expect(budgetFit('3-7k', 5000, 7000)).toBe('within');
+    expect(budgetFit('7-15k', 5000, 7000)).toBe('within'); // touches at 7k
+    expect(budgetFit('7-15k', 2000, 4000)).toBe('above');
+    expect(budgetFit('15k+', 5000, 7000)).toBe('above');
+    expect(budgetFit('15k+', 10000, 18000)).toBe('within');
+    expect(budgetFit('3-7k', 10000, 14000)).toBe('below');
+    expect(estimateDiscuss({...mid, budget: '15k+'}).budgetFit).toBe('above');
+    expect(estimateDiscuss({...mid, budget: 'lt3k'}).budgetFit).toBe('below');
   });
-  it('bands follow the 5k / 10k / 20k boundaries and the shared range factors', () => {
-    expect(DISCUSS_BUDGET_BOUNDS).toEqual([5000, 10000, 20000]);
-    expect(DISCUSS_CONFIG.budgetBands['5-10k']).toEqual({min: 5000, max: 10000});
-    expect(DISCUSS_CONFIG.budgetBands['20k+']).toEqual({min: 20000, max: null});
+  it('bands follow the 3k / 7k / 15k boundaries and the shared range factors', () => {
+    expect(DISCUSS_BUDGET_BOUNDS).toEqual([3000, 7000, 15000]);
+    expect(DISCUSS_CONFIG.budgetBands['3-7k']).toEqual({min: 3000, max: 7000});
+    expect(DISCUSS_CONFIG.budgetBands['15k+']).toEqual({min: 15000, max: null});
     expect(DISCUSS_CONFIG.startingRange).toEqual(ESTIMATOR_CONFIG.range);
   });
 });

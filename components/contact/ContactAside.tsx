@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react';
 import {useTranslations} from 'next-intl';
 import {SITE, SOCIALS} from '@/lib/site';
+import WhatsAppLink from '@/components/ui/WhatsAppLink';
 
 function Block({title, children}: {title: string; children: ReactNode}) {
   return (
@@ -25,6 +26,10 @@ export default function ContactAside() {
         >
           {SITE.email}
         </a>
+      </Block>
+
+      <Block title={t('a5_t')}>
+        <WhatsAppLink className="text-lg font-semibold text-ink transition-colors hover:text-amber" />
       </Block>
 
       <Block title={t('a2_t')}>

@@ -10,6 +10,7 @@ import SummaryList from './SummaryList';
 import {useTx} from './i18n';
 import {PrintIcon} from './icons';
 import {BTN_GHOST} from './ui';
+import WhatsAppLink from '@/components/ui/WhatsAppLink';
 
 export interface Social {
   label: string;
@@ -136,6 +137,9 @@ export default function SuccessView({
           {t('alt.title')}
         </h2>
         <ul className="flex flex-wrap gap-3">
+          <li>
+            <WhatsAppLink prompt className={BTN_GHOST} />
+          </li>
           <li>
             <a href={`mailto:${email}`} className={BTN_GHOST}>
               <span dir="ltr">{email}</span>

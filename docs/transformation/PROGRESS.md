@@ -82,3 +82,7 @@ All phases complete; see `docs/transformation/REPORT.md` (10-point report). Fina
 Resubmission handling (same email+source/new key stored + flagged, never another ref returned), hosting +₪60/mo removed, landing included at ₪0 with any multi-page type, WebGL renderer leak guard + poster unmounted after cross-fade, `/api/lead` same-origin + streamed body cap, SMTP fallback log no longer prints names, docs call out that rate limiting is disabled until Upstash is configured. The orchestrator opens the follow-up PR.
 
 **FOLLOW-UP DONE** — all six review fixes pushed at d2b86ca (typecheck, lint, 154 tests, build green).
+
+---
+## Round 4 (owner)
+Prices ~25–30% cheaper (`2026-11-v3`: bases ₪1,100–₪8,600, care ₪100/180/290, ROI 1,100+650 / 90+30, budget bands <3k/3–7k/7–15k/15k+ and contact <2k/2–4k/4–8k/8k+); WhatsApp (+972 54-218-2646) on contact, footer, all three success screens + JSON-LD telephone; rabea.art/kareem.video re-captured and copy aligned with the live sites; aldarb paused via `active:false` with 307 redirects, filtered everywhere. **ROUND 4 DONE** pending the final push.
