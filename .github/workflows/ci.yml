@@ -52,8 +52,69 @@ jobs:
       - name: Build
         run: npm run build
 
-      # When the e2e suite lands (tests/e2e.mjs + the `test:e2e` script),
-      # add a step here — it needs the app served first, e.g.:
-      #   - run: npm run build
-      #   - run: npm run start & npx wait-on http://localhost:3000
-      #   - run: npm run test:e2e
+  # Optional browser suite: serves the production build with a local SMTP sink
+  # (the lead API needs somewhere to deliver; no secrets involved) and runs the
+  # calculator flows + the page QA sweep in Chromium. Not a required check.
+  e2e:
+    name: E2E · Calculators + Pages
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      BASE_URL: http://localhost:3000
+      QA_SHOTS: ${{ github.workspace }}/qa-shots
+      # Local SMTP sink (tests/support/smtp-catcher.mjs) so POSTed leads succeed.
+      ZOHO_SMTP_HOST: 127.0.0.1
+      ZOHO_SMTP_PORT: '2525'
+      ZOHO_SMTP_SECURE: 'false'
+      ZOHO_SMTP_USER: qa@test.invalid
+      ZOHO_SMTP_PASS: qa-pass
+      # Test-only; ignored by production builds (see lib/leads/repository.ts).
+      LEADS_TEST_REPOSITORY: memory
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      - name: Start SMTP sink and app
+        run: |
+          node tests/support/smtp-catcher.mjs 2525 > smtp.log 2>&1 &
+          npm run start > server.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -fsS -o /dev/null http://localhost:3000/en && exit 0
+            sleep 2
+          done
+          echo "server did not start"; cat server.log; exit 1
+
+      - name: Calculators E2E
+        run: npm run test:e2e:calculators
+
+      - name: Page QA sweep
+        run: npm run test:qa
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-screenshots
+          path: qa-shots
+          if-no-files-found: ignore
+
+      - name: Server log
+        if: failure()
+        run: cat server.log smtp.log || true

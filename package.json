@@ -10,6 +10,8 @@
     "typecheck": "tsc --noEmit",
     "seed:kb": "node scripts/seed-kb.mjs",
     "test:e2e": "node tests/e2e.mjs",
+    "test:e2e:calculators": "node tests/calculators.e2e.mjs",
+    "test:qa": "node tests/pages.qa.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },

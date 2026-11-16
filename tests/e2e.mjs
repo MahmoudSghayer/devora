@@ -16,7 +16,9 @@ const browser = await chromium.launch();
 const page = await browser.newPage();
 
 try {
-  // 1. English widget: open, send, stream a grounded reply.
+  // 1. English widget: open, send, stream a grounded reply (needs ANTHROPIC_API_KEY on the server;
+  //    set SKIP_CHAT=1 to run only the locale + admin-gate checks below).
+  if (!process.env.SKIP_CHAT) {
   await page.goto(`${BASE}/en`, {waitUntil: 'domcontentloaded'});
   await page.waitForSelector('button[aria-label="Open the devora assistant"]');
   await page.waitForTimeout(400); // let the widget hydrate
@@ -44,6 +46,7 @@ try {
         ?.textContent || ''
   );
   check('EN widget streams a grounded reply', PRICE_RE.test(reply));
+  }
 
   // 2. Arabic page is RTL and the launcher is localized.
   await page.goto(`${BASE}/`, {waitUntil: 'domcontentloaded'});

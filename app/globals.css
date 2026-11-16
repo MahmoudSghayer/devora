@@ -250,6 +250,8 @@
 /* ══ v2 surface + light utilities ════════════════════════════════════════ */
 @layer utilities {
   .py-section { padding-block: var(--space-section); }
+  .mt-section { margin-top: var(--space-section); }
+  .pb-section { padding-bottom: var(--space-section); }
   .gap-block { gap: var(--space-block); }
 
   /* Translucent glass panel: blur + hairline border, no shadow. */
