@@ -123,7 +123,10 @@ export function estimateProject(
   // features (step 3): only those relevant to a selected type
   const chosenFeatures = new Set(answers.features ?? []);
   const featureIds = FEATURE_IDS.filter(
-    (id) => chosenFeatures.has(id) && c.features[id].appliesTo.some((t) => types.includes(t)),
+    (id) =>
+      chosenFeatures.has(id) &&
+      // an undecided project ('unsure') prices whatever the visitor picked
+      (types.includes('unsure') || c.features[id].appliesTo.some((t) => types.includes(t))),
   );
   // shared ids chosen only in step 5 are priced in the integrations group
   const chosenIntegrations = new Set(answers.integrations ?? []);
@@ -139,13 +142,23 @@ export function estimateProject(
     return item(`feature.${id}`, group, f.label, amount, f.days);
   };
 
-  const plainFeatures = featureIds.filter((id) => !c.features[id].percentOfCore);
-  const features: LineItem[] = plainFeatures.map((id) => featureItem(id, 'features', 0));
-  const coreBase = sum(build, 'amount') + sum(features, 'amount');
-  for (const id of featureIds.filter((i) => c.features[i].percentOfCore)) {
+  // Shared items (CRM, multilingual, advanced SEO, payments) are priced the same
+  // whether the visitor picked them in step 3 or step 5: both feed the core base
+  // (for percent-based items) and the premium-design base. Only the group differs.
+  const isPlain = (id: FeatureId) => !c.features[id].percentOfCore;
+  const features: LineItem[] = featureIds.filter(isPlain).map((id) => featureItem(id, 'features', 0));
+  const sharedPlain: LineItem[] = sharedFromIntegrations
+    .filter(isPlain)
+    .map((id) => featureItem(id, 'integrations', 0));
+  const coreBase = sum(build, 'amount') + sum(features, 'amount') + sum(sharedPlain, 'amount');
+  for (const id of featureIds.filter((i) => !isPlain(i))) {
     features.push(featureItem(id, 'features', coreBase));
   }
   features.sort((a, b) => featureOrder(a.id) - featureOrder(b.id));
+  const sharedPercent: LineItem[] = sharedFromIntegrations
+    .filter((id) => !isPlain(id))
+    .map((id) => featureItem(id, 'integrations', coreBase));
+  const sharedItems = [...sharedPlain, ...sharedPercent];
 
   // design
   const design: LineItem[] = [];
@@ -158,7 +171,7 @@ export function estimateProject(
     design.push(item('design.existing', 'design', 'Existing design provided (build discount)', amount, 0));
   }
   if (d.premium) {
-    const base = buildSub + sum(features, 'amount') + designDelta;
+    const base = buildSub + sum(features, 'amount') + sum(sharedItems, 'amount') + designDelta;
     design.push(
       item('design.premium', 'design', 'Premium visual design', round10(base * c.design.premiumFactor - base + 1e-9), c.design.premiumDays),
     );
@@ -174,7 +187,7 @@ export function estimateProject(
 
   // integrations (step 5)
   const integrations: LineItem[] = [];
-  for (const id of sharedFromIntegrations) integrations.push(featureItem(id, 'integrations', coreBase));
+  integrations.push(...sharedItems);
   for (const id of INTEGRATION_ONLY_IDS as readonly IntegrationOnlyId[]) {
     if (!chosenIntegrations.has(id)) continue;
     const g = c.integrations[id];

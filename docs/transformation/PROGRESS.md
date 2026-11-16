@@ -63,3 +63,8 @@ Running agents (6): particle hero, estimator UI, ROI UI, homepage sections, page
 - **SSG restored**: marketing layout now takes `params`, calls `setRequestLocale`, passes explicit locale to `getTranslations`; `next build` lists ● for every `/[locale]` marketing page in both locales (only the `[...rest]` 404 catch-all, OG/twitter images and API/admin are ƒ).
 - Done: engines (+goals/size, ROI buckets, discuss), backend (+discuss, tiers removed), all three guided flows' UI, pages (pricing = How pricing works, contact paths, services, faq/process…), SEO (pageMetadata + JSON-LD verified on 26 routes), homepage 8 sections, hero particle mark.
 - Remaining: perf measurement (Lighthouse), a11y axe pass, E2E for all three flows EN/AR + overflow assertion, visual QA, review pass, README + docs + REPORT.md, PROGRESS=DONE. Max 2–3 parallel subagents from now on.
+
+
+---
+## FINAL — DONE — ready for orchestrator review
+All phases complete; see `docs/transformation/REPORT.md` (10-point report). Final gates green (typecheck, lint, 126 tests, build; SSG restored). Owner actions: apply migration 0002, set env in Vercel, confirm pricing values/stack/client claims.

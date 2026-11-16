@@ -240,3 +240,23 @@ describe('goals and size', () => {
     expect(estimatorAnswersSchema.safeParse({types: ['business'], size: 'huge'}).success).toBe(false);
   });
 });
+
+describe('shared items priced identically from step 3 or step 5', () => {
+  it('business + CRM + multilingual + premium: same total either way', () => {
+    const viaFeatures = estimateProject({
+      types: ['business'],
+      features: ['crm', 'multilingual'],
+      design: {existing: false, brandIdentity: false, advancedMotion: false, premium: true},
+    } as EstimatorAnswers);
+    const viaIntegrations = estimateProject({
+      types: ['business'],
+      integrations: ['crm', 'multilingual'],
+      design: {existing: false, brandIdentity: false, advancedMotion: false, premium: true},
+    } as EstimatorAnswers);
+    expect(viaIntegrations.subtotal).toBe(viaFeatures.subtotal);
+  });
+  it('an undecided project still prices a feature the visitor chose', () => {
+    const r = estimateProject({types: ['unsure'], features: ['crm']} as EstimatorAnswers);
+    expect(r.subtotal).toBeGreaterThan(ESTIMATOR_CONFIG.projectBase.unsure.amount);
+  });
+});

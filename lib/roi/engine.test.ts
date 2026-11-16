@@ -59,7 +59,8 @@ describe('computeRoi: edge cases', () => {
     expect(r.savedHoursMonthly).toBe(0);
     expect(r.paybackMonthsDirect).toBeNull();
     expect(r.paybackMonthsCapacity).toBeNull();
-    expect(r.roi12Capacity).toBeLessThan(0);
+    expect(r.roi12Capacity).toBeNull(); // nothing is automated, so nothing is spent either
+    expect(r.implementationCost).toBe(0);
   });
   it('0% automation: saves nothing and does not count as an automated task', () => {
     const r = computeRoi({tasks: [task({automationPct: 0})], labor: hourly});

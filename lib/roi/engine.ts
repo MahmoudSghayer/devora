@@ -62,7 +62,8 @@ export function computeRoi(answers: RoiAnswers, config: RoiConfig = ROI_CONFIG):
     };
   });
 
-  const automatedTasks = answers.tasks.filter((t) => t.automationPct > 0).length;
+  // A task only counts as 'automated' (and only adds cost) if it actually frees hours.
+  const automatedTasks = rows.filter((r) => r.savedHours > 0).length;
   const savedHoursMonthly = sum(rows.map((r) => r.savedHours));
   const capacityValueMonthly = savedHoursMonthly * hourlyCost;
   const directReductionMonthly = capacityValueMonthly * directShare;
