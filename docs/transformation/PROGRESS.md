@@ -79,4 +79,6 @@ All phases complete; see `docs/transformation/REPORT.md` (10-point report). Fina
 
 ---
 ## Post-merge review fixes (branch `claude/zen-wright-dca3b6`, after PR #18 merged)
-Resubmission handling (same email+source/new key stored + flagged, never another ref returned), hosting +₪60/mo removed, landing included at ₪0 with any multi-page type, WebGL renderer leak guard + poster unmounted after cross-fade, `/api/lead` same-origin + streamed body cap, SMTP fallback log no longer prints names, docs call out that rate limiting is disabled until Upstash is configured. A follow-up PR is needed for these (PR #18 was already merged).
+Resubmission handling (same email+source/new key stored + flagged, never another ref returned), hosting +₪60/mo removed, landing included at ₪0 with any multi-page type, WebGL renderer leak guard + poster unmounted after cross-fade, `/api/lead` same-origin + streamed body cap, SMTP fallback log no longer prints names, docs call out that rate limiting is disabled until Upstash is configured. The orchestrator opens the follow-up PR.
+
+**FOLLOW-UP DONE** — all six review fixes pushed at d2b86ca (typecheck, lint, 154 tests, build green).
