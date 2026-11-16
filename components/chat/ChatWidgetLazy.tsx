@@ -22,16 +22,13 @@ export default function ChatWidgetLazy() {
   useEffect(() => {
     if (loaded) return;
     const load = () => setLoaded(true);
-    const win = window as Window & {
-      requestIdleCallback?: (cb: () => void, opts?: {timeout: number}) => number;
-      cancelIdleCallback?: (id: number) => void;
-    };
-    const idle = win.requestIdleCallback
-      ? win.requestIdleCallback(load, {timeout: IDLE_TIMEOUT_MS})
+    const hasIdle = 'requestIdleCallback' in window;
+    const idle = hasIdle
+      ? window.requestIdleCallback(load, {timeout: IDLE_TIMEOUT_MS})
       : window.setTimeout(load, IDLE_TIMEOUT_MS);
     WAKE_EVENTS.forEach((e) => window.addEventListener(e, load, {once: true, passive: true}));
     return () => {
-      if (win.cancelIdleCallback && win.requestIdleCallback) win.cancelIdleCallback(idle);
+      if (hasIdle) window.cancelIdleCallback(idle);
       else window.clearTimeout(idle);
       WAKE_EVENTS.forEach((e) => window.removeEventListener(e, load));
     };

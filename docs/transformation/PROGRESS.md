@@ -55,3 +55,11 @@ Homepage assembly (move `app/[locale]/page.tsx` into `(marketing)`, delete `lib/
 ## RESUMED (orchestrator RESUME received)
 Owner decisions applied: particle DevoraMark WebGL hero (poster-only on phones/reduced-motion/no-WebGL, CSS-only breathing glow); 8-section homepage (Hero · Value+Why+proof · Pillars · WhatsApp simulator · Selected work · Calculator cards · Stack · CTA; no process/FAQ sections — linked instead); amber + signal-blue (automation/AI/data only). Review fixes assigned: hero H1 display size, pillars overflow, /pricing gap, remove stats row. Phase 7: per-page overflow assertion at 390/1440 both locales.
 Running agents (6): particle hero, estimator UI, ROI UI, homepage sections, pages (+faq/process/pricing fixes), SEO. Orchestrator (me) will assemble the homepage, delete the experience monolith, wire SEO, then perf/QA/review/docs.
+
+
+---
+## Checkpoint (green) — after usage-limit recovery
+- Recovered: working tree intact; perf agent's partial work (lazy chat widget, self-hosted Cairo woff2 + AR-only preload, scoped client messages via `ScopedMessages`, starter SVGs removed) kept — typecheck/lint/test/build all green.
+- **SSG restored**: marketing layout now takes `params`, calls `setRequestLocale`, passes explicit locale to `getTranslations`; `next build` lists ● for every `/[locale]` marketing page in both locales (only the `[...rest]` 404 catch-all, OG/twitter images and API/admin are ƒ).
+- Done: engines (+goals/size, ROI buckets, discuss), backend (+discuss, tiers removed), all three guided flows' UI, pages (pricing = How pricing works, contact paths, services, faq/process…), SEO (pageMetadata + JSON-LD verified on 26 routes), homepage 8 sections, hero particle mark.
+- Remaining: perf measurement (Lighthouse), a11y axe pass, E2E for all three flows EN/AR + overflow assertion, visual QA, review pass, README + docs + REPORT.md, PROGRESS=DONE. Max 2–3 parallel subagents from now on.

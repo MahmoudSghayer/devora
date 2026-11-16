@@ -1,14 +1,17 @@
+import {useTranslations} from 'next-intl';
 import {Link} from '@/i18n/navigation';
 import DevoraMark from './DevoraMark';
 
 // Nav lockup: DEVORA OS wordmark — mark + "DEVORA" + a mono "dev + aura"
 // tagline, echoing the homepage HUD. Links home. Stays LTR in RTL (brand name).
 export default function Logo({className = ''}: {className?: string}) {
+  const t = useTranslations('common');
   return (
     <Link
       href="/"
       dir="ltr"
-      aria-label="devora — home"
+      // Accessible name must contain the visible text (WCAG 2.5.3 label in name).
+      aria-label={`DEVORA dev + aura — ${t('nav_home')}`}
       className={`inline-flex items-center gap-[10px] ${className}`}
     >
       <DevoraMark size={26} />

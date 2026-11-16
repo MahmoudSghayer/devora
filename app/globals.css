@@ -33,8 +33,8 @@
   --color-ink-2: #cdd0d6;
   --color-muted: #9aa0ab;
   --color-muted-2: #8b909b;
-  --color-faint: #6a6f7a;
-  --color-faint-2: #565b66;
+  --color-faint: #838995;
+  --color-faint-2: #7a808c;
 
   /* accent — DEVORA gold */
   --color-amber: #f2a84b;
@@ -60,7 +60,7 @@
   --color-glass-border: rgb(255 255 255 / 0.09);
   --color-hairline: rgb(255 255 255 / 0.06);
 
-  /* fonts (next/font vars set on <html>; Arabic (Cairo) fallback in the stack) */
+  /* fonts (Latin: next/font vars set on <html>; Arabic: self-hosted Cairo below) */
   --font-display: var(--font-space-grotesk), var(--font-arabic), sans-serif;
   --font-mono: var(--font-space-mono), var(--font-arabic), monospace;
 
@@ -88,8 +88,30 @@
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* z-index scale — never use raw z-[n] in components. */
+/* Cairo (Arabic subset only), self-hosted so the default-locale layout can
+   preload it for AR pages without EN downloading it (unicode-range keeps it
+   idle unless Arabic glyphs render). The fallback matches next/font's metrics. */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('/fonts/cairo-arabic.9ff27b8a.woff2') format('woff2');
+  unicode-range: U+600-6FF, U+750-77F, U+870-891, U+897-8E1, U+8E3-8FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: 'Cairo Fallback';
+  src: local('Arial');
+  ascent-override: 137.65%;
+  descent-override: 60.32%;
+  line-gap-override: 0%;
+  size-adjust: 94.66%;
+}
+
 :root {
+  --font-arabic: 'Cairo', 'Cairo Fallback';
+
+  /* z-index scale — never use raw z-[n] in components. */
   --z-base: 0;
   --z-raised: 10;
   --z-sticky: 30;
@@ -358,6 +380,15 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-motion: no-preference) {
   .kinetic-word { animation: kRise 0.7s var(--ease-out-quint) both; }
   @keyframes kRise { from { opacity: 0.25; transform: translateY(0.32em); } }
+}
+/* PageIntro entrance (HeroReveal / WordReveal): pure CSS so it runs from first
+   paint instead of waiting for hydration — the headline is an immediate LCP
+   candidate. Reduced motion → no animation, content simply visible. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-rise { animation: heroRise 0.75s var(--ease-out-quint) both; }
+  .word-rise { animation: wordRise 0.95s var(--ease-out-quint) both; }
+  @keyframes heroRise { from { opacity: 0.2; transform: translateY(26px); } }
+  @keyframes wordRise { from { transform: translateY(120%); } }
 }
 .kinetic [data-k] { transition: font-weight 0.12s linear; }
 
