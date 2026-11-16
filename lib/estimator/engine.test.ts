@@ -100,9 +100,18 @@ describe('types', () => {
   });
 
   it('additional types cost 60% of base; priciest is full price', () => {
-    const r = estimateProject({types: ['landing', 'ecommerce']});
-    expect(r.subtotal).toBe(C.projectBase.ecommerce.amount + Math.round((C.projectBase.landing.amount * 0.6) / 10) * 10);
-    expect(r.lineItems.map((i) => i.id)).toEqual(['base.ecommerce', 'type.landing']);
+    const r = estimateProject({types: ['business', 'ecommerce']});
+    expect(r.subtotal).toBe(C.projectBase.ecommerce.amount + Math.round((C.projectBase.business.amount * 0.6) / 10) * 10);
+    expect(r.lineItems.map((i) => i.id)).toEqual(['base.ecommerce', 'type.business']);
+  });
+
+  it('a landing page is included (₪0 line) whenever a multi-page type is selected', () => {
+    const r = estimateProject({types: ['landing', 'business']});
+    expect(r.subtotal).toBe(C.projectBase.business.amount);
+    const landing = r.lineItems.find((i) => i.id === 'type.landing');
+    expect(landing?.amount).toBe(0);
+    // landing alone is still priced normally
+    expect(estimateProject({types: ['landing']}).subtotal).toBe(C.projectBase.landing.amount);
   });
 
   it('unsure alongside real types is not priced as an extra type', () => {
@@ -189,7 +198,7 @@ describe('range, timeline, maintenance', () => {
     const r = estimateProject({types: ['business'], integrations: ['hosting', 'aiChatbot']});
     expect(r.subtotal).toBe(2900 + 0 + 1800);
     expect(r.maintenancePlan).toBe('studio'); // 4,700 >= Studio.from
-    expect(r.maintenanceMonthly).toBe(TIERS.studio.monthly + 60 + 100);
+    expect(r.maintenanceMonthly).toBe(TIERS.studio.monthly + 100); // hosting is covered by the care plan: +0
   });
   it('is JSON-serializable', () => {
     const r = estimateProject({types: ['business'], integrations: ['whatsapp']});

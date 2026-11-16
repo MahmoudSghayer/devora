@@ -19,10 +19,10 @@ The chat widget keeps using `POST /api/lead` (source `chat`, unchanged contract 
 
 1. strict zod envelope (`lib/leads/schema.ts`) -> 400
 2. honeypot `website` non-empty -> **silent ok**, nothing persisted/sent
-3. minimum fill time (`startedAtMs` >= 3 s old; required for calculators) -> silent ok
+3. minimum fill time (`startedAtMs` >= 3 s old; required for calculators) -> honest retryable **429** (never a fake success; a visitor clock ahead of the server is tolerated)
 4. same-origin (Origin, else Referer, host must equal request Host; localhost any-port in dev) -> 403
-5. rate limit: `calculator` 5/h per IP, then `calculator_email` 3/h per email (fail-open when Upstash is unset) -> 429 + `Retry-After`
-6. idempotency (client UUID) and same email+source dedupe within 10 min -> existing `leadRef`, `duplicate:true`
+5. rate limit: `calculator` 5/h per IP, then `calculator_email` 3/h per normalised email -> 429 + `Retry-After`. **IMPORTANT: rate limiting is DISABLED (fails open) until `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set in Vercel — set them in production** (a loud warning is logged when they are missing)
+6. idempotency: the SAME client UUID returns the original `leadRef` with `duplicate:true`. The same email+source within 10 min with a DIFFERENT key is **stored and emailed normally**, flagged `details.possibleDuplicateOf = <previous lead_ref>` and a "[Possible resubmission of DV-…]" email subject/body — another submission's ref is never returned
 7. **server recompute** with `estimateProject` / `computeRoi` / `estimateDiscuss` (discovery stores `startingLow/High` in `estimate_low/high`, full result in `details.result`); client totals are never read (a `result` key is accepted and discarded)
 8. generate `lead_ref` (`DV-YYMM-XXXX`, retried on collision), insert
 9. email: if the insert succeeded, sent in `after()` and `email_delivered` / `email_error` updated; if Supabase is unconfigured or the insert failed, sent **synchronously**
@@ -74,7 +74,7 @@ Responses:
 
 A 200 for a bot (honeypot / too fast) looks like a normal success with a fake `leadRef`. The UI must treat only `ok:true` as success and keep the form state on 429/503 so the visitor can retry (reuse the same `idempotencyKey`).
 
-`POST /api/lead` (chat): unchanged request; now 429 includes `Retry-After`, 503 `{ok:false,error:"unavailable",retryable:true}` when the lead could be neither saved nor emailed. Success: `{ok:true, delivered, queued?, leadId?}`; the AI summary is generated in `after()`.
+`POST /api/lead` (chat): same hardening as the calculator routes (same-origin check, streamed 64 KB body cap); otherwise unchanged request; now 429 includes `Retry-After`, 503 `{ok:false,error:"unavailable",retryable:true}` when the lead could be neither saved nor emailed. Success: `{ok:true, delivered, queued?, leadId?}`; the AI summary is generated in `after()`.
 
 Admin: `GET /api/admin/leads?status=&source=&q=`; `PATCH /api/admin/leads/:id` `{status}` -> 200 / 400 invalid id / 404 / 422 / 500 (errors are shown in the UI).
 

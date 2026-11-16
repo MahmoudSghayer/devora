@@ -25,9 +25,9 @@ export async function sendMail(opts: {
   const to = process.env.CONTACT_TO?.trim() || user;
 
   if (!user || !pass || !to) {
-    console.warn('[email] SMTP not configured — logging instead:', {
-      subject: opts.subject,
-    });
+    // Never log the subject: it can contain the visitor's name. The lead ref is enough.
+    const ref = opts.subject.match(/DV-\d{4}-[A-Z0-9]+/)?.[0] ?? 'n/a';
+    console.warn('[email] SMTP not configured — email not sent', {ref});
     return {delivered: false};
   }
 

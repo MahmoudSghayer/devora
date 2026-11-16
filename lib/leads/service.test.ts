@@ -87,13 +87,19 @@ describe('idempotency & dedupe', () => {
     expect(kit.repo.rows).toHaveLength(1);
   });
 
-  it('dedupes same email+source within 10 minutes (new key)', async () => {
+  it('same email+source within 10 minutes with a NEW key is stored and emailed, flagged as a possible resubmission', async () => {
     const kit = makeKit();
     const a = (await run(kit, estimateBody())) as {leadRef: string};
     const b = (await run(kit, estimateBody())) as {leadRef: string; duplicate?: boolean};
-    expect(b.duplicate).toBe(true);
-    expect(b.leadRef).toBe(a.leadRef);
-    expect(kit.repo.rows).toHaveLength(1);
+    await kit.flush();
+    expect(b.duplicate).toBeUndefined();
+    expect(b.leadRef).not.toBe(a.leadRef); // never hand back another submission's ref
+    expect(kit.repo.rows).toHaveLength(2);
+    expect((kit.repo.rows[1]!.details as {possibleDuplicateOf?: string}).possibleDuplicateOf).toBe(a.leadRef);
+    expect(kit.sent).toHaveLength(2);
+    expect(kit.sent[1]!.subject).toContain('Possible resubmission');
+    expect(kit.sent[1]!.subject).toContain(a.leadRef);
+    expect((kit.repo.rows[0]!.details as {possibleDuplicateOf?: string | null}).possibleDuplicateOf ?? null).toBeNull();
   });
 
   it('does not dedupe across different sources', async () => {
@@ -307,16 +313,18 @@ describe('software_discovery', () => {
     expect(mail.text).toContain('We run 3 clinics and need one system.');
   });
 
-  it('is idempotent by key and by email within the window', async () => {
+  it('is idempotent by key; a new key for the same email is stored and flagged', async () => {
     const kit = makeKit();
     const body = discussBody();
     const first = await run(kit, body);
     const again = await run(kit, body);
     expect(again).toMatchObject({ok: true, duplicate: true});
     expect((again as {leadRef: string}).leadRef).toBe((first as {leadRef: string}).leadRef);
+    // a different key for the same email is a new, flagged lead — not a swallowed duplicate
     const fresh = await run(kit, discussBody());
-    expect(fresh).toMatchObject({ok: true, duplicate: true});
-    expect(kit.repo.rows).toHaveLength(1);
+    expect(fresh).toMatchObject({ok: true});
+    expect((fresh as {duplicate?: boolean}).duplicate).toBeUndefined();
+    expect(kit.repo.rows).toHaveLength(2);
   });
 
   it('honeypot: silent ok, nothing persisted or sent', async () => {

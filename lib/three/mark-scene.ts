@@ -72,6 +72,18 @@ export function createMarkScene(o: MarkOptions): MarkHandle {
   const renderer = new WebGLRenderer({
     canvas: o.canvas, antialias: o.antialias, alpha: true, powerPreference: 'high-performance',
   });
+  // Anything that throws after the renderer exists (sampling, geometry, shaders)
+  // must not leak the GL context.
+  try {
+    return buildMarkScene(renderer, o);
+  } catch (err) {
+    renderer.dispose();
+    renderer.forceContextLoss();
+    throw err;
+  }
+}
+
+function buildMarkScene(renderer: WebGLRenderer, o: MarkOptions): MarkHandle {
   const pix = Math.min(window.devicePixelRatio || 1, o.maxDpr);
   renderer.setPixelRatio(pix);
   renderer.setClearColor(0x000000, 0);

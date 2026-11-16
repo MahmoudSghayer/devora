@@ -145,13 +145,25 @@ function buildEmail(env: Envelope, computed: Computed, leadRef: string, nowMs: n
   throw new Error('unreachable: source/result mismatch');
 }
 
+/** Mark an email as a possible resubmission of an earlier lead (subject + body). */
+function flagResubmission(mail: BuiltEmail, previousRef: string): BuiltEmail {
+  const note = `Possible resubmission of ${previousRef} (same email and form within 10 minutes) — compare the answers.`;
+  return {
+    ...mail,
+    subject: `[Possible resubmission of ${previousRef}] ${mail.subject}`,
+    text: `${note}\n\n${mail.text}`,
+    html: `<p style="margin:0 0 16px;padding:10px 14px;border:1px solid #c9a227;border-radius:8px;font-family:sans-serif;font-size:14px">${note}</p>${mail.html}`,
+  };
+}
+
 function buildRow(
   env: Envelope,
   computed: Computed,
   leadRef: string,
   nowMs: number,
   deps: SubmitDeps,
-  meta: RequestMeta
+  meta: RequestMeta,
+  possibleDuplicateOf: string | null = null
 ): LeadInsert {
   let low: number | null = null;
   let high: number | null = null;
@@ -186,6 +198,7 @@ function buildRow(
       timeline: env.timeline,
       notes: env.contact.notes ?? null,
       started_at_ms: env.startedAtMs ?? null,
+      possibleDuplicateOf,
     },
     estimate_low: low,
     estimate_high: high,
@@ -265,6 +278,7 @@ export async function submitLead(input: SubmitInput, deps: SubmitDeps): Promise<
 
   const repo = deps.repo;
   const persistenceOn = repo.isConfigured();
+  let possibleDuplicateOf: string | null = null;
 
   // 6. idempotency + short-window dedupe -----------------------------------
   if (persistenceOn) {
@@ -274,9 +288,11 @@ export async function submitLead(input: SubmitInput, deps: SubmitDeps): Promise<
         if (existing)
           return {ok: true, status: 200, leadRef: existing.leadRef, duplicate: true, persisted: true, emailQueued: false};
       }
+      // Same email + source within the window but a DIFFERENT idempotency key is
+      // a resubmission with possibly changed answers: store it and email it as
+      // normal, flagged — never return (or suppress) another submission's ref.
       const recent = await repo.findRecent(env.contact.email, env.source, nowMs - DEDUPE_WINDOW_MS);
-      if (recent)
-        return {ok: true, status: 200, leadRef: recent.leadRef, duplicate: true, persisted: true, emailQueued: false};
+      if (recent) possibleDuplicateOf = recent.leadRef;
     } catch (err) {
       // A failed lookup must not lose the lead; carry on (insert is still
       // protected by the unique indexes).
@@ -294,7 +310,7 @@ export async function submitLead(input: SubmitInput, deps: SubmitDeps): Promise<
     for (let attempt = 0; attempt < MAX_REF_ATTEMPTS; attempt++) {
       let outcome;
       try {
-        outcome = await repo.insert(buildRow(env, computed, leadRef, nowMs, deps, meta));
+        outcome = await repo.insert(buildRow(env, computed, leadRef, nowMs, deps, meta, possibleDuplicateOf));
       } catch (err) {
         log.error('[leads] insert threw:', err);
         break;
@@ -318,7 +334,8 @@ export async function submitLead(input: SubmitInput, deps: SubmitDeps): Promise<
     }
   }
 
-  const mail = buildEmail(env, computed, leadRef, nowMs);
+  let mail = buildEmail(env, computed, leadRef, nowMs);
+  if (possibleDuplicateOf) mail = flagResubmission(mail, possibleDuplicateOf);
 
   // 10a. saved → email after the response ----------------------------------
   if (leadId) {

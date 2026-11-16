@@ -7,7 +7,7 @@
  * CSS poster. After first paint + idle, capable fine-pointer devices lazy-load `MarkParticles`
  * and cross-fade the canvas over the poster. Coarse pointers (phones) never load WebGL.
  */
-import {useEffect, useState, type ComponentType} from 'react';
+import {useEffect, useRef, useState, type ComponentType} from 'react';
 import type {MarkParticlesProps} from './MarkParticles';
 import Poster from './Poster';
 
@@ -27,6 +27,10 @@ function webglAvailable() {
 export default function AuraSceneLazy({className = '', onReady, onError, ...rest}: MarkParticlesProps) {
   const [Scene, setScene] = useState<ComponentType<MarkParticlesProps> | null>(null);
   const [ready, setReady] = useState(false);
+  const [settled, setSettled] = useState(false); // canvas fully faded in
+  const settleTimer = useRef(0);
+  useEffect(() => () => window.clearTimeout(settleTimer.current), []);
+  const posterGone = ready && settled;
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -58,15 +62,30 @@ export default function AuraSceneLazy({className = '', onReady, onError, ...rest
 
   return (
     <div className={`relative size-full overflow-hidden ${className}`}>
-      <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-0' : 'opacity-100'}`}>
-        <Poster />
-      </div>
+      {/* The poster stays fully opaque until the canvas has finished fading in (no
+          brightness dip), then it is unmounted so its infinite CSS animations stop. */}
+      {!posterGone && (
+        <div className="absolute inset-0">
+          <Poster />
+        </div>
+      )}
       {Scene && (
         <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
           <Scene
             {...rest}
-            onReady={() => { setReady(true); onReady?.(); }}
-            onError={() => { setScene(null); setReady(false); onError?.(); }}
+            onReady={() => {
+              setReady(true);
+              window.clearTimeout(settleTimer.current);
+              settleTimer.current = window.setTimeout(() => setSettled(true), 800);
+              onReady?.();
+            }}
+            onError={() => {
+              window.clearTimeout(settleTimer.current);
+              setScene(null);
+              setReady(false);
+              setSettled(false);
+              onError?.();
+            }}
           />
         </div>
       )}
