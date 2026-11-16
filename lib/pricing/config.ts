@@ -178,7 +178,7 @@ export const ESTIMATOR_CONFIG: EstimatorConfig = {
     aiAgents: {id: 'aiAgents', label: 'AI agents / workflows', amount: 3500, days: 12, monthly: 150},
     thirdPartyApi: {id: 'thirdPartyApi', label: 'Third-party API integration', amount: 1000, days: 5},
     analytics: {id: 'analytics', label: 'Analytics & reporting', amount: 400, days: 3},
-    hosting: {id: 'hosting', label: 'Hosting & domain setup', amount: 0, days: 1, monthly: 60},
+    hosting: {id: 'hosting', label: 'Hosting & domain setup (covered by the care plan)', amount: 0, days: 1},
     maintenance: {id: 'maintenance', label: 'Ongoing care plan (billed monthly, shown separately)', amount: 0, days: 0},
   },
   design: {

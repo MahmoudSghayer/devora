@@ -54,6 +54,9 @@ function normalizeTypes(types: readonly ProjectType[]): ProjectType[] {
   return real.length > 0 ? real : ['unsure'];
 }
 
+/** Types that already include a landing page. */
+const MULTI_PAGE_TYPES: readonly ProjectType[] = ['business', 'ecommerce', 'booking', 'portal', 'dashboard', 'webapp'];
+
 function buildItems(types: ProjectType[], answers: EstimatorAnswers, c: EstimatorConfig): LineItem[] {
   const out: LineItem[] = [];
   const ranked = [...types].sort(
@@ -65,6 +68,9 @@ function buildItems(types: ProjectType[], answers: EstimatorAnswers, c: Estimato
     const b = c.projectBase[t];
     if (i === 0) {
       out.push(item(`base.${t}`, 'build', b.label, b.amount, b.days));
+    } else if (t === 'landing' && ranked.some((o) => MULTI_PAGE_TYPES.includes(o))) {
+      // Any multi-page site already contains a landing page: show it, charge nothing.
+      out.push(item('type.landing', 'build', 'Landing page (included in the site)', 0, 0));
     } else {
       const pct = Math.round(c.additionalTypeRate * 100);
       out.push(

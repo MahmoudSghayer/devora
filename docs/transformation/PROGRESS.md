@@ -76,3 +76,9 @@ All phases complete; see `docs/transformation/REPORT.md` (10-point report). Fina
 - Booking/dashboard/notification overlaps are no longer double-charged (engine + hidden questions + tests).
 - Emails: every answer, readable labels (all three calculators); chat launcher + scroll toggle lift above the mobile live-estimate bar; success views render in place of the page intro (all three flows).
 - Gates green: typecheck, lint, 153 unit tests, build; Playwright calculators (all flows EN/AR + API) and 850 page-QA checks pass.
+
+---
+## Post-merge review fixes (branch `claude/zen-wright-dca3b6`, after PR #18 merged)
+Resubmission handling (same email+source/new key stored + flagged, never another ref returned), hosting +₪60/mo removed, landing included at ₪0 with any multi-page type, WebGL renderer leak guard + poster unmounted after cross-fade, `/api/lead` same-origin + streamed body cap, SMTP fallback log no longer prints names, docs call out that rate limiting is disabled until Upstash is configured. The orchestrator opens the follow-up PR.
+
+**FOLLOW-UP DONE** — all six review fixes pushed at d2b86ca (typecheck, lint, 154 tests, build green).

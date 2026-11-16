@@ -30,7 +30,7 @@ export function productionDeps(): SubmitDeps {
   };
 }
 
-function metaFrom(request: Request): RequestMeta {
+export function metaFrom(request: Request): RequestMeta {
   const h = request.headers;
   return {
     ip: getRequestIp(request),
@@ -50,7 +50,7 @@ const ANALYTICS: Partial<
   software_discovery: 'discuss_submitted',
 };
 
-async function readCapped(request: Request, max: number): Promise<string | null> {
+export async function readCapped(request: Request, max: number): Promise<string | null> {
   if (!request.body) return '';
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];

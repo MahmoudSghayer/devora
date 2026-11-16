@@ -22,7 +22,7 @@ Edit the amounts in `ESTIMATOR_CONFIG` (project bases, `features`, `integrations
 | E-commerce | products 1–20: 0, 21–100: 600, 101–500: 1,500, 501–1,000: 2,500, 1,000+: 3,500 · categories 250 · filtering 700 · accounts 700 · cart 400 · shipping 800 · inventory 1,000 · coupons 350 · order tracking 500 (payment gateway = payments 800, admin = admin dashboard 1,200) |
 | Web app | roles 2–3: 1,200, 4+: 2,500 · auth 900 · subscriptions 1,800 · dashboards 1,500 · database screens 1,200 · API integrations 1,000 · real-time 1,800 · AI features 2,500 |
 | Design | existing design ×0.85 of build · brand identity 1,200 · advanced 3D/animation 2,000 · premium ×1.10 |
-| Integrations | WhatsApp 300 · email automation 600 · CRM 900 · AI chatbot 1,800 (+₪100/mo) · AI agents 3,500 (+₪150/mo) · payments 800 · third-party APIs 1,000 · analytics/reporting 400 · advanced SEO 700 · hosting 0 (+₪60/mo) |
+| Integrations | WhatsApp 300 · email automation 600 · CRM 900 · AI chatbot 1,800 (+₪100/mo) · AI agents 3,500 (+₪150/mo) · payments 800 · third-party APIs 1,000 · analytics/reporting 400 · advanced SEO 700 · hosting 0 (covered by the care plan) |
 | Care plans | ₪150 / ₪250 / ₪400 per month (`TIERS`, internal) |
 
 ## Order of operations
@@ -72,3 +72,5 @@ The estimator is a sequence of option cards (no free typing). Steps: 1 goals, 2 
 - `size?: 'small'|'medium'|'large'|'xlarge'|'unsure'`. When `pages` is absent, `ESTIMATOR_CONFIG.sizePages` gives the representative page count: small 5, medium 10, large 28, xlarge 50, unsure 8. Pages beyond the included 5 are priced as before; an explicit `pages` wins.
 - Cards come from config: `GOAL_OPTIONS`, `SIZE_OPTIONS` (i18n `estimator.goal.<id>`, `estimator.size.<id>`), exported from `lib/pricing/config` and re-exported by `lib/estimator/questions`.
 - Care plans: `TIERS` remains the source of maintenance-plan amounts; it is no longer presented as packages.
+
+**Landing included:** when any multi-page type (business, e-commerce, booking, portal, dashboard, web app) is selected, a selected landing page is shown as a ₪0 "included" line instead of being charged at the additional-type rate. Hosting adds nothing one-time or monthly (the care plan covers it).

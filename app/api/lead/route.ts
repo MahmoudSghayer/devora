@@ -11,13 +11,24 @@ import {
 import {logEvent} from '@/lib/analytics';
 import {rateLimit, getRequestIp} from '@/lib/ratelimit';
 import type {ChatMessage} from '@/lib/chat/types';
+import {metaFrom, readCapped} from '@/lib/leads/http';
+import {isSameOrigin} from '@/lib/leads/service';
+import {MAX_BODY_BYTES} from '@/lib/leads/types';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
+  // Same hardening as the calculator routes: same-origin only, streamed body cap.
+  if (!isSameOrigin(metaFrom(request))) {
+    return NextResponse.json({ok: false, error: 'origin'}, {status: 403});
+  }
+  const raw = await readCapped(request, MAX_BODY_BYTES);
+  if (raw === null) {
+    return NextResponse.json({ok: false, error: 'too_large'}, {status: 413});
+  }
   let body: unknown;
   try {
-    body = await request.json();
+    body = JSON.parse(raw);
   } catch {
     return NextResponse.json({ok: false, error: 'invalid_json'}, {status: 400});
   }
