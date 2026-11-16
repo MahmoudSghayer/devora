@@ -107,6 +107,19 @@ async function inspect(browser, {l, p, w, ctxOpts = {}, tag = '', shot = true}) 
   }
 }
 
+// aldarb.co is paused: its old URLs must redirect (temporary, 307) to the work list, never 404.
+for (const [from, to] of [['/work/aldarb', '/work'], ['/en/work/aldarb', '/en/work']]) {
+  const res = await fetch(BASE + from, {redirect: 'manual'});
+  const loc = res.headers.get('location') ?? '';
+  report(`redirect ${from}`, 'paused case redirects (307) to the work list',
+    res.status === 307 && new URL(loc, BASE).pathname === to, `status ${res.status} → ${loc}`);
+}
+// …and it is gone from the sitemap and the work list.
+const sm = await (await fetch(BASE + '/sitemap.xml')).text();
+report('sitemap', 'paused case is not in the sitemap', !/\/work\/aldarb/.test(sm), '');
+const wk = await (await fetch(BASE + '/en/work')).text();
+report('/en/work', 'paused case is not listed', !/aldarb/i.test(wk), '');
+
 const browser = await chromium.launch();
 const list = PAGES.filter((p) => !ONLY || ONLY.includes(p));
 

@@ -11,33 +11,33 @@ const C = ESTIMATOR_CONFIG;
 const total = (a: EstimatorAnswers) => estimateProject(a).subtotal;
 
 describe('calibration', () => {
-  it('landing alone ≈ ₪1,400–1,800', () => {
+  it('landing alone ≈ ₪1,000–1,300', () => {
     const r = estimateProject({types: ['landing']});
-    expect(r.subtotal).toBe(1500);
-    expect(r.subtotal).toBeGreaterThanOrEqual(1400);
-    expect(r.subtotal).toBeLessThanOrEqual(1800);
+    expect(r.subtotal).toBe(1100);
+    expect(r.subtotal).toBeGreaterThanOrEqual(1000);
+    expect(r.subtotal).toBeLessThanOrEqual(1300);
     expect(r.maintenancePlan).toBe('launch');
   });
 
-  it('5-page business site + WhatsApp + hosting ≈ ₪2,600–3,400', () => {
+  it('5-page business site + WhatsApp + hosting ≈ ₪2,000–2,700', () => {
     const r = estimateProject({types: ['business'], pages: 5, integrations: ['whatsapp', 'hosting']});
     expect(r.subtotal).toBe(C.projectBase.business.amount + C.integrations.whatsapp.amount + C.integrations.hosting.amount);
-    expect(r.subtotal).toBeGreaterThanOrEqual(2600);
-    expect(r.subtotal).toBeLessThanOrEqual(3400);
+    expect(r.subtotal).toBeGreaterThanOrEqual(2000);
+    expect(r.subtotal).toBeLessThanOrEqual(2700);
     expect(r.maintenancePlan).toBe('launch');
   });
 
-  it('small store (≤100 products, payments, shipping) ≈ ₪6,500–8,500', () => {
+  it('small store (≤100 products, payments, shipping) ≈ ₪4,800–6,300', () => {
     const r = estimateProject({types: ['ecommerce'], productBucket: 'p21_100', features: ['payments', 'shipping']});
-    expect(r.subtotal).toBe(7700);
-    expect(r.subtotal).toBeGreaterThanOrEqual(6500);
-    expect(r.subtotal).toBeLessThanOrEqual(8500);
+    expect(r.subtotal).toBe(5400);
+    expect(r.subtotal).toBeGreaterThanOrEqual(4800);
+    expect(r.subtotal).toBeLessThanOrEqual(6300);
     expect(r.maintenancePlan).toBe('studio');
   });
 
-  it('web app with auth + dashboards starts at ≈ ₪12,000+', () => {
+  it('web app with auth + dashboards starts at ≈ ₪8,500+', () => {
     const r = estimateProject({types: ['webapp'], features: ['auth', 'dashboards']});
-    expect(r.subtotal).toBeGreaterThanOrEqual(12000);
+    expect(r.subtotal).toBeGreaterThanOrEqual(8500);
     expect(r.maintenancePlan).toBe('growth');
     const big = estimateProject({
       types: ['webapp'],
@@ -150,9 +150,9 @@ describe('dedupe', () => {
 describe('multilingual', () => {
   it('uses the minimum on small builds and 10% on larger ones', () => {
     const small = estimateProject({types: ['landing'], features: ['multilingual']});
-    expect(small.lineItems.find((i) => i.id === 'feature.multilingual')?.amount).toBe(600);
+    expect(small.lineItems.find((i) => i.id === 'feature.multilingual')?.amount).toBe(400);
     const big = estimateProject({types: ['webapp'], features: ['multilingual']});
-    expect(big.lineItems.find((i) => i.id === 'feature.multilingual')?.amount).toBe(Math.round(12000 * 0.1 / 10) * 10);
+    expect(big.lineItems.find((i) => i.id === 'feature.multilingual')?.amount).toBe(Math.round(8600 * 0.1 / 10) * 10);
   });
 });
 
@@ -160,17 +160,17 @@ describe('design multipliers', () => {
   const base: EstimatorAnswers = {types: ['business'], features: ['blog']};
   it('existing design takes 15% off the build only', () => {
     const r = estimateProject({...base, design: {existing: true}});
-    expect(r.groups.design.subtotal).toBe(-440);
+    expect(r.groups.design.subtotal).toBe(-320);
   });
   it('premium adds 10% on build + features (after existing discount)', () => {
     const r = estimateProject({...base, design: {premium: true}});
-    expect(r.groups.design.subtotal).toBe(Math.round((2900 + 500) * 0.1 / 10) * 10);
+    expect(r.groups.design.subtotal).toBe(Math.round((2100 + 350) * 0.1 / 10) * 10);
     const both = estimateProject({...base, design: {existing: true, premium: true}});
-    expect(both.groups.design.items.map((i) => i.amount)).toEqual([-440, 300]);
+    expect(both.groups.design.items.map((i) => i.amount)).toEqual([-320, 210]);
   });
   it('brand identity and motion are flat', () => {
     const r = estimateProject({...base, design: {brandIdentity: true, advancedMotion: true}});
-    expect(r.groups.design.subtotal).toBe(1200 + 2000);
+    expect(r.groups.design.subtotal).toBe(850 + 1400);
   });
 });
 
@@ -186,7 +186,7 @@ describe('range, timeline, maintenance', () => {
       expect(r.high).toBeLessThan(r.subtotal * 1.15 + 100);
     }
     const landing = estimateProject({types: ['landing']});
-    expect([landing.low, landing.high]).toEqual([1300, 1800]);
+    expect([landing.low, landing.high]).toEqual([900, 1300]);
   });
   it('weeks are integers >= 1 and ordered', () => {
     const r = estimateProject({types: ['landing']});
@@ -196,9 +196,9 @@ describe('range, timeline, maintenance', () => {
   });
   it('maintenance includes recurring integration costs separately from the one-time total', () => {
     const r = estimateProject({types: ['business'], integrations: ['hosting', 'aiChatbot']});
-    expect(r.subtotal).toBe(2900 + 0 + 1800);
-    expect(r.maintenancePlan).toBe('studio'); // 4,700 >= Studio.from
-    expect(r.maintenanceMonthly).toBe(TIERS.studio.monthly + 100); // hosting is covered by the care plan: +0
+    expect(r.subtotal).toBe(2100 + 0 + 1300);
+    expect(r.maintenancePlan).toBe('studio'); // 3,400 >= Studio.from
+    expect(r.maintenanceMonthly).toBe(TIERS.studio.monthly + 70); // hosting is covered by the care plan: +0
   });
   it('is JSON-serializable', () => {
     const r = estimateProject({types: ['business'], integrations: ['whatsapp']});

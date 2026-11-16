@@ -32,12 +32,12 @@ describe('computeRoi: the canonical example', () => {
     expect(r.annualDirect).toBeCloseTo(13305.6, 9);
   });
   it('costs, payback and ROI follow the config', () => {
-    expect(r.implementationCost).toBe(1500 + 900);
-    expect(r.runningMonthly).toBe(120 + 40);
-    expect(r.paybackMonthsCapacity).toBeCloseTo(2400 / (5544 - 160), 9);
-    expect(r.paybackMonthsDirect).toBeCloseTo(2400 / (1108.8 - 160), 9);
-    expect(r.roi12Capacity).toBeCloseTo((12 * 5544 - 12 * 160 - 2400) / (2400 + 12 * 160), 9);
-    expect(r.roi12Direct).toBeCloseTo((12 * 1108.8 - 12 * 160 - 2400) / (2400 + 12 * 160), 9);
+    expect(r.implementationCost).toBe(1100 + 650);
+    expect(r.runningMonthly).toBe(90 + 30);
+    expect(r.paybackMonthsCapacity).toBeCloseTo(1750 / (5544 - 120), 9);
+    expect(r.paybackMonthsDirect).toBeCloseTo(1750 / (1108.8 - 120), 9);
+    expect(r.roi12Capacity).toBeCloseTo((12 * 5544 - 12 * 120 - 1750) / (1750 + 12 * 120), 9);
+    expect(r.roi12Direct).toBeCloseTo((12 * 1108.8 - 12 * 120 - 1750) / (1750 + 12 * 120), 9);
     expect(r.rows[0]).toMatchObject({taskId: 'whatsappReplies', label: 'WhatsApp replies', hoursPerDay: 6});
   });
   it('is JSON-serializable', () => {
@@ -74,13 +74,13 @@ describe('computeRoi: edge cases', () => {
     expect(r.capacityValueMonthly).toBe(7920);
   });
   it('null payback when direct benefit does not cover running cost', () => {
-    // 1 employee: 1848 capacity; 20% direct = 369.6 > 160 running, so direct payback exists
+    // 1 employee: 1848 capacity; 20% direct = 369.6 > 120 running, so direct payback exists
     const paying = computeRoi({tasks: [task({employees: 1})], labor: hourly});
-    expect(paying.paybackMonthsDirect).toBeCloseTo(2400 / (369.6 - 160), 9);
-    // 5% direct share = 92.4 < 160 running: direct never pays back, capacity does
+    expect(paying.paybackMonthsDirect).toBeCloseTo(1750 / (369.6 - 120), 9);
+    // 5% direct share = 92.4 < 120 running: direct never pays back, capacity does
     const r = computeRoi({tasks: [task({employees: 1})], labor: hourly, directShare: 0.05});
     expect(r.paybackMonthsDirect).toBeNull();
-    expect(r.paybackMonthsCapacity).toBeCloseTo(2400 / (1848 - 160), 9);
+    expect(r.paybackMonthsCapacity).toBeCloseTo(1750 / (1848 - 120), 9);
   });
   it('salary mode: gross × 1.25 ÷ 182', () => {
     const r = computeRoi({tasks: [task()], labor: {mode: 'salary', monthlyGross: 10000}});
@@ -106,8 +106,8 @@ describe('computeRoi: edge cases', () => {
     expect(r.savedHoursMonthly).toBeCloseTo(92.4 + second * 22 * 0.9, 9);
     expect(r.rows).toHaveLength(2);
     expect(r.automatedTasks).toBe(2);
-    expect(r.implementationCost).toBe(1500 + 2 * 900);
-    expect(r.runningMonthly).toBe(120 + 2 * 40);
+    expect(r.implementationCost).toBe(1100 + 2 * 650);
+    expect(r.runningMonthly).toBe(90 + 2 * 30);
   });
   it('directShare 0 and 1', () => {
     const zero = computeRoi({tasks: [task()], labor: hourly, directShare: 0});

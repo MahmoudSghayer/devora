@@ -1,7 +1,7 @@
 import {formatMoney} from './config';
 
-/** Contact-form budget band boundaries (₪), sized for small-business projects (website ≈ ₪1.5–7k, store or app ≈ ₪5–12k+). */
-export const BUDGET_BANDS = [3000, 6000, 12000] as const;
+/** Contact-form budget band boundaries (₪), sized for small-business projects (website ≈ ₪1–3k, store ≈ ₪4–6k, app ≈ ₪8k+). */
+export const BUDGET_BANDS = [2000, 4000, 8000] as const;
 
 const compact = (n: number, locale: string) =>
   formatMoney(n / 1000, locale, {maximumFractionDigits: 0}) + 'k';

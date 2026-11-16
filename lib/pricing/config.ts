@@ -5,7 +5,7 @@
 // docs/pricing-engine.md); Devora can edit them without touching any UI.
 //
 // Currency: Israeli shekel. Prices are deliberately affordable for any small
-// business (2026-11-v2 repricing). The care plans (TIERS) are the internal
+// business (2026-11-v3 repricing). The care plans (TIERS) are the internal
 // source for the monthly maintenance price; they are never sold as packages.
 
 import type {EstimatorConfig, FeatureDef, FeatureId, Goal, ProjectType, SizeId} from '@/lib/estimator/types';
@@ -15,7 +15,7 @@ export const CURRENCY = 'ILS' as const;
 export type CurrencyCode = typeof CURRENCY;
 
 /** Bump when any price in this file changes (stored with every lead snapshot). */
-export const PRICING_CONFIG_VERSION = '2026-11-v2';
+export const PRICING_CONFIG_VERSION = '2026-11-v3';
 
 export type TierId = 'launch' | 'studio' | 'growth';
 
@@ -29,14 +29,14 @@ export interface Tier {
 
 export const TIERS: Record<TierId, Tier> = {
   // `from` = build subtotal at which the plan starts to apply (internal; never surfaced).
-  launch: {id: 'launch', from: 1500, monthly: 150},
-  studio: {id: 'studio', from: 4500, monthly: 250},
-  growth: {id: 'growth', from: 12000, monthly: 400},
+  launch: {id: 'launch', from: 1000, monthly: 100},
+  studio: {id: 'studio', from: 3200, monthly: 180},
+  growth: {id: 'growth', from: 8400, monthly: 290},
 };
 
 export const TIER_ORDER: readonly TierId[] = ['launch', 'studio', 'growth'];
 
-/** Care-plan monthly range across tiers (for copy like "from ₪150/mo"). */
+/** Care-plan monthly range across tiers (for copy like "from ₪100/mo"). */
 export const MONTHLY_MIN = Math.min(...TIER_ORDER.map((t) => TIERS[t].monthly));
 export const MONTHLY_MAX = Math.max(...TIER_ORDER.map((t) => TIERS[t].monthly));
 
@@ -101,11 +101,11 @@ const BUSINESS_TYPES = ['landing', 'business', 'ecommerce', 'booking', 'dashboar
 
 const FEATURES: Record<FeatureId, FeatureDef> = Object.fromEntries([
   // business / landing
-  feature({id: 'blog', home: 'business', appliesTo: ['business'], label: 'Blog / articles', amount: 500, days: 3}),
-  feature({id: 'leadForm', home: 'business', appliesTo: ['landing', 'business'], label: 'Contact / lead collection', amount: 300, days: 1}),
-  feature({id: 'booking', home: 'business', appliesTo: ['business'], label: 'Online booking', amount: 1200, days: 6}),
+  feature({id: 'blog', home: 'business', appliesTo: ['business'], label: 'Blog / articles', amount: 350, days: 3}),
+  feature({id: 'leadForm', home: 'business', appliesTo: ['landing', 'business'], label: 'Contact / lead collection', amount: 200, days: 1}),
+  feature({id: 'booking', home: 'business', appliesTo: ['business'], label: 'Online booking', amount: 850, days: 6}),
   // shared (also selectable in step 5 — priced once)
-  feature({id: 'crm', home: 'shared', appliesTo: BUSINESS_TYPES, label: 'CRM integration', amount: 900, days: 4}),
+  feature({id: 'crm', home: 'shared', appliesTo: BUSINESS_TYPES, label: 'CRM integration', amount: 650, days: 4}),
   feature({
     id: 'multilingual',
     home: 'shared',
@@ -113,29 +113,29 @@ const FEATURES: Record<FeatureId, FeatureDef> = Object.fromEntries([
     label: 'Multilingual (Hebrew / Arabic / English)',
     amount: 0,
     days: 4,
-    percentOfCore: {rate: 0.1, min: 600},
+    percentOfCore: {rate: 0.1, min: 400},
   }),
-  feature({id: 'advancedSeo', home: 'shared', appliesTo: BUSINESS_TYPES, label: 'Advanced SEO', amount: 700, days: 3}),
-  feature({id: 'adminDashboard', home: 'shared', appliesTo: ['business', 'ecommerce', 'booking', 'portal', 'webapp'], label: 'Admin dashboard', amount: 1200, days: 5}),
-  feature({id: 'payments', home: 'shared', appliesTo: BUSINESS_TYPES, label: 'Online payments', amount: 800, days: 3}),
+  feature({id: 'advancedSeo', home: 'shared', appliesTo: BUSINESS_TYPES, label: 'Advanced SEO', amount: 500, days: 3}),
+  feature({id: 'adminDashboard', home: 'shared', appliesTo: ['business', 'ecommerce', 'booking', 'portal', 'webapp'], label: 'Admin dashboard', amount: 850, days: 5}),
+  feature({id: 'payments', home: 'shared', appliesTo: BUSINESS_TYPES, label: 'Online payments', amount: 550, days: 3}),
   // e-commerce
-  feature({id: 'categories', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Product categories', amount: 250, days: 1}),
-  feature({id: 'filtering', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Advanced filtering & search', amount: 700, days: 2}),
-  feature({id: 'accounts', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Customer accounts', amount: 700, days: 3}),
-  feature({id: 'cart', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Shopping cart & checkout', amount: 400, days: 3}),
-  feature({id: 'shipping', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Shipping options', amount: 800, days: 2}),
-  feature({id: 'inventory', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Inventory management', amount: 1000, days: 3}),
-  feature({id: 'coupons', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Coupons & discounts', amount: 350, days: 2}),
-  feature({id: 'orderTracking', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Order tracking', amount: 500, days: 2}),
-  feature({id: 'notifications', home: 'ecommerce', appliesTo: ['ecommerce', 'booking'], label: 'Customer notifications', amount: 400, days: 2}),
+  feature({id: 'categories', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Product categories', amount: 180, days: 1}),
+  feature({id: 'filtering', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Advanced filtering & search', amount: 500, days: 2}),
+  feature({id: 'accounts', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Customer accounts', amount: 500, days: 3}),
+  feature({id: 'cart', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Shopping cart & checkout', amount: 300, days: 3}),
+  feature({id: 'shipping', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Shipping options', amount: 550, days: 2}),
+  feature({id: 'inventory', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Inventory management', amount: 700, days: 3}),
+  feature({id: 'coupons', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Coupons & discounts', amount: 250, days: 2}),
+  feature({id: 'orderTracking', home: 'ecommerce', appliesTo: ['ecommerce'], label: 'Order tracking', amount: 350, days: 2}),
+  feature({id: 'notifications', home: 'ecommerce', appliesTo: ['ecommerce', 'booking'], label: 'Customer notifications', amount: 300, days: 2}),
   // web app
-  feature({id: 'auth', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Authentication & accounts', amount: 900, days: 4}),
-  feature({id: 'subscriptions', home: 'webapp', appliesTo: ['webapp', 'portal'], label: 'Subscriptions & billing plans', amount: 1800, days: 7}),
-  feature({id: 'dashboards', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Dashboards & charts', amount: 1500, days: 8}),
-  feature({id: 'database', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Database management screens', amount: 1200, days: 5}),
-  feature({id: 'apiIntegrations', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'API integrations', amount: 1000, days: 5}),
-  feature({id: 'realtime', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Real-time updates', amount: 1800, days: 7}),
-  feature({id: 'aiFeatures', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'AI features', amount: 2500, days: 8}),
+  feature({id: 'auth', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Authentication & accounts', amount: 650, days: 4}),
+  feature({id: 'subscriptions', home: 'webapp', appliesTo: ['webapp', 'portal'], label: 'Subscriptions & billing plans', amount: 1300, days: 7}),
+  feature({id: 'dashboards', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Dashboards & charts', amount: 1100, days: 8}),
+  feature({id: 'database', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Database management screens', amount: 850, days: 5}),
+  feature({id: 'apiIntegrations', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'API integrations', amount: 700, days: 5}),
+  feature({id: 'realtime', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'Real-time updates', amount: 1300, days: 7}),
+  feature({id: 'aiFeatures', home: 'webapp', appliesTo: ['dashboard', 'portal', 'webapp'], label: 'AI features', amount: 1800, days: 8}),
 ]) as Record<FeatureId, FeatureDef>;
 
 /** Indicative project estimator prices (ILS). Documented in docs/pricing-engine.md. */
@@ -143,48 +143,48 @@ export const ESTIMATOR_CONFIG: EstimatorConfig = {
   configVersion: PRICING_CONFIG_VERSION,
   currency: CURRENCY,
   projectBase: {
-    landing: {label: 'Landing page', amount: 1500, days: 4},
-    business: {label: 'Business website (up to 5 pages)', amount: 2900, days: 8},
-    ecommerce: {label: 'E-commerce store', amount: 5500, days: 16},
-    booking: {label: 'Booking / scheduling system', amount: 4500, days: 14},
-    dashboard: {label: 'Dashboard / internal tool', amount: 7000, days: 18},
-    portal: {label: 'Customer portal', amount: 8000, days: 22},
-    webapp: {label: 'Custom web app', amount: 12000, days: 30},
-    unsure: {label: 'Project to be defined (discovery)', amount: 2900, days: 8},
+    landing: {label: 'Landing page', amount: 1100, days: 4},
+    business: {label: 'Business website (up to 5 pages)', amount: 2100, days: 8},
+    ecommerce: {label: 'E-commerce store', amount: 3900, days: 16},
+    booking: {label: 'Booking / scheduling system', amount: 3200, days: 14},
+    dashboard: {label: 'Dashboard / internal tool', amount: 5000, days: 18},
+    portal: {label: 'Customer portal', amount: 5800, days: 22},
+    webapp: {label: 'Custom web app', amount: 8600, days: 30},
+    unsure: {label: 'Project to be defined (discovery)', amount: 2100, days: 8},
   },
   additionalTypeRate: 0.6,
-  pages: {included: 5, perPage: 150, daysPerPage: 0.5},
+  pages: {included: 5, perPage: 100, daysPerPage: 0.5},
   // Representative page count per size card (used when `pages` is not answered).
   // small = 1–5 pages → 5; medium = 6–15 → 10; large = 16–40 → 28; xlarge = 40+ → 50;
   // unsure → 8 (a modest mid-small site; the team confirms scope in discovery).
   sizePages: {small: 5, medium: 10, large: 28, xlarge: 50, unsure: 8},
   products: {
     p1_20: {label: 'Catalog: 1–20 products', amount: 0, days: 0},
-    p21_100: {label: 'Catalog: 21–100 products', amount: 600, days: 2},
-    p101_500: {label: 'Catalog: 101–500 products', amount: 1500, days: 4},
-    p501_1000: {label: 'Catalog: 501–1,000 products', amount: 2500, days: 6},
-    p1000_plus: {label: 'Catalog: 1,000+ products', amount: 3500, days: 9},
+    p21_100: {label: 'Catalog: 21–100 products', amount: 400, days: 2},
+    p101_500: {label: 'Catalog: 101–500 products', amount: 1100, days: 4},
+    p501_1000: {label: 'Catalog: 501–1,000 products', amount: 1800, days: 6},
+    p1000_plus: {label: 'Catalog: 1,000+ products', amount: 2500, days: 9},
   },
   roles: {
     one: {label: 'User roles: single role', amount: 0, days: 0},
-    few: {label: 'User roles: 2–3 roles', amount: 1200, days: 4},
-    many: {label: 'User roles: 4+ roles', amount: 2500, days: 8},
+    few: {label: 'User roles: 2–3 roles', amount: 850, days: 4},
+    many: {label: 'User roles: 4+ roles', amount: 1800, days: 8},
   },
   features: FEATURES,
   integrations: {
-    whatsapp: {id: 'whatsapp', label: 'WhatsApp integration', amount: 300, days: 2},
-    emailAutomation: {id: 'emailAutomation', label: 'Email automation', amount: 600, days: 3},
-    aiChatbot: {id: 'aiChatbot', label: 'AI chatbot', amount: 1800, days: 7, monthly: 100},
-    aiAgents: {id: 'aiAgents', label: 'AI agents / workflows', amount: 3500, days: 12, monthly: 150},
-    thirdPartyApi: {id: 'thirdPartyApi', label: 'Third-party API integration', amount: 1000, days: 5},
-    analytics: {id: 'analytics', label: 'Analytics & reporting', amount: 400, days: 3},
+    whatsapp: {id: 'whatsapp', label: 'WhatsApp integration', amount: 200, days: 2},
+    emailAutomation: {id: 'emailAutomation', label: 'Email automation', amount: 450, days: 3},
+    aiChatbot: {id: 'aiChatbot', label: 'AI chatbot', amount: 1300, days: 7, monthly: 70},
+    aiAgents: {id: 'aiAgents', label: 'AI agents / workflows', amount: 2500, days: 12, monthly: 100},
+    thirdPartyApi: {id: 'thirdPartyApi', label: 'Third-party API integration', amount: 700, days: 5},
+    analytics: {id: 'analytics', label: 'Analytics & reporting', amount: 300, days: 3},
     hosting: {id: 'hosting', label: 'Hosting & domain setup (covered by the care plan)', amount: 0, days: 1},
     maintenance: {id: 'maintenance', label: 'Ongoing care plan (billed monthly, shown separately)', amount: 0, days: 0},
   },
   design: {
     existingFactor: 0.85,
-    brandIdentity: {amount: 1200, days: 5},
-    advancedMotion: {amount: 2000, days: 8},
+    brandIdentity: {amount: 850, days: 5},
+    advancedMotion: {amount: 1400, days: 8},
     premiumFactor: 1.1,
     premiumDays: 4,
   },
@@ -210,8 +210,8 @@ export const ROI_CONFIG: RoiConfig = {
   defaultWorkingDays: 22,
   defaultDirectShare: 0.2,
   hoursPerMonthFte: 182,
-  implementation: {base: 1500, perTask: 900},
-  running: {base: 120, perTask: 40},
+  implementation: {base: 1100, perTask: 650},
+  running: {base: 90, perTask: 30},
 };
 
 const roiTask = (

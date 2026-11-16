@@ -73,7 +73,7 @@ function compile(locale, messages, site) {
         `Name: ${site.SITE.name} (the name means dev + aura).`,
         `Website: ${site.SITE.domain}.`,
         `Contact email: ${site.SITE.email}.`,
-        'A full-stack web studio: strategy, brand, design, code, growth and AI — one senior team, end to end.',
+        'A web studio for small businesses: websites, automation & AI agents, and custom software — one team, end to end.',
         'Remote-first, working across MENA and worldwide. Bilingual EN/AR (RTL done right).',
       ].join('\n'),
     });

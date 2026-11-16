@@ -5,6 +5,13 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig: NextConfig = {
   experimental: {viewTransition: true},
+  // aldarb.co is paused: keep old links alive (temporary redirect — the case may return).
+  async redirects() {
+    return [
+      {source: '/work/aldarb', destination: '/work', permanent: false},
+      {source: '/en/work/aldarb', destination: '/en/work', permanent: false},
+    ];
+  },
   async headers() {
     return [
       {

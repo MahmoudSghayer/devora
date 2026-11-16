@@ -1,11 +1,27 @@
 // Brand constants + placeholders the client will replace before launch.
-// Search "TODO(devora)" to find everything that needs real values.
+// Search "TODO(devora)" to find anything that still needs a real value.
 
 export const SITE = {
   name: 'devora',
   domain: 'devora.design',
   email: 'support@devora.design',
+  /** Business WhatsApp number (E.164). */
+  whatsapp: '+972542182646',
 } as const;
+
+/** The number as people read it (always rendered LTR). */
+export const WHATSAPP_DISPLAY = '+972 54-218-2646';
+
+const WHATSAPP_PREFILL: Record<'en' | 'ar', string> = {
+  en: "Hi devora, I'd like to talk about a project.",
+  ar: 'مرحبًا ديفورا، أودّ التحدّث عن مشروع.',
+};
+
+/** https://wa.me link with a localized, URL-encoded prefilled message. */
+export function whatsappUrl(locale: string, message?: string): string {
+  const text = message ?? WHATSAPP_PREFILL[locale === 'ar' ? 'ar' : 'en'];
+  return `https://wa.me/${SITE.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(text)}`;
+}
 
 // Only Instagram is live today; other channels are added as they launch.
 export const SOCIALS = [
@@ -14,10 +30,13 @@ export const SOCIALS = [
 
 // Case studies. `slug`, `domain`, `href`, `image` are real (live client sites).
 // The bilingual narrative (challenge/approach/outcome) is qualitative and honest
-// — no invented metrics. TODO(devora): confirm wording with each client.
-export const CASES = [
+// — no invented metrics. The two newest sites (rabea.art, kareem.video) were checked against the live pages in Nov 2026.
+/** All known case studies. Set `active: false` to pause one — it disappears from every page,
+ *  sitemap, JSON-LD and the chat knowledge base (data + image are kept; flip it back to re-enable). */
+const ALL_CASES = [
   {
     slug: 'zawiya',
+    active: true,
     domain: 'zawiya.studio',
     href: 'https://zawiya.studio',
     image: '/images/zawiya.png',
@@ -48,6 +67,7 @@ export const CASES = [
   },
   {
     slug: 'aldarb',
+    active: false,
     domain: 'aldarb.co',
     href: 'https://aldarb.co',
     image: '/images/aldarb.png',
@@ -77,45 +97,42 @@ export const CASES = [
     },
   },
   {
-    // TODO(devora): rabea.art still serves the pre-launch splash, so the captured
-    // screenshot shows that until the storefront is public — re-run
-    // scripts/capture-screenshots.mjs on launch day.
     slug: 'rabea',
+    active: true,
     domain: 'rabea.art',
     href: 'https://rabea.art',
     image: '/images/rabea.png',
     en: {
       industry: 'Art & e-commerce',
-      tags: 'Brand · E-commerce · Development',
+      tags: 'E-commerce · Development',
       summary:
-        'A custom storefront for Rabea Hamoud — original paintings alongside printed and embroidered t-shirts and hoodies, built from scratch rather than assembled from a template.',
+        'A custom, Arabic-first storefront for Rabea Hamoud — printed and embroidered shirts, original paintings and art prints, and made-to-order pieces that start from a customer’s own idea.',
       challenge:
-        'The catalogue mixes things that behave nothing alike: one-of-a-kind paintings, t-shirts and hoodies that come either screen-printed or hand-embroidered, and commissions that start from a customer idea. Off-the-shelf store templates flatten all of that into one identical product grid — sizes and finishes bolted on as afterthoughts — and none of them handle an Arabic-first shop with real RTL properly.',
+        'The catalogue mixes things that behave nothing alike: shirts that come printed or hand-embroidered, one-of-a-kind paintings with art-print copies, and custom orders that begin with a customer’s uploaded idea. Off-the-shelf store templates flatten all of that into one identical product grid, and few handle an Arabic-first shop with real RTL properly.',
       approach:
-        'We built the store around the catalogue rather than bending the catalogue to fit a platform. A unique canvas sells once and needs no size chart; a hoodie needs sizes and a choice between print and embroidery; a commission begins as a conversation, not an add-to-cart. Brand, art direction and storefront were handled by one team, bilingual from the first screen.',
+        'We built the store around the catalogue rather than bending the catalogue to fit a platform: shirts, paintings and a dedicated custom-order flow where the customer uploads their idea and chooses print, embroidery or a painted piece. Orders are reviewed and the price and delivery are confirmed with the customer before work starts — no online payment is forced on a made-to-order business. The storefront is Arabic-first, with a clear, simple order journey.',
       outcome:
-        'A store that presents the work like a gallery and sells like a shop — owned outright by Rabea, with no template to fight and nothing locked behind a plugin.',
+        'A live store that presents the work like a gallery and takes orders like a studio — owned outright by Rabea, with no template to fight and nothing locked behind a plugin.',
     },
     ar: {
       industry: 'فن وتجارة إلكترونية',
-      tags: 'هوية · متجر إلكتروني · تطوير',
+      tags: 'متجر إلكتروني · تطوير',
       summary:
-        'متجر مخصّص لـ«ربيع حمود» — لوحاتٌ أصلية إلى جانب قمصانٍ وهوديزٍ مطبوعة أو مطرّزة، مبنيٌّ من الصفر لا قالبًا جاهزًا.',
+        'متجر مخصّص بالعربية أولًا لـ«ربيع حمود» — قمصانٌ مطبوعة ومطرّزة، ولوحاتٌ أصلية ونسخٌ فنية، وقطعٌ تُصنع عند الطلب من فكرة الزبون نفسه.',
       challenge:
-        'تجمع المعروضات أشياءً لا تتشابه في سلوكها: لوحاتٌ فريدة لا تتكرّر، وقمصانٌ وهوديز تأتي مطبوعةً أو مطرّزةً باليد، وطلباتٌ خاصة تبدأ من فكرة الزبون. القوالب الجاهزة تصهر هذا كله في شبكة منتجاتٍ واحدة — تُلحِق المقاسات والتشطيبات بها إلحاقًا — ولا يتعامل أيٌّ منها مع متجرٍ عربيٍّ أولًا واتجاهٍ من اليمين إلى اليسار كما ينبغي.',
+        'تجمع المعروضات أشياءً لا تتشابه في سلوكها: قمصانٌ تأتي مطبوعةً أو مطرّزةً باليد، ولوحاتٌ فريدة لها نسخٌ فنية، وطلباتٌ خاصة تبدأ من فكرةٍ يرفعها الزبون. القوالب الجاهزة تصهر هذا كله في شبكة منتجاتٍ واحدة، وقلّما يتعامل أيٌّ منها مع متجرٍ عربيٍّ أولًا واتجاهٍ من اليمين إلى اليسار كما ينبغي.',
       approach:
-        'بنينا المتجر حول طبيعة المعروضات بدل ليّها لتناسب منصّةً جاهزة. اللوحة الفريدة تُباع مرة واحدة ولا تحتاج جدول مقاسات؛ والهودي يحتاج مقاسًا وخيارًا بين الطباعة والتطريز؛ والطلب الخاص يبدأ بحوارٍ لا بزرّ «أضف إلى السلة». أنجزنا الهوية والإخراج الفني والمتجر بفريقٍ واحد، وثنائي اللغة منذ أول شاشة.',
+        'بنينا المتجر حول طبيعة المعروضات بدل ليّها لتناسب منصّةً جاهزة: قمصان ولوحات، ومسارٌ مخصّص للطلبات الخاصة يرفع فيه الزبون فكرته ويختار الطباعة أو التطريز أو لوحةً مرسومة. تُراجَع الطلبات ويُتَّفق على السعر والتسليم مع الزبون قبل بدء العمل — دون فرض دفعٍ إلكتروني على نشاطٍ يعمل بالطلب. والواجهة عربيةٌ أولًا برحلة طلبٍ واضحة وبسيطة.',
       outcome:
-        'متجر يعرض الأعمال كأنه صالة عرض ويبيع كأنه متجر — ملكٌ خالصٌ لـ«ربيع»، بلا قالبٍ يُصارَع ولا ميزةٍ محبوسة خلف إضافة مدفوعة.',
+        'متجر مباشر يعرض الأعمال كأنه صالة عرض ويستقبل الطلبات كأنه مرسم — ملكٌ خالصٌ لـ«ربيع»، بلا قالبٍ يُصارَع ولا ميزةٍ محبوسة خلف إضافة مدفوعة.',
     },
   },
   {
-    // TODO(devora): kareem.video was unreachable for review from the network this
-    // copy was written on — confirm the details with the client.
     slug: 'kareem',
+    active: true,
     domain: 'kareem.video',
     href: 'https://kareem.video',
-    image: undefined,
+    image: '/images/kareem.png',
     en: {
       industry: 'Video editing',
       tags: 'Web design · Development',
@@ -143,4 +160,7 @@ export const CASES = [
   },
 ] as const;
 
-export type CaseStudy = (typeof CASES)[number];
+/** Active case studies — what the site actually shows. */
+export const CASES = ALL_CASES.filter((c) => c.active);
+
+export type CaseStudy = (typeof ALL_CASES)[number];

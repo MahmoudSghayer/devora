@@ -45,7 +45,7 @@ const OPTIONS: Record<string, Record<string, string>> = {
   },
   timeline: {'lt-1m': 'Under a month', '1-3m': '1–3 months', '3-6m': '3–6 months', flexible: 'Flexible'},
   // Amounts are ICU params ({b1}/{b2}/{b3} from DISCUSS_BUDGET_BOUNDS), never hardcoded.
-  budget: {lt5k: 'Under {b1}', '5-10k': '{b1} – {b2}', '10-20k': '{b2} – {b3}', '20k+': '{b3} or more', unsure: 'Not sure yet'},
+  budget: {lt3k: 'Under {b1}', '3-7k': '{b1} – {b2}', '7-15k': '{b2} – {b3}', '15k+': '{b3} or more', unsure: 'Not sure yet'},
 };
 
 /** key → English text, namespace `discuss`. */

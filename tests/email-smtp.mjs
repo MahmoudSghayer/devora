@@ -92,7 +92,7 @@ try {
     purpose: ['replace-spreadsheets', 'ai-tool'],
     users: 'team-2-10',
     mustHaves: ['auth-roles', 'dashboards'],
-    budget: '5-10k',
+    budget: '3-7k',
   };
   const mails = [
     ['estimate', 'DV-2611-EST1', t.websiteEstimateEmail({...base, leadRef: 'DV-2611-EST1', answers: estAnswers, result: estimateProject(estAnswers)})],

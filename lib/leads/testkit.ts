@@ -61,7 +61,7 @@ export function discussBody(over: Record<string, unknown> = {}) {
       purpose: ['replace-spreadsheets', 'customer-portal'],
       users: 'team-and-customers',
       mustHaves: ['auth-roles', 'payments'],
-      budget: '10-20k',
+      budget: '7-15k',
     },
     timeline: [{step: 'purpose', tsMs: NOW - 50_000}],
     ...over,

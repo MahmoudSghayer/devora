@@ -71,12 +71,15 @@
     "skip": "Skip to content",
     "nav_aria": "Primary",
     "footer_nav_aria": "Footer",
-    "home_title": "devora — Websites, automation & custom software that grow your business"
+    "home_title": "devora — Websites, automation & custom software that grow your business",
+    "whatsapp_cta": "Chat on WhatsApp",
+    "whatsapp_prefer": "Prefer to talk now?",
+    "opens_new_tab": "(opens in a new tab)"
   },
   "work": {
     "wk_label": "Work",
     "wk_title": "Real sites, real launches.",
-    "wk_sub": "Four live products, each built end to end.",
+    "wk_sub": "Live products, each built end to end.",
     "visit": "Visit site",
     "view_case": "View case study",
     "c1_tags": "Product design · SaaS · Development",
@@ -306,7 +309,8 @@
     "sent_ref": "Reference",
     "err_rate": "Too many attempts. Please wait a little and try again.",
     "retry": "Try again",
-    "mail_fallback": "Or email us at"
+    "mail_fallback": "Or email us at",
+    "a5_t": "WhatsApp"
   },
   "pillars": {
     "label": "What we build",
@@ -556,7 +560,7 @@
     "e_d": "We build with AI and for AI: assistants grounded in your own content, and automation that frees people for work that needs judgement. Try the assistant on this site.",
     "sw_label": "Selected work",
     "sw_title": "Real sites, built and launched.",
-    "sw_sub": "Four live projects for real clients. Visit them, judge the work yourself.",
+    "sw_sub": "Live projects for real clients. Visit them, judge the work yourself.",
     "sw_all": "All work",
     "sw_case": "Read the case",
     "sw_live": "Visit live site",
@@ -1562,10 +1566,10 @@
       "flexible": "Flexible"
     },
     "budget": {
-      "lt5k": "Under {b1}",
-      "5-10k": "{b1} – {b2}",
-      "10-20k": "{b2} – {b3}",
-      "20k+": "{b3} or more",
+      "lt3k": "Under {b1}",
+      "3-7k": "{b1} – {b2}",
+      "7-15k": "{b2} – {b3}",
+      "15k+": "{b3} or more",
       "unsure": "Not sure yet"
     },
     "sum": {

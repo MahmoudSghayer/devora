@@ -133,7 +133,7 @@ describe('software discovery email', () => {
     users: 'team-2-10' as const,
     mustHaves: ['auth-roles' as const, 'bilingual' as const],
     timeline: '1-3m' as const,
-    budget: '5-10k' as const,
+    budget: '3-7k' as const,
   };
   const result = estimateDiscuss(answers);
   const mail = softwareDiscoveryEmail({
@@ -310,7 +310,7 @@ describe('rich-sample emails render every answer readably', () => {
       integrations: 'one-two' as const,
       mustHaves: [...MUST_HAVE_OPTIONS],
       timeline: 'lt-1m' as const,
-      budget: '5-10k' as const,
+      budget: '3-7k' as const,
     };
     const mail = softwareDiscoveryEmail({...base, answers, result: estimateDiscuss(answers)});
     expectReadable(mail, [
@@ -320,7 +320,7 @@ describe('rich-sample emails render every answer readably', () => {
       INTEGRATIONS_LABEL['one-two'],
       ...MUST_HAVE_OPTIONS.map((v) => MUST_HAVE_LABEL[v]),
       TIMELINE_LABEL['lt-1m'],
-      BUDGET_LABEL['5-10k'],
+      BUDGET_LABEL['3-7k'],
     ]);
   });
 });

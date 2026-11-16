@@ -10,6 +10,7 @@ import {money, num} from './format';
 import type {Submitted} from './LeadForm';
 import type {CalcState} from './model';
 import {Ltr, ghostBtn} from './ui';
+import WhatsAppLink from '@/components/ui/WhatsAppLink';
 
 export default function Success({
   state,
@@ -128,6 +129,7 @@ export default function Success({
 
       <div className="flex flex-col gap-2 text-sm text-muted print:hidden">
         <p className="font-semibold text-ink-2">{t('success.altTitle')}</p>
+        <WhatsAppLink prompt className="text-signal underline underline-offset-4" />
         <a href={`mailto:${SITE.email}`} className="inline-flex min-h-11 w-fit items-center text-signal underline underline-offset-4">
           {t('success.altEmail')}: <Ltr className="ms-1">{SITE.email}</Ltr>
         </a>
