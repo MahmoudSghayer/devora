@@ -29,7 +29,8 @@ export default function Success({
   const date = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-u-nu-latn' : 'en-GB', {dateStyle: 'medium'}).format(new Date());
 
   useEffect(() => {
-    headingRef.current?.focus();
+    headingRef.current?.focus({preventScroll: true});
+    headingRef.current?.scrollIntoView({block: 'start'});
   }, []);
 
   async function copyRef() {
@@ -52,9 +53,9 @@ export default function Success({
               <CheckIcon className="size-6" />
             </span>
             <div>
-              <h2 ref={headingRef} tabIndex={-1} className="font-display text-h3 font-semibold text-ink outline-none">
+              <h1 ref={headingRef} tabIndex={-1} className="font-display text-h3 font-semibold text-ink scroll-mt-28 outline-none">
                 {t('success.title')}
-              </h2>
+              </h1>
               <p className="mt-1 text-base text-muted">{t('success.sub')}</p>
             </div>
           </div>
@@ -79,7 +80,7 @@ export default function Success({
 
       <Spotlight tone="signal" className="glass rounded-panel">
         <div className="flex flex-col gap-4 rounded-panel p-5 nav:p-8">
-          <h3 className="font-display text-xl font-semibold text-ink">{t('success.recapTitle')}</h3>
+          <h2 className="font-display text-xl font-semibold text-ink">{t('success.recapTitle')}</h2>
           <dl className="grid grid-cols-1 gap-4 min-[560px]:grid-cols-3">
             <div>
               <dt className="text-sm text-muted">{t('form.recapHours')}</dt>
@@ -107,7 +108,7 @@ export default function Success({
 
       <Spotlight tone="signal" className="glass rounded-panel print:hidden">
         <div className="flex flex-col gap-4 rounded-panel p-5 nav:p-8">
-          <h3 className="font-display text-xl font-semibold text-ink">{t('success.nextTitle')}</h3>
+          <h2 className="font-display text-xl font-semibold text-ink">{t('success.nextTitle')}</h2>
           <ol className="flex list-decimal flex-col gap-2 ps-5 text-base leading-relaxed text-ink-2">
             <li>{t('success.next1')}</li>
             <li>{t('success.next2', {channel: t(`form.channel.${submitted.channel}`)})}</li>

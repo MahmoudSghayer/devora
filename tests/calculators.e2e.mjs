@@ -123,7 +123,18 @@ const stepParam = (page) => new URL(page.url()).searchParams.get('step');
 /** Visible text of the live estimate panel (aside), '' when none. */
 const panelText = async (page) => {
   const a = page.locator('main aside').first();
-  return (await a.count()) && (await a.isVisible()) ? (await a.innerText()).replace(/\s+/g, ' ').trim() : '';
+  if ((await a.count()) && (await a.isVisible())) return (await a.innerText()).replace(/\s+/g, ' ').trim();
+  // Mobile (< 920px): the live estimate lives in the fixed bottom bar instead of the aside.
+  return page.evaluate(() => {
+    const bars = [...document.querySelectorAll('body *')].filter((el) => {
+      const cs = getComputedStyle(el);
+      if (cs.position !== 'fixed') return false;
+      const r = el.getBoundingClientRect();
+      return r.height > 0 && r.top > innerHeight / 2 && /₪|\d{3}/.test(el.textContent || '') && el.querySelector('button');
+    });
+    const el = bars.sort((x, y) => (x.textContent || '').length - (y.textContent || '').length)[0];
+    return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : '';
+  });
 };
 
 async function honeypotChecks(page) {

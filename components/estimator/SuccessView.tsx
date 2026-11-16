@@ -67,21 +67,21 @@ export default function SuccessView({
       </p>
 
       <header>
-        <h2
+        <h1
           ref={headingRef}
           tabIndex={-1}
-          className="font-display text-h3 font-semibold leading-tight text-ink outline-none"
+          className="font-display text-h3 font-semibold leading-tight text-ink scroll-mt-28 outline-none"
         >
           {t('success.title')}
-        </h2>
+        </h1>
         <p className="mt-2 max-w-[60ch] text-[15px] leading-relaxed text-ink-2">{t('success.sub', {name})}</p>
         {duplicate ? <p className="mt-2 text-sm text-muted">{t('success.duplicate')}</p> : null}
       </header>
 
       <section aria-labelledby="est-ref" className="glass rounded-panel p-5 nav:p-8">
-        <h3 id="est-ref" className="u-mono font-mono text-xs uppercase tracking-[0.2em] text-amber">
+        <h2 id="est-ref" className="u-mono font-mono text-xs uppercase tracking-[0.2em] text-amber">
           {t('success.ref')}
-        </h3>
+        </h2>
         <div className="mt-3 flex flex-wrap items-center gap-4">
           <p dir="ltr" className="num font-mono text-2xl font-semibold tracking-wider text-ink [overflow-wrap:anywhere]">
             {leadRef}
@@ -97,9 +97,9 @@ export default function SuccessView({
       </section>
 
       <section aria-labelledby="est-yours" className="glass rounded-panel p-5 nav:p-8">
-        <h3 id="est-yours" className="mb-5 font-display text-lg font-semibold text-ink">
+        <h2 id="est-yours" className="mb-5 font-display text-lg font-semibold text-ink">
           {t('sum.title')}
-        </h3>
+        </h2>
         <SummaryList sections={sections} />
         <div className="mt-6 grid gap-2 border-t border-hairline pt-5 text-sm text-ink-2">
           <p className="font-display text-2xl font-semibold text-ink">
@@ -118,9 +118,9 @@ export default function SuccessView({
       </section>
 
       <section aria-labelledby="est-next">
-        <h3 id="est-next" className="mb-4 font-display text-lg font-semibold text-ink">
+        <h2 id="est-next" className="mb-4 font-display text-lg font-semibold text-ink">
           {t('next.title')}
-        </h3>
+        </h2>
         <ol className="space-y-3">
           {([1, 2, 3] as const).map((n) => (
             <li key={n} className="flex gap-4 text-[15px] leading-relaxed text-ink-2">
@@ -137,9 +137,9 @@ export default function SuccessView({
       </section>
 
       <section aria-labelledby="est-alt" className="print:hidden">
-        <h3 id="est-alt" className="mb-3 font-display text-lg font-semibold text-ink">
+        <h2 id="est-alt" className="mb-3 font-display text-lg font-semibold text-ink">
           {t('alt.title')}
-        </h3>
+        </h2>
         <ul className="flex flex-wrap gap-3">
           <li>
             <a href={`mailto:${email}`} className={BTN_GHOST}>

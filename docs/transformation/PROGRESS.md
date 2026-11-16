@@ -68,3 +68,11 @@ Running agents (6): particle hero, estimator UI, ROI UI, homepage sections, page
 ---
 ## FINAL — DONE — ready for orchestrator review
 All phases complete; see `docs/transformation/REPORT.md` (10-point report). Final gates green (typecheck, lint, 126 tests, build; SSG restored). Owner actions: apply migration 0002, set env in Vercel, confirm pricing values/stack/client claims.
+
+
+---
+## Owner pricing change + review fixes (applied)
+- Prices lowered for small businesses (`PRICING_CONFIG_VERSION 2026-11-v2`): bases ₪1,500–₪12,000, extra types at 60%, +₪150/page beyond 5, range ×0.9/×1.15 rounded to ₪100, care plans ₪150/₪250/₪400, ROI implementation ₪1,500 + ₪900/task (running ₪120 + ₪40/task), discuss budget bands <5k/5–10k/10–20k/20k+. Worked ROI example unchanged (132 / 92.4 / ₪5,544 / ₪66,528).
+- Booking/dashboard/notification overlaps are no longer double-charged (engine + hidden questions + tests).
+- Emails: every answer, readable labels (all three calculators); chat launcher + scroll toggle lift above the mobile live-estimate bar; success views render in place of the page intro (all three flows).
+- Gates green: typecheck, lint, 153 unit tests, build; Playwright calculators (all flows EN/AR + API) and 850 page-QA checks pass.

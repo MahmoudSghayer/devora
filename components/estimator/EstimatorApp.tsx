@@ -7,6 +7,7 @@ import {estimateProject} from '@/lib/estimator/engine';
 import {formatMoney} from '@/lib/pricing/config';
 import {trackFunnel} from '@/lib/leads/track';
 import EstimatePanel from './EstimatePanel';
+import {useCalcDone} from '@/components/calc/CalcShell';
 import MobileSheet from './MobileSheet';
 import ProgressNav from './ProgressNav';
 import SuccessView, {type Social} from './SuccessView';
@@ -58,6 +59,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
   const [submitting, setSubmitting] = useState(false);
   const [failure, setFailure] = useState<Failure | null>(null);
   const [outcome, setOutcome] = useState<Outcome>(null);
+  const setDone = useCalcDone();
   const [stepNote, setStepNote] = useState('');
   const [liveNote, setLiveNote] = useState('');
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -178,6 +180,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
     if (result.ok) {
       clearStored();
       trackFunnel('estimate_submitted', {calculator: 'estimator', duplicate: result.duplicate});
+      setDone(true);
       setOutcome({leadRef: result.leadRef, duplicate: result.duplicate, name: form.name.trim()});
     } else {
       setFailure({error: result.error, retryAfterSec: result.retryAfterSec});
@@ -186,6 +189,7 @@ export default function EstimatorApp({email, socials}: {email: string; socials: 
 
   const restart = () => {
     clearStored();
+    setDone(false);
     setOutcome(null);
     setFailure(null);
     setForm(EMPTY_FORM);

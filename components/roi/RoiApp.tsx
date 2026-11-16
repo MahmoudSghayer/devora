@@ -3,6 +3,7 @@
 import {useCallback, useEffect, useMemo, useReducer, useRef, useState} from 'react';
 import {useReducedMotion} from 'motion/react';
 import {useTranslations} from 'next-intl';
+import {useCalcDone} from '@/components/calc/CalcShell';
 import {trackFunnel} from '@/lib/leads/track';
 import {computeRoi} from '@/lib/roi/engine';
 import {ChevronIcon} from './icons';
@@ -54,6 +55,7 @@ export default function RoiApp() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [attempted, setAttempted] = useState(false);
   const [submitted, setSubmitted] = useState<Submitted | null>(null);
+  const setDone = useCalcDone();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const focusPending = useRef(false);
   const startedTracked = useRef(false);
@@ -100,7 +102,7 @@ export default function RoiApp() {
     if (!h) return;
     h.focus({preventScroll: true});
     h.scrollIntoView({block: 'start', behavior: reduced ? 'auto' : 'smooth'});
-  }, [state.step, submitted, reduced]);
+  }, [state.step, reduced]);
 
   const errors: FieldErrors = useMemo(() => (attempted ? validateStep(state, state.step) : {}), [attempted, state]);
   const errCount = Object.keys(errors).length;
@@ -132,6 +134,7 @@ export default function RoiApp() {
     submittedRef.current = false;
     clearSaved();
     setSubmitted(null);
+    setDone(false);
     dispatch({type: 'reset', key: newKey(), startedAt: Date.now()});
     goTo(1);
   }
@@ -139,8 +142,17 @@ export default function RoiApp() {
   function onSuccess(s: Submitted) {
     submittedRef.current = true;
     clearSaved();
-    focusPending.current = true;
+    setDone(true);
     setSubmitted(s);
+  }
+
+  // The success view replaces the whole flow (and, via CalcShell, the page intro).
+  if (submitted) {
+    return (
+      <div aria-live="off">
+        <Success state={state} result={result} submitted={submitted} onRestart={restart} />
+      </div>
+    );
   }
 
   const nextLabel = step === 4 ? t('nav.toResults') : step === 5 ? t('nav.toForm') : t('nav.next');
@@ -152,7 +164,7 @@ export default function RoiApp() {
           {STEP_IDS.map((id, i) => {
             const n = i + 1;
             const current = n === step;
-            const enabled = n <= reach && !submitted;
+            const enabled = n <= reach;
             const label = t(`step.short.${id}`);
             return (
               <li key={id} className="flex min-w-0 flex-1 items-center gap-2 nav:flex-none">
@@ -192,7 +204,7 @@ export default function RoiApp() {
       <section aria-labelledby="roi-step-title" className="flex flex-col gap-6">
         <header className="print:hidden">
           <Eyebrow>
-            <span aria-hidden>{t('step.of', {n: submitted ? TOTAL_STEPS : step, total: TOTAL_STEPS})}</span>
+            <span aria-hidden>{t('step.of', {n: step, total: TOTAL_STEPS})}</span>
           </Eyebrow>
           <h2
             id="roi-step-title"
@@ -227,42 +239,37 @@ export default function RoiApp() {
         {step === 3 && <Labor state={state} errors={errors} dispatch={dispatch} />}
         {step === 4 && <Potential tasks={state.tasks} directPct={state.directPct} level={state.level} dispatch={dispatch} />}
         {step === 5 && <Results state={state} result={result} dispatch={dispatch} />}
-        {step === 6 &&
-          (submitted ? (
-            <Success state={state} result={result} submitted={submitted} onRestart={restart} />
-          ) : (
-            <div className="flex flex-col gap-6">
-              <Summary state={state} onEdit={(n) => goTo(n)} />
-              <LeadForm state={state} result={result} onSuccess={onSuccess} />
-            </div>
-          ))}
+        {step === 6 && (
+          <div className="flex flex-col gap-6">
+            <Summary state={state} onEdit={(n) => goTo(n)} />
+            <LeadForm state={state} result={result} onSuccess={onSuccess} />
+          </div>
+        )}
       </section>
 
-      {!submitted && (
-        <div className="flex flex-col gap-4 print:hidden">
-          {errCount > 0 && (
-            <p role="alert" className="text-sm font-medium text-amber-hi">
-              {t('err.summary', {count: errCount})}
-            </p>
+      <div className="flex flex-col gap-4 print:hidden">
+        {errCount > 0 && (
+          <p role="alert" className="text-sm font-medium text-amber-hi">
+            {t('err.summary', {count: errCount})}
+          </p>
+        )}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {step > 1 ? (
+            <button type="button" className={ghostBtn} onClick={() => goTo(step - 1)}>
+              <ChevronIcon className="size-4 rtl:rotate-180" />
+              {t('nav.back')}
+            </button>
+          ) : (
+            <span />
           )}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            {step > 1 ? (
-              <button type="button" className={ghostBtn} onClick={() => goTo(step - 1)}>
-                <ChevronIcon className="size-4 rtl:rotate-180" />
-                {t('nav.back')}
-              </button>
-            ) : (
-              <span />
-            )}
-            {step < TOTAL_STEPS && (
-              <button type="button" className={primaryBtn} onClick={onNext}>
-                {nextLabel}
-                <ChevronIcon className="size-4 rotate-180 rtl:rotate-0" />
-              </button>
-            )}
-          </div>
+          {step < TOTAL_STEPS && (
+            <button type="button" className={primaryBtn} onClick={onNext}>
+              {nextLabel}
+              <ChevronIcon className="size-4 rotate-180 rtl:rotate-0" />
+            </button>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

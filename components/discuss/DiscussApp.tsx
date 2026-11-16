@@ -8,6 +8,7 @@ import {formatMoney} from '@/lib/pricing/config';
 import {trackFunnel} from '@/lib/leads/track';
 import LivePanel, {MobileBar, weeksText} from './LivePanel';
 import ProgressNav from './ProgressNav';
+import {useCalcDone} from '@/components/calc/CalcShell';
 import SuccessView, {type Social} from './SuccessView';
 import QuestionStep from './steps/QuestionStep';
 import SummaryStep, {type Failure} from './steps/SummaryStep';
@@ -52,6 +53,7 @@ export default function DiscussApp({email, socials}: {email: string; socials: re
   const [submitting, setSubmitting] = useState(false);
   const [failure, setFailure] = useState<Failure | null>(null);
   const [outcome, setOutcome] = useState<Outcome>(null);
+  const setDone = useCalcDone();
   const [stepNote, setStepNote] = useState('');
   const [liveNote, setLiveNote] = useState('');
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -163,6 +165,7 @@ export default function DiscussApp({email, socials}: {email: string; socials: re
     if (res.ok) {
       clearStored();
       trackFunnel('discuss_submitted', {calculator: 'discuss', duplicate: res.duplicate});
+      setDone(true);
       setOutcome({leadRef: res.leadRef, duplicate: res.duplicate, name: form.name.trim()});
     } else {
       setFailure({error: res.error, retryAfterSec: res.retryAfterSec});
@@ -171,6 +174,7 @@ export default function DiscussApp({email, socials}: {email: string; socials: re
 
   const restart = () => {
     clearStored();
+    setDone(false);
     setOutcome(null);
     setFailure(null);
     setForm(EMPTY_FORM);
