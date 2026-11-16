@@ -126,13 +126,22 @@ describe('bot defences', () => {
     expect(kit.limiterCalls).toHaveLength(0);
   });
 
-  it('too-fast submission: silent ok, nothing persisted or sent', async () => {
+  it('too-fast submission: honest retryable 429 (never a fake success), nothing persisted or sent', async () => {
     const kit = makeKit();
     const res = await run(kit, estimateBody({startedAtMs: NOW - 1000}));
-    expect(res.ok).toBe(true);
+    expect(res.ok).toBe(false);
+    expect(res.status).toBe(429);
     await kit.flush();
     expect(kit.repo.rows).toHaveLength(0);
     expect(kit.sent).toHaveLength(0);
+  });
+
+  it('visitor clock ahead of the server (negative elapsed) is not penalised', async () => {
+    const kit = makeKit();
+    const res = await run(kit, estimateBody({startedAtMs: NOW + 60_000}));
+    expect(res.ok).toBe(true);
+    await kit.flush();
+    expect(kit.repo.rows).toHaveLength(1);
   });
 
   it('calculators require startedAtMs', async () => {

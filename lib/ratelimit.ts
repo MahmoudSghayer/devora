@@ -19,6 +19,9 @@ function getRedis(): Redis | null {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   redis = url && token ? new Redis({url, token}) : null;
+  if (!redis && process.env.NODE_ENV === 'production') {
+    console.warn('[ratelimit] UPSTASH_REDIS_REST_URL/TOKEN not set in production — rate limiting is DISABLED (fails open).');
+  }
   return redis;
 }
 

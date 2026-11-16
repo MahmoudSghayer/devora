@@ -43,6 +43,15 @@ function silentOk(deps: SubmitDeps): SubmitResult {
   };
 }
 
+/** Rate-limit key for an address: lowercase, strip +tag (and dots for gmail) so
+ *  plus-addressing can't mint unlimited quotas. */
+export function normaliseEmailKey(email: string): string {
+  const [local = '', domain = ''] = email.toLowerCase().split('@');
+  const base = local.split('+')[0];
+  const isGmail = domain === 'gmail.com' || domain === 'googlemail.com';
+  return `${isGmail ? base.replace(/\./g, '') : base}@${domain}`;
+}
+
 function hostOf(url: string | null): string | null {
   if (!url) return null;
   try {
@@ -220,9 +229,18 @@ export async function submitLead(input: SubmitInput, deps: SubmitDeps): Promise<
   // 3. minimum fill time (a human needs more than a few seconds) ------------
   if (env.startedAtMs !== undefined) {
     const elapsed = nowMs - env.startedAtMs;
-    if (elapsed < MIN_FILL_MS) {
-      log.warn('[leads] submitted too fast — dropping silently', {elapsed});
-      return silentOk(deps);
+    // elapsed < 0 means the visitor's clock is ahead of ours: treat as unknown
+    // (never penalise skew). A genuinely too-fast submit gets an HONEST
+    // retryable 429 instead of a fake success, so a real visitor whose clock is
+    // slightly off just retries a few seconds later and is never silently lost.
+    if (elapsed >= 0 && elapsed < MIN_FILL_MS) {
+      log.warn('[leads] submitted too fast — asking to retry', {elapsed});
+      return {
+        ok: false,
+        status: 429,
+        error: 'rate_limited',
+        retryAfterSec: Math.ceil((MIN_FILL_MS - elapsed) / 1000) + 1,
+      };
     }
   } else if (env.source !== 'contact') {
     // Calculators always report when they started; absence means a script.
@@ -241,7 +259,7 @@ export async function submitLead(input: SubmitInput, deps: SubmitDeps): Promise<
   const ipRl = await deps.rateLimit('calculator', meta.ip || 'unknown');
   if (!ipRl.success)
     return {ok: false, status: 429, error: 'rate_limited', retryAfterSec: ipRl.retryAfterSec ?? 3600};
-  const mailRl = await deps.rateLimit('calculator_email', env.contact.email);
+  const mailRl = await deps.rateLimit('calculator_email', normaliseEmailKey(env.contact.email));
   if (!mailRl.success)
     return {ok: false, status: 429, error: 'rate_limited', retryAfterSec: mailRl.retryAfterSec ?? 3600};
 
